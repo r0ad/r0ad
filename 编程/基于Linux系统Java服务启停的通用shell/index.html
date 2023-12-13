@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>基于Linux系统Java服务启停的通用shell | code trend</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="java,spring,spring cloud,javascript">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="code trend" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/logo.svg">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">code trend</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">专注软件技术发展趋势，传播软件技术</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-编程/基于Linux系统Java服务启停的通用shell" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      基于Linux系统Java服务启停的通用shell
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-07-27T16:00:00.000Z" itemprop="datePublished">2023年07月28日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a>
+  </div>
+
+      
+        
+<span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>应用程序的启停最为显著的特征是端口的占用情况，例如Nginx、Tomcat。除此之外也可以通过进程的文件信息判断进程启停情况。在Linux系统常用的两个命令分别为 <code>lsof</code> 和 <code>ps</code>。在应用的启停中通过监听端口去判断是否存在进行启停是更合理的一种方式。实际使用过程中都会使用到。</p>
+<h3 id="lsof用法"><a href="#lsof用法" class="headerlink" title="lsof用法"></a>lsof用法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">       lsof - list open files</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">       lsof  [  -?abChKlnNOPRtUvVX  ]  [ -A A ] [ -c c ] [ +c c ] [ +|-d d ] [</span><br><span class="line">       +|-D D ] [ +|-e s ] [ +|-E ] [ +|-f [cfgGn] ] [ -F [f] ] [ -g [s]  ]  [</span><br><span class="line">       -i  [i] ] [ -k k ] [ +|-L [l] ] [ +|-m m ] [ +|-M ] [ -o [o] ] [ -p s ]</span><br><span class="line">       [ +|-r [t[m&lt;fmt&gt;]] ] [ -s [p:s] ] [ -S [t] ] [ -T [t] ] [ -u s ] [ +|-w</span><br><span class="line">       ] [ -x [fl] ] [ -z [z] ] [ -Z [Z] ] [ -- ] [names]</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       Lsof  revision 4.89 lists on its standard output file information about</span><br><span class="line">       files opened by processes for the following UNIX dialects:</span><br><span class="line"></span><br><span class="line">            Apple Darwin 9 and Mac OS X 10.[567]</span><br><span class="line">            FreeBSD 8.[234], 9.0, 10.0 and 11.0 for AMD64-based systems</span><br><span class="line">            Linux 2.1.72 and above for x86-based systems</span><br><span class="line">            Solaris 9, 10 and 11</span><br><span class="line"></span><br><span class="line">       (See the DISTRIBUTION section of this manual page  for  information  on</span><br><span class="line">       how to obtain the latest lsof revision.)</span><br><span class="line"></span><br><span class="line">       An  open file may be a regular file, a directory, a block special file,</span><br><span class="line">       a character special file, an executing text  reference,  a  library,  a</span><br><span class="line">       stream  or  a  network  file  (Internet socket, NFS file or UNIX domain</span><br><span class="line">       socket.)  A specific file or all the files in  a  file  system  may  be</span><br><span class="line">       selected by path.</span><br><span class="line"></span><br><span class="line">       Instead  of  a  formatted display, lsof will produce output that can be</span><br><span class="line">       parsed by other programs.  See the -F, option description, and the OUT‐</span><br><span class="line">       PUT FOR OTHER PROGRAMS section for more information.</span><br><span class="line"></span><br><span class="line">       In  addition to producing a single output list, lsof will run in repeat</span><br><span class="line">       mode.  In repeat mode it will produce output, delay,  then  repeat  the</span><br><span class="line">       output  operation  until stopped with an interrupt or quit signal.  See</span><br><span class="line">       the +|-r [t[m&lt;fmt&gt;]] option description for more information.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="ps用法"><a href="#ps用法" class="headerlink" title="ps用法"></a>ps用法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">       ps - report a snapshot of the current processes.</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">       ps [options]</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       ps displays information about a selection of the active processes.  If you want a repetitive update of the selection and the displayed information, use top(1) instead.</span><br><span class="line"></span><br><span class="line">       This version of ps accepts several kinds of options:</span><br><span class="line"></span><br><span class="line">       1   UNIX options, which may be grouped and must be preceded by a dash.</span><br><span class="line">       2   BSD options, which may be grouped and must not be used with a dash.</span><br><span class="line">       3   GNU long options, which are preceded by two dashes.</span><br><span class="line"></span><br><span class="line">       Options of different types may be freely mixed, but conflicts can appear.  There are some synonymous options, which are functionally identical, due to the many standards and ps</span><br><span class="line">       implementations that this ps is compatible with.</span><br><span class="line"></span><br><span class="line">       Note that &quot;ps -aux&quot; is distinct from &quot;ps aux&quot;.  The POSIX and UNIX standards require that &quot;ps -aux&quot; print all processes owned by a user named &quot;x&quot;, as well as printing all</span><br><span class="line">       processes that would be selected by the -a option.  If the user named &quot;x&quot; does not exist, this ps may interpret the command as &quot;ps aux&quot; instead and print a warning.  This</span><br><span class="line">       behavior is intended to aid in transitioning old scripts and habits.  It is fragile, subject to change, and thus should not be relied upon.</span><br><span class="line"></span><br><span class="line">       By default, ps selects all processes with the same effective user ID (euid=EUID) as the current user and associated with the same terminal as the invoker.  It displays the</span><br><span class="line">       process ID (pid=PID), the terminal associated with the process (tname=TTY), the cumulated CPU time in [DD-]hh:mm:ss format (time=TIME), and the executable name (ucmd=CMD).</span><br><span class="line">       Output is unsorted by default.</span><br><span class="line"></span><br><span class="line">       The use of BSD-style options will add process state (stat=STAT) to the default display and show the command args (args=COMMAND) instead of the executable name.  You can override</span><br><span class="line">       this with the PS_FORMAT environment variable. The use of BSD-style options will also change the process selection to include processes on other terminals (TTYs) that are owned by</span><br><span class="line">       you; alternately, this may be described as setting the selection to be the set of all processes filtered to exclude processes owned by other users or not on a terminal.  These</span><br><span class="line">       effects are not considered when options are described as being &quot;identical&quot; below, so -M will be considered identical to Z and so on.</span><br><span class="line"></span><br><span class="line">       Except as described below, process selection options are additive.  The default selection is discarded, and then the selected processes are added to the set of processes to be</span><br><span class="line">       displayed.  A process will thus be shown if it meets any of the given selection criteria.</span><br></pre></td></tr></table></figure>
+
+<h2 id="通过监听端口停止应用"><a href="#通过监听端口停止应用" class="headerlink" title="通过监听端口停止应用"></a>通过监听端口停止应用</h2><p>使用lsof加关键词LISTEN获取端口，脚本如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">author： sunz</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">file name: killProcessByPort.sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 参数通过运行时传入</span></span></span><br><span class="line">port1=$1</span><br><span class="line">MSG=&quot;shutdown port %s at pid %s  %s \n&quot;</span><br><span class="line"></span><br><span class="line">killByPort()&#123;</span><br><span class="line">pids=$(lsof -i:$port1 | grep LISTEN | awk &#x27;&#123;print $2&#125;&#x27; |xargs)</span><br><span class="line">pids_len=$&#123;#pids[*]&#125;</span><br><span class="line"></span><br><span class="line">if test $pids_len -ne 1</span><br><span class="line">then</span><br><span class="line">printf &quot;port %s has been killed or not start yet. \n&quot; $port1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">for pid in $pids; do</span><br><span class="line">printf &quot;shutdown port %s at pid %s  %s \n&quot; $port1 $pid  &#x27;start&#x27;</span><br><span class="line">kill -9 $pid</span><br><span class="line">CheckKillResult $? $pid</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CheckKillResult()&#123;</span><br><span class="line">result=$1</span><br><span class="line">pid=$2</span><br><span class="line">if test $result -eq 0</span><br><span class="line">then </span><br><span class="line">printf &quot;shutdown port %s at pid %s  %s \n&quot; $port1 $pid  &quot;successs&quot;</span><br><span class="line">else</span><br><span class="line">printf &quot;shutdown port %s at pid %s  %s \n&quot; $port1 $pid  &quot;failed&quot;</span><br><span class="line">fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">killByPort</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">eg <span class="variable">$killProcessByPort</span> 9430</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="通过文件名停止应用"><a href="#通过文件名停止应用" class="headerlink" title="通过文件名停止应用"></a>通过文件名停止应用</h2><p>使用ps+awk加应用名关键词获取pid，脚本如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">author： sunz</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">file name: killProcessByName.sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 参数通过运行时传入</span></span></span><br><span class="line">name=$1</span><br><span class="line">MSG=&quot;shutdown app %s at pid %s  %s \n&quot;</span><br><span class="line"></span><br><span class="line">killByName()&#123;</span><br><span class="line">pids=$(ps -ef | grep $name |grep java | awk &#x27;&#123;print $2&#125;&#x27; |xargs)</span><br><span class="line">pids_len=$&#123;#pids[*]&#125;</span><br><span class="line"></span><br><span class="line">if test $pids_len -ne 1</span><br><span class="line">then</span><br><span class="line">printf &quot;app %s has been killed or not start yet. \n&quot; $name</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">for pid in $pids; do</span><br><span class="line">printf &quot;shutdown app %s at pid %s  %s \n&quot; $name $pid  &#x27;start&#x27;</span><br><span class="line">kill -9 $pid</span><br><span class="line">CheckKillResult $? $pid</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CheckKillResult()&#123;</span><br><span class="line">result=$1</span><br><span class="line">pid=$2</span><br><span class="line">if test $result -eq 0</span><br><span class="line">then </span><br><span class="line">printf &quot;shutdown app %s at pid %s  %s \n&quot; $name $pid  &quot;successs&quot;</span><br><span class="line">else</span><br><span class="line">printf &quot;shutdown app %s at pid %s  %s \n&quot; $name $pid  &quot;failed&quot;</span><br><span class="line">fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">killByName</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">eg <span class="variable">$killProcessByName</span> spring-boot.jar</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="通用启动Java程序脚本"><a href="#通用启动Java程序脚本" class="headerlink" title="通用启动Java程序脚本"></a>通用启动Java程序脚本</h2><p>通过函数式编写启动Java程序脚本有如下优点：</p>
+<ul>
+<li>简化启动应用的脚本维护；</li>
+<li>统一维护一类程序的JVM参数；</li>
+</ul>
+<p>脚本信息如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">author： sunz</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">file name: startJavaProcess.sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 参数通过运行时传入</span></span></span><br><span class="line"></span><br><span class="line">APP=$1</span><br><span class="line">startJavaProcess()&#123;</span><br><span class="line">  echo &quot;start $APP &quot;</span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># JVM参数基于Java8</span></span></span><br><span class="line">  JVM=&quot; -Xmx1344M -Xms1344M -Xmn448M -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M -XX:+UseConcMarkSweepGC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 -XX:+ExplicitGCInvokesConcurrentAndUnloadsClasses -XX:+CMSClassUnloadingEnabled -XX:+ParallelRefProcEnabled -XX:+CMSScavengeBeforeRemark &quot;</span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># 特殊版本java的路径可以通过全路径制定</span></span></span><br><span class="line">  nohup java $JVM -jar $APP &gt;/dev/null 2&gt;&amp;1 &amp;</span><br><span class="line">  CheckStartResult $? $APP</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CheckStartResult()&#123;</span><br><span class="line">result=$1</span><br><span class="line">pid=$2</span><br><span class="line">if test $result -eq 0</span><br><span class="line">then </span><br><span class="line">printf &quot;startup  %s  %s \n&quot; $2 &quot;successs&quot;</span><br><span class="line">else</span><br><span class="line">printf &quot;startup  %s  %s \n&quot; $2 &quot;failed&quot;</span><br><span class="line">fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">startJavaProcess</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"> eg  <span class="variable">$startJavaProcess</span> zuul-boot-2.0.0-SNAPSHOT.jar</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="通过-bashrc-简化程序脚本"><a href="#通过-bashrc-简化程序脚本" class="headerlink" title="通过 ~/.bashrc 简化程序脚本"></a>通过 ~/.bashrc 简化程序脚本</h2><p><code>.bashrc</code> 在用户登录时获取该文件的 <code>aslias</code> 等信息。维护人员可以通过别名简化程序脚本，增加维护效率。</p>
+<p><code>.bash_profile</code> 文件可以维护环境变量，也可以简化该脚本。</p>
+<p><code>.bash_profile</code> 修改过程如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑 bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vi .bash_profile</span></span><br><span class="line">SHELL_HOME=&quot;/home/sunz/文档/files/shell/cshell&quot;</span><br><span class="line">killProcessByPort=&#x27;sh $SHELL_HOME/killProcessByPort.sh &#x27;</span><br><span class="line">export killProcessByPort</span><br><span class="line">startJavaProcess=&#x27;sh $SHELL_HOME/startJavaProcess.sh &#x27;</span><br><span class="line">export startJavaProcess</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">更新 bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">source</span> .bash_profile</span></span><br></pre></td></tr></table></figure>
+
+<p><code>.bashrc</code> 修改过程如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑 bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vi .bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用 <span class="built_in">alias</span> 方法</span></span><br><span class="line">SHELL_HOME=&quot;/home/sunz/文档/files/shell/cshell&quot;</span><br><span class="line">alias startJavaProcess=&#x27;sh $SHELL_HOME/startJavaProcess.sh &#x27;</span><br><span class="line">alias killProcessByPort=&#x27;sh $SHELL_HOME/killProcessByPort.sh &#x27;</span><br></pre></td></tr></table></figure>
+
+<p>注意不同系统的文件名可能存在差异。</p>
+<h2 id="以user-gatewayin-svc为例子说明使用"><a href="#以user-gatewayin-svc为例子说明使用" class="headerlink" title="以user-gatewayin-svc为例子说明使用"></a>以user-gatewayin-svc为例子说明使用</h2><p>服务部署路径信息 <code>/app/user_projects/user-gatewayin-svc</code> ,目录结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x 3 app sunz     4096 2月   1 13:40 config</span><br><span class="line">-rw-r--r-- 1 app sunz       86 2月   1 13:47 start.sh</span><br><span class="line">-rw-r--r-- 1 app sunz       19 12月  9 15:57 stop.sh</span><br><span class="line">-rw-r--r-- 1 app sunz 57520835 1月   5 16:10 zuul-boot-2.0.0-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>start.sh</code> 内容如下;</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">startJavaProcess <span class="string">&quot;zuul-boot-2.0.0-SNAPSHOT.jar --spring.profiles.active=dev,dev-in&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>其中 <code>stop.sh</code> 内容如下;</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">killProcess 9450</span></span><br></pre></td></tr></table></figure>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lsof%E7%94%A8%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">lsof用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ps%E7%94%A8%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">ps用法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3%E5%81%9C%E6%AD%A2%E5%BA%94%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">通过监听端口停止应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E5%90%8D%E5%81%9C%E6%AD%A2%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">通过文件名停止应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%90%AF%E5%8A%A8Java%E7%A8%8B%E5%BA%8F%E8%84%9A%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">通用启动Java程序脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87-bashrc-%E7%AE%80%E5%8C%96%E7%A8%8B%E5%BA%8F%E8%84%9A%E6%9C%AC"><span class="toc-number">5.</span> <span class="toc-text">通过 ~&#x2F;.bashrc 简化程序脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A5user-gatewayin-svc%E4%B8%BA%E4%BE%8B%E5%AD%90%E8%AF%B4%E6%98%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">6.</span> <span class="toc-text">以user-gatewayin-svc为例子说明使用</span></a></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          Windows端微信多开的技巧
+        
+      </div>
+    </a>
+  
+  
+    <a href="/%E7%BC%96%E7%A8%8B/VsCode%E4%B8%AD%E5%BC%80%E5%8F%91%E5%89%8D%E7%AB%AF%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">Visual Studio Code 中开发前端常用插件</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/">Gitlab使用或替换外部Nginx方法说明</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/">Windows端微信多开的技巧</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/%E5%9F%BA%E4%BA%8ELinux%E7%B3%BB%E7%BB%9FJava%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%81%9C%E7%9A%84%E9%80%9A%E7%94%A8shell/">基于Linux系统Java服务启停的通用shell</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/VsCode%E4%B8%AD%E5%BC%80%E5%8F%91%E5%89%8D%E7%AB%AF%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/">Visual Studio Code 中开发前端常用插件</a>
+          </li>
+        
+          <li>
+            <a href="/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/RabbitMQ%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">RabbitMQ 的安装和使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">前端编程</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年08月</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B/" rel="tag">前端编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> 友情链接</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://juejin.cn/">掘金</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://tech.meituan.com/">美团技术团队</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://efe.baidu.com/">百度EFE</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/atom.xml">订阅本站</a>
+        <span> | </span><a href="/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2023 codeman.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6e17ef6b36c9fdda22a20012ad8022c3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/localshare/js/social-share.js"></script>
+
+  
+<script src="/localshare/js/qrcode.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    const host = 'https://r0ad.github.io'
+    const local = location.href
+    const white = ['localhost','127.0.0.1','l192.168']
+    let redirectFlag = true;
+    white.find(function(item){
+      if(local.indexOf(item) > -1){
+        redirectFlag =false
+      }
+    })
+    if(local && local.indexOf(host)===-1 && redirectFlag ){
+      location.replace(location.href.replace(location.origin,host))
+    }
+
+  </script>
+
+
+
+  <script src='https://unpkg.com/mermaid@9.2.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+  </div>
+</body>
+</html>

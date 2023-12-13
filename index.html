@@ -88,6 +88,284 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-运维/Gitlab使用或替换外部Nginx方法说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/">Gitlab使用或替换外部Nginx方法说明</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-08-15T16:00:00.000Z" itemprop="datePublished">2023年08月16日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Gitlab 版本没更新就会导致依赖的组件库版本没更新，如果Nginx有漏洞，则需要升级Gitlab，或者第二个选择就是使用外部的Nginx作为服务容器。</p>
+<h2 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h2><p>** 请勿直接在生产或者线上主机上执行。</p>
+<p>具体操作步骤如下：</p>
+<ol>
+<li>备份配置文件 <code>cp /etc/gitlab/gitlab.rb /etc/gitlab/gitlab.rb.20230822.bak</code></li>
+<li>禁用捆绑的 NGINX，在 /etc/gitlab/gitlab.rb 中设置：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx[&#x27;enable&#x27;] = false</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>下载正确的网络服务器配置，访问地址： <a target="_blank" rel="noopener" href="https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/web-server">GitLab recipes repository</a></li>
+</ol>
+<p>下面以http的Nginx为例说明，把配置文件放入/etc/nginx/conf.d（默认）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">upstream gitlab-workhorse &#123;</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">On GitLab versions before 13.5, the location is</span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">`/var/opt/gitlab/gitlab-workhorse/socket`. Change the following line</span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">accordingly.</span></span><br><span class="line">  server unix:/var/opt/gitlab/gitlab-workhorse/sockets/socket;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># Normal HTTP host</span></span></span><br><span class="line">server &#123;</span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># Either remove &quot;default_server&quot; from the listen line below 如果遇到问题可以删除 default_server</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># or delete the /etc/nginx/sites-enabled/default file. This will cause gitlab</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># to be served if you visit any address that your server responds to, eg.</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># the ip address of the server (http://x.x.x.x/)n 0.0.0.0:80 default_server;</span></span></span><br><span class="line">  listen 0.0.0.0:8088 default_server; # 修改你需要监听的端口</span><br><span class="line">  listen [::]:8088 default_server;</span><br><span class="line">  server_name localhost; ## Replace this with something like gitlab.example.com # 修改配置的域名</span><br><span class="line">  server_tokens off; ## Don&#x27;t show the nginx version number, a security best practice</span><br><span class="line">  root /opt/gitlab/embedded/service/gitlab-rails/public; # 默认位置就是这里</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># See app/controllers/application_controller.rb for headers set</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># Individual nginx logs for this GitLab vhost</span></span></span><br><span class="line">  access_log  /var/log/nginx/gitlab_access.log;</span><br><span class="line">  error_log   /var/log/nginx/gitlab_error.log;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    client_max_body_size 0;</span><br><span class="line">    gzip off;</span><br><span class="line"></span><br><span class="line">    ## https://github.com/gitlabhq/gitlabhq/issues/694</span><br><span class="line">    ## Some requests take more than 30 seconds.</span><br><span class="line">    proxy_read_timeout      300;</span><br><span class="line">    proxy_connect_timeout   300;</span><br><span class="line">    proxy_redirect          off;</span><br><span class="line"></span><br><span class="line">    proxy_http_version 1.1;</span><br><span class="line"></span><br><span class="line">    proxy_set_header    Host                $http_host;</span><br><span class="line">    proxy_set_header    X-Real-IP           $remote_addr;</span><br><span class="line">    proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header    X-Forwarded-Proto   $scheme;</span><br><span class="line"></span><br><span class="line">    proxy_pass http://gitlab-workhorse;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>执行 <code>sudo gitlab-ctl reconfigure</code> 命令以使更改生效。</p>
+</li>
+<li><p>启动 nginx。</p>
+</li>
+</ol>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li>权限不够，界面返回502。解决办法是修改nginx配置文件的启动用户为root或者授权给对应用户。</li>
+<li>出现如下错误：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect() to unix:/var/opt/gitlab/gitlab-workhorse/sockets/socket failed (13:Permission denied) while connecting to upstream</span><br></pre></td></tr></table></figure>
+
+<p>选择以下选项之一进行修复：</p>
+<ul>
+<li>更新到 14.3 或更高版本，其中包含更新的 SELinux 策略。</li>
+<li>手动获取和更新策略：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://gitlab.com/gitlab-org/omnibus-gitlab/-/raw/a9d6b020f81d18d778fb502c21b2c8f2265cabb4/files/gitlab-selinux/rhel/7/gitlab-13.5.0-gitlab-shell.pp</span><br><span class="line">semodule -i gitlab-13.5.0-gitlab-shell.pp</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.gitlab.cn/14.6/omnibus/settings/nginx.html#%E4%BD%BF%E7%94%A8%E9%9D%9E%E6%8D%86%E7%BB%91%E7%9A%84%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E5%99%A8">NGINX 配置-Gitlab</a></li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-编程/Windows端微信多开的技巧" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/">Windows端微信多开的技巧</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-07-31T16:00:00.000Z" itemprop="datePublished">2023年08月01日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Windows端微信会根据用户ID创建对应的目录，用于数据的保护和隔离。也就是说微信本身和QQ一样是支持多个同时登陆的，但是在PC端通过常规的方式打开微信只会打开同一个微信。</p>
+<p>下面通过简单的教程教会微信多开的方法。</p>
+<h2 id="通过脚本多开"><a href="#通过脚本多开" class="headerlink" title="通过脚本多开"></a>通过脚本多开</h2><ol>
+<li>安装Windows版本微信，下载地址： <a target="_blank" rel="noopener" href="https://weixin.qq.com/">https://weixin.qq.com/</a></li>
+<li>找到对应的安装位置。有几种方法。<ul>
+<li>在桌面找到微信图标，右键“属性”，点击“快捷方式”，其中“目标”的值就是接下来需要的内容。这里的内容是 “C:\Program Files (x86)\Tencent\WeChat\WeChat.exe”</li>
+<li>在桌面找到微信图标，右键“属性”，点击“快捷方式”，点击“打开文件所在位置”，其中地址栏的路径和文件名“WeChat.exe”就是我们需要的内容。这里的路径也是 “C:\Program Files (x86)\Tencent\WeChat\WeChat.exe”</li>
+</ul>
+</li>
+<li>在桌面创建一个文本文件，重命名为“微信多开.bat”。</li>
+</ol>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">start</span> C:\&quot;Program Files (x86)\Tencent\WeChat\WeChat.exe&quot;</span><br><span class="line"><span class="built_in">start</span> C:\&quot;Program Files (x86)\Tencent\WeChat\WeChat.exe&quot;</span><br></pre></td></tr></table></figure>
+
+<p>注意事项如下：</p>
+<ol>
+<li>需要多开几个就复制几行。</li>
+<li>路径的盘符也就是上面的“C”需要放在引号外面。</li>
+</ol>
+<p>下次需要多开微信的时候直接运行“微信多开.bat”即可多开。</p>
+<h2 id="使用命令提示符多开"><a href="#使用命令提示符多开" class="headerlink" title="使用命令提示符多开"></a>使用命令提示符多开</h2><ol>
+<li>安装Windows版本微信，下载地址： <a target="_blank" rel="noopener" href="https://weixin.qq.com/">https://weixin.qq.com/</a></li>
+<li>找到对应的安装位置。在桌面找到微信图标，右键“属性”，点击“快捷方式”，点击“打开文件所在位置”，其中地址栏的路径和文件名“WeChat.exe”就是我们需要的内容。这里的路径也是 “C:\Program Files (x86)\Tencent\WeChat\WeChat.exe”</li>
+<li>在文件夹路径里面输入“cmd”即可打开命令提示符。</li>
+<li>输入命令：<code>start WeChat.exe &amp; WeChat.exe</code> 并按回车。即可实现多开。</li>
+</ol>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-编程/基于Linux系统Java服务启停的通用shell" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E7%BC%96%E7%A8%8B/%E5%9F%BA%E4%BA%8ELinux%E7%B3%BB%E7%BB%9FJava%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%81%9C%E7%9A%84%E9%80%9A%E7%94%A8shell/">基于Linux系统Java服务启停的通用shell</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-07-27T16:00:00.000Z" itemprop="datePublished">2023年07月28日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>应用程序的启停最为显著的特征是端口的占用情况，例如Nginx、Tomcat。除此之外也可以通过进程的文件信息判断进程启停情况。在Linux系统常用的两个命令分别为 <code>lsof</code> 和 <code>ps</code>。在应用的启停中通过监听端口去判断是否存在进行启停是更合理的一种方式。实际使用过程中都会使用到。</p>
+<h3 id="lsof用法"><a href="#lsof用法" class="headerlink" title="lsof用法"></a>lsof用法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">       lsof - list open files</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">       lsof  [  -?abChKlnNOPRtUvVX  ]  [ -A A ] [ -c c ] [ +c c ] [ +|-d d ] [</span><br><span class="line">       +|-D D ] [ +|-e s ] [ +|-E ] [ +|-f [cfgGn] ] [ -F [f] ] [ -g [s]  ]  [</span><br><span class="line">       -i  [i] ] [ -k k ] [ +|-L [l] ] [ +|-m m ] [ +|-M ] [ -o [o] ] [ -p s ]</span><br><span class="line">       [ +|-r [t[m&lt;fmt&gt;]] ] [ -s [p:s] ] [ -S [t] ] [ -T [t] ] [ -u s ] [ +|-w</span><br><span class="line">       ] [ -x [fl] ] [ -z [z] ] [ -Z [Z] ] [ -- ] [names]</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       Lsof  revision 4.89 lists on its standard output file information about</span><br><span class="line">       files opened by processes for the following UNIX dialects:</span><br><span class="line"></span><br><span class="line">            Apple Darwin 9 and Mac OS X 10.[567]</span><br><span class="line">            FreeBSD 8.[234], 9.0, 10.0 and 11.0 for AMD64-based systems</span><br><span class="line">            Linux 2.1.72 and above for x86-based systems</span><br><span class="line">            Solaris 9, 10 and 11</span><br><span class="line"></span><br><span class="line">       (See the DISTRIBUTION section of this manual page  for  information  on</span><br><span class="line">       how to obtain the latest lsof revision.)</span><br><span class="line"></span><br><span class="line">       An  open file may be a regular file, a directory, a block special file,</span><br><span class="line">       a character special file, an executing text  reference,  a  library,  a</span><br><span class="line">       stream  or  a  network  file  (Internet socket, NFS file or UNIX domain</span><br><span class="line">       socket.)  A specific file or all the files in  a  file  system  may  be</span><br><span class="line">       selected by path.</span><br><span class="line"></span><br><span class="line">       Instead  of  a  formatted display, lsof will produce output that can be</span><br><span class="line">       parsed by other programs.  See the -F, option description, and the OUT‐</span><br><span class="line">       PUT FOR OTHER PROGRAMS section for more information.</span><br><span class="line"></span><br><span class="line">       In  addition to producing a single output list, lsof will run in repeat</span><br><span class="line">       mode.  In repeat mode it will produce output, delay,  then  repeat  the</span><br><span class="line">       output  operation  until stopped with an interrupt or quit signal.  See</span><br><span class="line">       the +|-r [t[m&lt;fmt&gt;]] option description for more information.</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="ps用法"><a href="#ps用法" class="headerlink" title="ps用法"></a>ps用法</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">       ps - report a snapshot of the current processes.</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">       ps [options]</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       ps displays information about a selection of the active processes.  If you want a repetitive update of the selection and the displayed information, use top(1) instead.</span><br><span class="line"></span><br><span class="line">       This version of ps accepts several kinds of options:</span><br><span class="line"></span><br><span class="line">       1   UNIX options, which may be grouped and must be preceded by a dash.</span><br><span class="line">       2   BSD options, which may be grouped and must not be used with a dash.</span><br><span class="line">       3   GNU long options, which are preceded by two dashes.</span><br><span class="line"></span><br><span class="line">       Options of different types may be freely mixed, but conflicts can appear.  There are some synonymous options, which are functionally identical, due to the many standards and ps</span><br><span class="line">       implementations that this ps is compatible with.</span><br><span class="line"></span><br><span class="line">       Note that &quot;ps -aux&quot; is distinct from &quot;ps aux&quot;.  The POSIX and UNIX standards require that &quot;ps -aux&quot; print all processes owned by a user named &quot;x&quot;, as well as printing all</span><br><span class="line">       processes that would be selected by the -a option.  If the user named &quot;x&quot; does not exist, this ps may interpret the command as &quot;ps aux&quot; instead and print a warning.  This</span><br><span class="line">       behavior is intended to aid in transitioning old scripts and habits.  It is fragile, subject to change, and thus should not be relied upon.</span><br><span class="line"></span><br><span class="line">       By default, ps selects all processes with the same effective user ID (euid=EUID) as the current user and associated with the same terminal as the invoker.  It displays the</span><br><span class="line">       process ID (pid=PID), the terminal associated with the process (tname=TTY), the cumulated CPU time in [DD-]hh:mm:ss format (time=TIME), and the executable name (ucmd=CMD).</span><br><span class="line">       Output is unsorted by default.</span><br><span class="line"></span><br><span class="line">       The use of BSD-style options will add process state (stat=STAT) to the default display and show the command args (args=COMMAND) instead of the executable name.  You can override</span><br><span class="line">       this with the PS_FORMAT environment variable. The use of BSD-style options will also change the process selection to include processes on other terminals (TTYs) that are owned by</span><br><span class="line">       you; alternately, this may be described as setting the selection to be the set of all processes filtered to exclude processes owned by other users or not on a terminal.  These</span><br><span class="line">       effects are not considered when options are described as being &quot;identical&quot; below, so -M will be considered identical to Z and so on.</span><br><span class="line"></span><br><span class="line">       Except as described below, process selection options are additive.  The default selection is discarded, and then the selected processes are added to the set of processes to be</span><br><span class="line">       displayed.  A process will thus be shown if it meets any of the given selection criteria.</span><br></pre></td></tr></table></figure>
+
+<h2 id="通过监听端口停止应用"><a href="#通过监听端口停止应用" class="headerlink" title="通过监听端口停止应用"></a>通过监听端口停止应用</h2><p>使用lsof加关键词LISTEN获取端口，脚本如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">author： sunz</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">file name: killProcessByPort.sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 参数通过运行时传入</span></span></span><br><span class="line">port1=$1</span><br><span class="line">MSG=&quot;shutdown port %s at pid %s  %s \n&quot;</span><br><span class="line"></span><br><span class="line">killByPort()&#123;</span><br><span class="line">pids=$(lsof -i:$port1 | grep LISTEN | awk &#x27;&#123;print $2&#125;&#x27; |xargs)</span><br><span class="line">pids_len=$&#123;#pids[*]&#125;</span><br><span class="line"></span><br><span class="line">if test $pids_len -ne 1</span><br><span class="line">then</span><br><span class="line">printf &quot;port %s has been killed or not start yet. \n&quot; $port1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">for pid in $pids; do</span><br><span class="line">printf &quot;shutdown port %s at pid %s  %s \n&quot; $port1 $pid  &#x27;start&#x27;</span><br><span class="line">kill -9 $pid</span><br><span class="line">CheckKillResult $? $pid</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CheckKillResult()&#123;</span><br><span class="line">result=$1</span><br><span class="line">pid=$2</span><br><span class="line">if test $result -eq 0</span><br><span class="line">then </span><br><span class="line">printf &quot;shutdown port %s at pid %s  %s \n&quot; $port1 $pid  &quot;successs&quot;</span><br><span class="line">else</span><br><span class="line">printf &quot;shutdown port %s at pid %s  %s \n&quot; $port1 $pid  &quot;failed&quot;</span><br><span class="line">fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">killByPort</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">eg <span class="variable">$killProcessByPort</span> 9430</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="通过文件名停止应用"><a href="#通过文件名停止应用" class="headerlink" title="通过文件名停止应用"></a>通过文件名停止应用</h2><p>使用ps+awk加应用名关键词获取pid，脚本如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">author： sunz</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">file name: killProcessByName.sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 参数通过运行时传入</span></span></span><br><span class="line">name=$1</span><br><span class="line">MSG=&quot;shutdown app %s at pid %s  %s \n&quot;</span><br><span class="line"></span><br><span class="line">killByName()&#123;</span><br><span class="line">pids=$(ps -ef | grep $name |grep java | awk &#x27;&#123;print $2&#125;&#x27; |xargs)</span><br><span class="line">pids_len=$&#123;#pids[*]&#125;</span><br><span class="line"></span><br><span class="line">if test $pids_len -ne 1</span><br><span class="line">then</span><br><span class="line">printf &quot;app %s has been killed or not start yet. \n&quot; $name</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">for pid in $pids; do</span><br><span class="line">printf &quot;shutdown app %s at pid %s  %s \n&quot; $name $pid  &#x27;start&#x27;</span><br><span class="line">kill -9 $pid</span><br><span class="line">CheckKillResult $? $pid</span><br><span class="line">done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CheckKillResult()&#123;</span><br><span class="line">result=$1</span><br><span class="line">pid=$2</span><br><span class="line">if test $result -eq 0</span><br><span class="line">then </span><br><span class="line">printf &quot;shutdown app %s at pid %s  %s \n&quot; $name $pid  &quot;successs&quot;</span><br><span class="line">else</span><br><span class="line">printf &quot;shutdown app %s at pid %s  %s \n&quot; $name $pid  &quot;failed&quot;</span><br><span class="line">fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">killByName</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">eg <span class="variable">$killProcessByName</span> spring-boot.jar</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="通用启动Java程序脚本"><a href="#通用启动Java程序脚本" class="headerlink" title="通用启动Java程序脚本"></a>通用启动Java程序脚本</h2><p>通过函数式编写启动Java程序脚本有如下优点：</p>
+<ul>
+<li>简化启动应用的脚本维护；</li>
+<li>统一维护一类程序的JVM参数；</li>
+</ul>
+<p>脚本信息如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">author： sunz</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">file name: startJavaProcess.sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 参数通过运行时传入</span></span></span><br><span class="line"></span><br><span class="line">APP=$1</span><br><span class="line">startJavaProcess()&#123;</span><br><span class="line">  echo &quot;start $APP &quot;</span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># JVM参数基于Java8</span></span></span><br><span class="line">  JVM=&quot; -Xmx1344M -Xms1344M -Xmn448M -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M -XX:+UseConcMarkSweepGC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 -XX:+ExplicitGCInvokesConcurrentAndUnloadsClasses -XX:+CMSClassUnloadingEnabled -XX:+ParallelRefProcEnabled -XX:+CMSScavengeBeforeRemark &quot;</span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># 特殊版本java的路径可以通过全路径制定</span></span></span><br><span class="line">  nohup java $JVM -jar $APP &gt;/dev/null 2&gt;&amp;1 &amp;</span><br><span class="line">  CheckStartResult $? $APP</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CheckStartResult()&#123;</span><br><span class="line">result=$1</span><br><span class="line">pid=$2</span><br><span class="line">if test $result -eq 0</span><br><span class="line">then </span><br><span class="line">printf &quot;startup  %s  %s \n&quot; $2 &quot;successs&quot;</span><br><span class="line">else</span><br><span class="line">printf &quot;startup  %s  %s \n&quot; $2 &quot;failed&quot;</span><br><span class="line">fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">startJavaProcess</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"> eg  <span class="variable">$startJavaProcess</span> zuul-boot-2.0.0-SNAPSHOT.jar</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="通过-bashrc-简化程序脚本"><a href="#通过-bashrc-简化程序脚本" class="headerlink" title="通过 ~/.bashrc 简化程序脚本"></a>通过 ~/.bashrc 简化程序脚本</h2><p><code>.bashrc</code> 在用户登录时获取该文件的 <code>aslias</code> 等信息。维护人员可以通过别名简化程序脚本，增加维护效率。</p>
+<p><code>.bash_profile</code> 文件可以维护环境变量，也可以简化该脚本。</p>
+<p><code>.bash_profile</code> 修改过程如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑 bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vi .bash_profile</span></span><br><span class="line">SHELL_HOME=&quot;/home/sunz/文档/files/shell/cshell&quot;</span><br><span class="line">killProcessByPort=&#x27;sh $SHELL_HOME/killProcessByPort.sh &#x27;</span><br><span class="line">export killProcessByPort</span><br><span class="line">startJavaProcess=&#x27;sh $SHELL_HOME/startJavaProcess.sh &#x27;</span><br><span class="line">export startJavaProcess</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">更新 bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">source</span> .bash_profile</span></span><br></pre></td></tr></table></figure>
+
+<p><code>.bashrc</code> 修改过程如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编辑 bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">vi .bash_profile</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用 <span class="built_in">alias</span> 方法</span></span><br><span class="line">SHELL_HOME=&quot;/home/sunz/文档/files/shell/cshell&quot;</span><br><span class="line">alias startJavaProcess=&#x27;sh $SHELL_HOME/startJavaProcess.sh &#x27;</span><br><span class="line">alias killProcessByPort=&#x27;sh $SHELL_HOME/killProcessByPort.sh &#x27;</span><br></pre></td></tr></table></figure>
+
+<p>注意不同系统的文件名可能存在差异。</p>
+<h2 id="以user-gatewayin-svc为例子说明使用"><a href="#以user-gatewayin-svc为例子说明使用" class="headerlink" title="以user-gatewayin-svc为例子说明使用"></a>以user-gatewayin-svc为例子说明使用</h2><p>服务部署路径信息 <code>/app/user_projects/user-gatewayin-svc</code> ,目录结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">drwxr-xr-x 3 app sunz     4096 2月   1 13:40 config</span><br><span class="line">-rw-r--r-- 1 app sunz       86 2月   1 13:47 start.sh</span><br><span class="line">-rw-r--r-- 1 app sunz       19 12月  9 15:57 stop.sh</span><br><span class="line">-rw-r--r-- 1 app sunz 57520835 1月   5 16:10 zuul-boot-2.0.0-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>start.sh</code> 内容如下;</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">startJavaProcess <span class="string">&quot;zuul-boot-2.0.0-SNAPSHOT.jar --spring.profiles.active=dev,dev-in&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>其中 <code>stop.sh</code> 内容如下;</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">killProcess 9450</span></span><br></pre></td></tr></table></figure>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-编程/VsCode中开发前端常用插件" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -941,315 +1219,10 @@
 </article>
 
 
-  <article id="post-网文学习/网文大纲从零开始编写" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E7%BD%91%E6%96%87%E5%AD%A6%E4%B9%A0/%E7%BD%91%E6%96%87%E5%A4%A7%E7%BA%B2%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%BC%96%E5%86%99/">网文大纲从零开始编写</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-03-01T16:00:00.000Z" itemprop="datePublished">2023年03月02日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a> > <a class="article-category-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>编写大致框架；</li>
-<li>撰写设定落地；</li>
-<li>撰写完善细纲。</li>
-</ul>
-<h2 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h2><h3 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h3><ul>
-<li>记录灵感。</li>
-<li>选定脑洞，刷同类文+查资料。</li>
-</ul>
-<h3 id="大纲阶段"><a href="#大纲阶段" class="headerlink" title="大纲阶段"></a>大纲阶段</h3><p>第一部分：编写大致框架</p>
-<ul>
-<li>步骤一： 一句话核心梗。<ul>
-<li>一句话概括模板，谁（和谁）遭遇了什么，然后做（经历）了什么，最后结局如何。</li>
-<li>一个好的作品，主题鲜明统一，有且仅有一个主题。</li>
-</ul>
-</li>
-<li>步骤二：三百字～五百字简纲（全文梗概）。对一句话核心进行扩写。</li>
-<li>步骤三：一干字～五干字粗纲（进一步细化的全文梗概）。</li>
-</ul>
-<p>第二部分：设定落地。</p>
-<ul>
-<li>步骤一：世界观（设定）。<ul>
-<li>用一个文档写定这个故事的世界观。</li>
-<li>世界观和设定写的越详细越好。</li>
-</ul>
-</li>
-<li>步骤二：人设（人物小传）。<ul>
-<li>Ta经历过些什么，ta被他人、被世界如何对待，从而让ta成为了现在的性格与模样？</li>
-<li>Ta是一个这样的人，为什么？</li>
-<li>编写人物基本资料卡。</li>
-<li>构思一个具体的场景，把不同人物放进去看是什么反应。</li>
-</ul>
-</li>
-<li>步骤三：人物线。<ul>
-<li>固定某个角色的视角，把你的故事（粗纲）重新讲一遍。</li>
-<li>从每个角色的视角，重新经历一遍这个故事。</li>
-<li>两个关键点，人物动机（为什么这么做）和行动（做了什么）。</li>
-<li>在人物线路，你要百分百尊重这个角色。</li>
-</ul>
-</li>
-</ul>
-<p>第三部分：完善细纲。</p>
-<ul>
-<li>步骤一：阶段</li>
-<li>步骤二：事件（具体时间）</li>
-<li>步骤三：细节（章纲）</li>
-</ul>
-<p>将步骤一到三用一个Excel罗列编写。</p>
-<ul>
-<li>步骤四：人物弧光（性格成长线+感情线）</li>
-</ul>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Dr4y1M7bj?share_source=copy_web">超完整网文大纲教程（最新版）- 爱斯基布拉斯基-竹子</a></li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
-  <article id="post-技术人生/开源软件靠什么赚钱" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E5%BC%80%E6%BA%90%E8%BD%AF%E4%BB%B6%E9%9D%A0%E4%BB%80%E4%B9%88%E8%B5%9A%E9%92%B1/">开源软件靠什么赚钱</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-02-20T16:00:00.000Z" itemprop="datePublished">2023年02月21日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>使用CSDN的 ChatGPT （ <a target="_blank" rel="noopener" href="https://so.csdn.net/so/chat">https://so.csdn.net/so/chat</a> ）询问“开源项目靠什么赚钱”会得到如下答案。</p>
-<p>开源项目通常是免费使用的，但是这并不意味着开发者不能赚钱。开源项目可以通过以下方式获得收益：</p>
-<ul>
-<li>提供商业支持和服务：开发者可以为使用开源项目的企业或个人提供商业支持和服务，例如帮助他们安装、调试、维护和升级软件。</li>
-<li>开发附加功能或插件：开发者可以为开源项目开发附加功能或插件，并向使用者收费。</li>
-<li>接受捐赠：开发者可以在自己的网站上提供捐赠按钮，供感谢他们的用户捐赠。</li>
-<li>在线广告：如果开源项目有一个网站或在线应用程序，开发者可以在其中放置广告来获得收益。</li>
-<li>开展培训或咨询业务：开发者可以通过提供培训或咨询服务来获得收益，帮助使用者更好地使用开源项目。</li>
-<li>其他方式：还有其他许多方法可以让开源项目开发者赚钱，例如出版书籍、举办会议等。</li>
-</ul>
-<p>通过知乎网站（个人搞开源怎么赚钱？ - OSCHINA的文章 - 知乎<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/355411897">https://zhuanlan.zhihu.com/p/355411897</a> ）获取答案会获得更加全面的回答，相比chatgpt的简洁回答，知乎回答的更有理有据。</p>
-<p>“在不违反开源许可证以及开源社区基本道德准则的前提下，开发者从开源项目中合理获利并不是一件坏事。 自由软件运动领袖 Richard Stallman （RMS）曾鼓励自由与开源软件作者合理利用开源软件赚钱，以更好地维持项目的研发和推广。Linux Kernel 维护者 Linus Torvalds 也接受着来自各大厂商的资助，从而能够全职进行 Linux Kernel 的维护工作。”</p>
-<ol>
-<li>Bug 赏金计划</li>
-</ol>
-<p>BUG 赏金计划是很多大型开源机构面向个人开发者推出的一种赚钱的方式。开发者可以通过报告开源项目上的 BUG，也可以直接修复这些 BUG 获得来自项目官方不同程度的奖金。</p>
-<ol start="2">
-<li>提供付费支持</li>
-</ol>
-<p>提供付费支持是很多开源项目团队获利的经典方式之一。 </p>
-<p>如果开发者决定开始为某开源项目提供付费支持，则可以向其他人提供他们需要的有偿服务，这里有些例子：帮助进行基本安装或使用。代码和错误修复。添加新的和额外的功能。提供书面文件（例如书籍和教程）。但要注意，如果你提供的支持包括对项目源代码进行更改，则需要核对项目采用的开源许可证，以确保其允许该类型的活动。当然，你不能只修改项目原作者的原始代码，你必须维护自己的产品副本。</p>
-<ol start="3">
-<li>出售增强功能/插件</li>
-</ol>
-<p>例如，开发人员销售 WordPress 插件。用户可以免费下载并安装 WordPress，但WordPress 拥有丰富的付费插件生态，用户会根据自己的需求购买用于修改或增强现有功能的付费插件，开发者可以通过开发并出售这些插件获利。</p>
-<ol start="4">
-<li>出售代码以外的内容</li>
-</ol>
-<ul>
-<li>写和出售关于该项目的书籍教程。这可以通过与出版社推荐主题来完成。后者将负责编辑过程和发布步骤，让你专注于写作。当然，你必须与出版社分配收入，但这是值得的。</li>
-<li>为一些内容付费平台创建视频课程。这样做会产生被动收入，就像书出版后一样。另外，这些平台通常会提供视频培训。</li>
-<li>撰写有关产品的推广帖子。这并不意味着开源产品的所有者要向您付费以撰写这些帖子，而是使某些博客对该主题感兴趣，并愿意向你付费以提供有关其他主题的内容。</li>
-</ul>
-<ol start="5">
-<li>来自用户的捐赠</li>
-</ol>
-<p>GitHub、Gitee 等代码托管平台都拥有用户捐赠的功能，开源项目拥有者可以从这些平台获得来自用户的自发捐赠，当然这项收入的大小要取决于你的项目是否足够强大，以及你所在地区的用户是否足够慷慨。</p>
-<ol start="6">
-<li>用参与开源提升自己的职场竞争力</li>
-</ol>
-<p>有时单纯的参与开源项目的代码贡献并不能带来直接的金钱利益，但开发者可以将这段经历写进简历里，以获得更多的就业机会。也可以通过参与大型公司旗下的开源项目，从而获得进入这家公司工作的机会。</p>
-<p><strong>CSDN的 ChatGPT 也是使用开源模型建立的，开源产品也可以商业化也就是一个例子。通过开源产品能赚钱，但是有难度。但总的来说对于技术的提升、个人影响力的提升都是很重要的一种方法。</strong></p>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
-  <article id="post-编程/使用Springboot集成MybatisGenerator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8Springboot%E9%9B%86%E6%88%90MybatisGenerator/">使用Springboot集成MybatisGenerator</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-02-19T16:00:00.000Z" itemprop="datePublished">2023年02月20日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> > <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Mybatis Generator 可以生成mybatis的模板代码，包括动态脚本、实体类、Mapper映射访问类。<br>Mybatis Generator 有多种使用方式，此处介绍一种线上环境比较用的多的场景，通过Maven插件使用。</p>
-<p>使用方法如下：</p>
-<ol>
-<li>通过核心jar包cmd使用。 例如 <code>java -jar mybatis-generator-core-x.x.x.jar -configfile \temp\generatorConfig.xml -overwrite</code></li>
-<li>通过 <code>Ant task</code> 使用。</li>
-<li>通过 java程序使用。</li>
-<li>通过 Maven Plugin 使用。</li>
-</ol>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>JDK 1.8+</li>
-<li>SpringBoot 2.1+</li>
-<li>mybatis 3+</li>
-</ul>
-<h2 id="引入-MybatisGenerator"><a href="#引入-MybatisGenerator" class="headerlink" title="引入 MybatisGenerator"></a>引入 MybatisGenerator</h2><ol>
-<li>引入mybatis，用于后续的代码使用。</li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>MybatisGenerator Maven Plugin的引入和配置。</li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.generator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-generator-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 指定配置文件地址--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configurationFile</span>&gt;</span>$&#123;basedir&#125;/src/main/resources/generatorConfigSqlLite.xml<span class="tag">&lt;/<span class="name">configurationFile</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="MBG配置使用"><a href="#MBG配置使用" class="headerlink" title="MBG配置使用"></a>MBG配置使用</h2><p>MBG配置有两种形式，一种是xml、一种是java代码。此处演示使用的是xml配置的方式。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">generatorConfiguration</span></span></span><br><span class="line"><span class="meta">        <span class="keyword">PUBLIC</span> <span class="string">&quot;-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN&quot;</span></span></span><br><span class="line"><span class="meta">        <span class="string">&quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 指定数据库连接池用到的依赖 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">classPathEntry</span> <span class="attr">location</span>=<span class="string">&quot;E:\repo\mvn-repo\org\xerial\sqlite-jdbc\3.40.1.0\sqlite-jdbc-3.40.1.0.jar&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">&quot;DB2Tables&quot;</span> <span class="attr">targetRuntime</span>=<span class="string">&quot;MyBatis3&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">commentGenerator</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;suppressAllComments&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">commentGenerator</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 指定 数据库链接配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">&quot;org.sqlite.JDBC&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">connectionURL</span>=<span class="string">&quot;jdbc:sqlite:E:\ws-research\backend\rssboot\src\main\resources\db\rssboot.db&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">userId</span>=<span class="string">&quot;&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">password</span>=<span class="string">&quot;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaTypeResolver</span> &gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;forceBigDecimals&quot;</span> <span class="attr">value</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">javaTypeResolver</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 指定javaBean生成的位置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">&quot;io.rainforest.rss.dao.po&quot;</span></span></span><br><span class="line"><span class="tag">                            <span class="attr">targetProject</span>=<span class="string">&quot;./src/main/java&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;enableSubPackages&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">javaModelGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!--指定sql映射文件生成的位置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">&quot;mapper&quot;</span> <span class="attr">targetProject</span>=<span class="string">&quot;./src/main/resources/mybatis&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;enableSubPackages&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">sqlMapGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- 指定dao接口生成的位置，mapper接口 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">type</span>=<span class="string">&quot;XMLMAPPER&quot;</span></span></span><br><span class="line"><span class="tag">                             <span class="attr">targetPackage</span>=<span class="string">&quot;io.rainforest.rss.dao.mapper&quot;</span> <span class="attr">targetProject</span>=<span class="string">&quot;./src/main/java&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;enableSubPackages&quot;</span> <span class="attr">value</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">javaClientGenerator</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">&lt;!-- table指定每个表的生成策略 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">&quot;rss_follow&quot;</span> <span class="attr">enableCountByExample</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">enableUpdateByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">enableDeleteByExample</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">enableSelectByExample</span>=<span class="string">&quot;false&quot;</span> <span class="attr">selectByExampleQueryId</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">generatedKey</span> <span class="attr">column</span>=<span class="string">&quot;id&quot;</span> <span class="attr">sqlStatement</span>=<span class="string">&quot;MySql&quot;</span> <span class="attr">identity</span>=<span class="string">&quot;true&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="http://mybatis.org/generator/running/running.html">Running MyBatis Generator - http://mybatis.org/generator/running/running.html</a></li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
-<span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
+<span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页</a>
 </nav>
 
 
@@ -1264,23 +1237,23 @@
       <ul>
         
           <li>
+            <a href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/">Gitlab使用或替换外部Nginx方法说明</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/">Windows端微信多开的技巧</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/%E5%9F%BA%E4%BA%8ELinux%E7%B3%BB%E7%BB%9FJava%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%81%9C%E7%9A%84%E9%80%9A%E7%94%A8shell/">基于Linux系统Java服务启停的通用shell</a>
+          </li>
+        
+          <li>
             <a href="/%E7%BC%96%E7%A8%8B/VsCode%E4%B8%AD%E5%BC%80%E5%8F%91%E5%89%8D%E7%AB%AF%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/">Visual Studio Code 中开发前端常用插件</a>
           </li>
         
           <li>
             <a href="/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/RabbitMQ%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">RabbitMQ 的安装和使用</a>
-          </li>
-        
-          <li>
-            <a href="/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/Redis%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">Redis的安装和使用</a>
-          </li>
-        
-          <li>
-            <a href="/JavaEngineer/Java%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">Java函数式编程</a>
-          </li>
-        
-          <li>
-            <a href="/JavaEngineer/Java%E6%B3%A8%E8%A7%A3%E6%9C%BA%E5%88%B6%E5%92%8C%E5%BA%94%E7%94%A8/">Java 注解机制和应用</a>
           </li>
         
       </ul>
@@ -1302,7 +1275,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1312,7 +1285,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年07月</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年08月</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 

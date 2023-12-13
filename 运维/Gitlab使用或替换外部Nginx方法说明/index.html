@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Gitlab使用或替换外部Nginx方法说明 | code trend</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="java,spring,spring cloud,javascript">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="code trend" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/logo.svg">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">code trend</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">专注软件技术发展趋势，传播软件技术</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-运维/Gitlab使用或替换外部Nginx方法说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Gitlab使用或替换外部Nginx方法说明
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-08-15T16:00:00.000Z" itemprop="datePublished">2023年08月16日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+        
+<span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Gitlab 版本没更新就会导致依赖的组件库版本没更新，如果Nginx有漏洞，则需要升级Gitlab，或者第二个选择就是使用外部的Nginx作为服务容器。</p>
+<h2 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h2><p>** 请勿直接在生产或者线上主机上执行。</p>
+<p>具体操作步骤如下：</p>
+<ol>
+<li>备份配置文件 <code>cp /etc/gitlab/gitlab.rb /etc/gitlab/gitlab.rb.20230822.bak</code></li>
+<li>禁用捆绑的 NGINX，在 /etc/gitlab/gitlab.rb 中设置：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx[&#x27;enable&#x27;] = false</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>下载正确的网络服务器配置，访问地址： <a target="_blank" rel="noopener" href="https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/web-server">GitLab recipes repository</a></li>
+</ol>
+<p>下面以http的Nginx为例说明，把配置文件放入/etc/nginx/conf.d（默认）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">upstream gitlab-workhorse &#123;</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">On GitLab versions before 13.5, the location is</span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">`/var/opt/gitlab/gitlab-workhorse/socket`. Change the following line</span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">accordingly.</span></span><br><span class="line">  server unix:/var/opt/gitlab/gitlab-workhorse/sockets/socket;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># Normal HTTP host</span></span></span><br><span class="line">server &#123;</span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># Either remove &quot;default_server&quot; from the listen line below 如果遇到问题可以删除 default_server</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># or delete the /etc/nginx/sites-enabled/default file. This will cause gitlab</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># to be served if you visit any address that your server responds to, eg.</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># the ip address of the server (http://x.x.x.x/)n 0.0.0.0:80 default_server;</span></span></span><br><span class="line">  listen 0.0.0.0:8088 default_server; # 修改你需要监听的端口</span><br><span class="line">  listen [::]:8088 default_server;</span><br><span class="line">  server_name localhost; ## Replace this with something like gitlab.example.com # 修改配置的域名</span><br><span class="line">  server_tokens off; ## Don&#x27;t show the nginx version number, a security best practice</span><br><span class="line">  root /opt/gitlab/embedded/service/gitlab-rails/public; # 默认位置就是这里</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># See app/controllers/application_controller.rb for headers set</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># Individual nginx logs for this GitLab vhost</span></span></span><br><span class="line">  access_log  /var/log/nginx/gitlab_access.log;</span><br><span class="line">  error_log   /var/log/nginx/gitlab_error.log;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    client_max_body_size 0;</span><br><span class="line">    gzip off;</span><br><span class="line"></span><br><span class="line">    ## https://github.com/gitlabhq/gitlabhq/issues/694</span><br><span class="line">    ## Some requests take more than 30 seconds.</span><br><span class="line">    proxy_read_timeout      300;</span><br><span class="line">    proxy_connect_timeout   300;</span><br><span class="line">    proxy_redirect          off;</span><br><span class="line"></span><br><span class="line">    proxy_http_version 1.1;</span><br><span class="line"></span><br><span class="line">    proxy_set_header    Host                $http_host;</span><br><span class="line">    proxy_set_header    X-Real-IP           $remote_addr;</span><br><span class="line">    proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header    X-Forwarded-Proto   $scheme;</span><br><span class="line"></span><br><span class="line">    proxy_pass http://gitlab-workhorse;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>执行 <code>sudo gitlab-ctl reconfigure</code> 命令以使更改生效。</p>
+</li>
+<li><p>启动 nginx。</p>
+</li>
+</ol>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
+<li>权限不够，界面返回502。解决办法是修改nginx配置文件的启动用户为root或者授权给对应用户。</li>
+<li>出现如下错误：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect() to unix:/var/opt/gitlab/gitlab-workhorse/sockets/socket failed (13:Permission denied) while connecting to upstream</span><br></pre></td></tr></table></figure>
+
+<p>选择以下选项之一进行修复：</p>
+<ul>
+<li>更新到 14.3 或更高版本，其中包含更新的 SELinux 策略。</li>
+<li>手动获取和更新策略：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://gitlab.com/gitlab-org/omnibus-gitlab/-/raw/a9d6b020f81d18d778fb502c21b2c8f2265cabb4/files/gitlab-selinux/rhel/7/gitlab-13.5.0-gitlab-shell.pp</span><br><span class="line">semodule -i gitlab-13.5.0-gitlab-shell.pp</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://docs.gitlab.cn/14.6/omnibus/settings/nginx.html#%E4%BD%BF%E7%94%A8%E9%9D%9E%E6%8D%86%E7%BB%91%E7%9A%84%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E5%99%A8">NGINX 配置-Gitlab</a></li>
+</ul>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">升级步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+  
+    <a href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">Windows端微信多开的技巧</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/">Gitlab使用或替换外部Nginx方法说明</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/">Windows端微信多开的技巧</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/%E5%9F%BA%E4%BA%8ELinux%E7%B3%BB%E7%BB%9FJava%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%81%9C%E7%9A%84%E9%80%9A%E7%94%A8shell/">基于Linux系统Java服务启停的通用shell</a>
+          </li>
+        
+          <li>
+            <a href="/%E7%BC%96%E7%A8%8B/VsCode%E4%B8%AD%E5%BC%80%E5%8F%91%E5%89%8D%E7%AB%AF%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/">Visual Studio Code 中开发前端常用插件</a>
+          </li>
+        
+          <li>
+            <a href="/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/RabbitMQ%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">RabbitMQ 的安装和使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">前端编程</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年08月</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B/" rel="tag">前端编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> 友情链接</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://juejin.cn/">掘金</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://tech.meituan.com/">美团技术团队</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://efe.baidu.com/">百度EFE</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/atom.xml">订阅本站</a>
+        <span> | </span><a href="/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2023 codeman.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6e17ef6b36c9fdda22a20012ad8022c3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/localshare/js/social-share.js"></script>
+
+  
+<script src="/localshare/js/qrcode.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    const host = 'https://r0ad.github.io'
+    const local = location.href
+    const white = ['localhost','127.0.0.1','l192.168']
+    let redirectFlag = true;
+    white.find(function(item){
+      if(local.indexOf(item) > -1){
+        redirectFlag =false
+      }
+    })
+    if(local && local.indexOf(host)===-1 && redirectFlag ){
+      location.replace(location.href.replace(location.origin,host))
+    }
+
+  </script>
+
+
+
+  <script src='https://unpkg.com/mermaid@9.2.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+  </div>
+</body>
+</html>
