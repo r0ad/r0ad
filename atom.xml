@@ -39,6 +39,30 @@
   </entry>
   
   <entry>
+    <title>高并发编程基础-引言</title>
+    <link href="https://r0ad.github.io/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/01-%E5%BC%95%E8%A8%80/"/>
+    <id>https://r0ad.github.io/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/01-%E5%BC%95%E8%A8%80/</id>
+    <published>2023-12-06T16:00:00.000Z</published>
+    <updated>2024-02-01T08:32:45.913Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="5W1H"><a href="#5W1H" class="headerlink" title="5W1H"></a>5W1H</h2><p>这里用“六何”的分析方法概括下即将开始的新主题高并发编程基础系列文章。</p><p>what何事：</p><p>高并发编程指同一时间进行大量任务的处理，同时保持过程稳定和结果一致。Java中使用多线程技术来支撑高并发的场景。“高并发编程基础”指的就是多线程这块技术的内容。</p><p>随着JDK版本的迭代，JDK已经出到23，本文主要基于JDK17版本的源码和api来说明多线程编程技术的使用。一个是因为这个版本稳定兼容性好，第二个是相较于8的版本更加新和优秀。</p><p>why何因：</p><p>Java为多线程提供了基本的工具来支持在多核处理器进行编程的工具类，通过对这款内容的学习可以加深对并发框架的使用原理的了解以及满足日常多线程开发过程的使用。</p><p>where何地：</p><p>“高并发编程基础”会发表在各大技术论坛（掘金、知乎、CSDN等）、公众号和博客（<a href="https://r0ad.github.io/">https://r0ad.github.io/</a>）中。</p><p>when何时:</p><p>预计需要花费一个月时间完成整个基础教程的输出。</p><p>who何人:</p><p>适合希望使用或学习多线程编程或想要自我检查学习成果的人。不足之处可以随时交流指出</p><p>how何法:</p><p>通过源码分析加DEMO实战加图片文字说明的方式输出整个系文档。</p><h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><p>整个“高并发编程基础”可能的大纲如下，随着后续迭代可能进行增删。</p><ul><li>线程基础知识说明</li><li>Thread构造函数使用说明</li><li>Thread常用API使用说明</li><li>线程安全与数据同步</li><li>并发中的基础概念Monitor</li><li>线程间通信</li><li>AQS的原理和实现</li><li>Java中锁的概念和原理</li><li>对象共享中的可见性问题</li><li>ThreadGroup的使用</li><li>Hook线程以及捕获线程执行异常</li><li>线程池原理以及自定义线程池</li><li>线程上下文通讯</li><li>单例模式与多线程</li><li>Lock的使用</li><li>CAS 原子操作及相关类</li><li>Future 和 FutureTask</li><li>线程池工作原理</li><li>ThreadLocal 底层原理</li><li>等等</li></ul><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>由于水平限制，“高并发编程基础”参考了很多资料来编写。</p><ul><li>JDK 17 官方文档，用于自查和权威核对 <a href="https://docs.oracle.com/en/java/javase/17/">https://docs.oracle.com/en/java/javase/17/</a></li><li>涉及JDK源码、基础原理介绍的书：《Java高并发编程详解：多线程与架构设计》（基于JDK8）</li><li>涉及Java标准介绍和多线程基础说明的书： 《Java多线程编程核心技术》（基于JDK8）</li></ul><h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>来自一线全栈程序员nine的八年探索与实践，持续迭代中。欢迎关注“雨林寻北”或添加个人卫星codetrend（备注技术）。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;5W1H&quot;&gt;&lt;a href=&quot;#5W1H&quot; class=&quot;headerlink&quot; title=&quot;5W1H&quot;&gt;&lt;/a&gt;5W1H&lt;/h2&gt;&lt;p&gt;这里用“六何”的分析方法概括下即将开始的新主题高并发编程基础系列文章。&lt;/p&gt;
+&lt;p&gt;what何事：&lt;/p&gt;
+&lt;p&gt;高并发编</summary>
+      
+    
+    
+    
+    <category term="高并发编程基础" scheme="https://r0ad.github.io/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Gitlab使用或替换外部Nginx方法说明</title>
     <link href="https://r0ad.github.io/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/"/>
     <id>https://r0ad.github.io/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/</id>
@@ -452,28 +476,6 @@ A --&gt; C(App</summary>
     <updated>2023-10-07T10:02:37.765Z</updated>
     
     <content type="html"><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@startmindmap</span><br><span class="line">* 追踪微服务调用</span><br><span class="line">** 服务追踪的作用</span><br><span class="line">*** 优化系统瓶颈</span><br><span class="line">*** 优化链路调用</span><br><span class="line">*** 生成网络拓扑</span><br><span class="line">*** 透明传输数据</span><br><span class="line">** 服务追踪系统原理</span><br><span class="line">*** traceId，用于标识某一次具体的请求 ID。</span><br><span class="line">*** spanId，用于标识一次 RPC 调用在分布式请求中的位置。</span><br><span class="line">*** annotation，用于业务自定义埋点数据。</span><br><span class="line">** 服务追踪系统实现</span><br><span class="line">*** 数据采集层，负责数据埋点并上报。</span><br><span class="line">*** 数据处理层，负责数据的存储与计算。</span><br><span class="line">*** 数据展示层，负责数据的图形化展示。</span><br><span class="line">@endmindmap</span><br></pre></td></tr></table></figure><p>微服务架构下，由于进行了服务拆分，一次请求往往需要涉及多个服务，每个服务可能是由不同的团队开发，使用了不同的编程语言，还有可能部署在不同的机器上，分布在不同的数据中心。</p><h2 id="服务追踪的作用"><a href="#服务追踪的作用" class="headerlink" title="服务追踪的作用"></a>服务追踪的作用</h2><ul><li>第一，优化系统瓶颈。<br>通过记录调用经过的每一条链路上的耗时，我们能快速定位整个系统的瓶颈点在哪里</li><li>第二，优化链路调用。<br>通过服务追踪可以分析调用所经过的路径，然后评估是否合理。</li><li>第三，生成网络拓扑。<br>通过服务追踪系统中记录的链路信息，可以生成一张系统的网络调用拓扑图，它可以反映系统都依赖了哪些服务，以及服务之间的调用关系是什么样的。</li><li>第四，透明传输数据。</li></ul><h2 id="服务追踪系统原理"><a href="#服务追踪系统原理" class="headerlink" title="服务追踪系统原理"></a>服务追踪系统原理</h2><p><a href="http://bigbully.github.io/Dapper-translation/">Dapper, a Large-Scale Distributed Systems Tracing Infrastructure</a>：调用链：通过一个全局唯一的 ID 将分布在各个服务节点上的同一次请求串联起来，从而还原原有的调用关系，可以追踪系统问题、分析调用数据并统计各种系统指标。</p><ul><li>traceId，用于标识某一次具体的请求 ID。当用户的请求进入系统后，会在 RPC 调用网络的第一层生成一个全局唯一的 traceId，并且会随着每一层的 RPC 调用，不断往后传递，这样的话通过 traceId 就可以把一次用户请求在系统中调用的路径串联起来。</li><li>spanId，用于标识一次 RPC 调用在分布式请求中的位置。当用户的请求进入系统后，处在 RPC 调用网络的第一层 A 时 spanId 初始值是 0，进入下一层 RPC 调用 B 的时候 spanId 是 0.1，继续进入下一层 RPC 调用 C 时 spanId 是 0.1.1，而与 B 处在同一层的 RPC 调用 E 的 spanId 是 0.2，这样的话通过 spanId 就可以定位某一次 RPC 请求在系统调用中所处的位置，以及它的上下游依赖分别是谁。</li><li>annotation，用于业务自定义埋点数据，可以是业务感兴趣的想上传到后端的数据，比如一次请求的用户 UID。</li></ul><h2 id="服务追踪系统实现"><a href="#服务追踪系统实现" class="headerlink" title="服务追踪系统实现"></a>服务追踪系统实现</h2><ul><li>数据采集层，负责数据埋点并上报。</li><li>数据处理层，负责数据的存储与计算。</li><li>数据展示层，负责数据的图形化展示。</li></ul><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;概要&quot;&gt;&lt;a href=&quot;#概要&quot; class=&quot;headerlink&quot; title=&quot;概要&quot;&gt;&lt;/a&gt;概要&lt;/h2&gt;&lt;figure class=&quot;highlight plaintext&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;s</summary>
-      
-    
-    
-    
-    <category term="从0开始学微服务" scheme="https://r0ad.github.io/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>05-监控微服务调用</title>
-    <link href="https://r0ad.github.io/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/05-%E7%9B%91%E6%8E%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8/"/>
-    <id>https://r0ad.github.io/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/05-%E7%9B%91%E6%8E%A7%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8/</id>
-    <published>2022-04-28T16:00:00.000Z</published>
-    <updated>2023-10-07T10:02:37.765Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">@startmindmap</span><br><span class="line">* 监控微服务</span><br><span class="line">** 监控对象</span><br><span class="line">*** 用户端监控</span><br><span class="line">*** 接口监控</span><br><span class="line">*** 资源监控</span><br><span class="line">*** 基础监控</span><br><span class="line">** 监控指标</span><br><span class="line">*** 请求量</span><br><span class="line">*** 响应时间</span><br><span class="line">*** 错误率</span><br><span class="line">** 监控维度</span><br><span class="line">*** 全局维度</span><br><span class="line">*** 分机房维度</span><br><span class="line">*** 单机维度</span><br><span class="line">*** 时间维度</span><br><span class="line">*** 核心维度</span><br><span class="line">** 监控系统原理</span><br><span class="line">*** 数据采集</span><br><span class="line">*** 数据传输</span><br><span class="line">*** 数据处理</span><br><span class="line">*** 数据展示</span><br><span class="line">@endmindmap</span><br></pre></td></tr></table></figure><p>与单体应用相比，在微服务架构下，一次用户调用会因为服务化拆分后，变成多个不同服务之间的相互调用，这也就需要对拆分后的每个服务都监控起来。</p><h2 id="监控对象"><a href="#监控对象" class="headerlink" title="监控对象"></a>监控对象</h2><ul><li>用户端监控。通常是指业务直接对用户提供的功能的监控。</li><li>接口监控。通常是指业务提供的功能所依赖的具体 RPC 接口的监控。</li><li>资源监控。通常是指某个接口依赖的资源的监控。</li><li>基础监控。通常是指对服务器本身的健康状况的监控。</li></ul><h2 id="监控指标"><a href="#监控指标" class="headerlink" title="监控指标"></a>监控指标</h2><ul><li>请求量。请求量监控分为两个维度，一个是实时请求量，一个是统计请求量。实时请求量用 QPS（Queries Per Second）即每秒查询次数来衡量，它反映了服务调用的实时变化情况。统计请求量一般用 PV（Page View）即一段时间内用户的访问量来衡量，比如一天的 PV 代表了服务一天的请求量，通常用来统计报表。</li><li>响应时间。大多数情况下，可以用一段时间内所有调用的平均耗时来反映请求的响应时间。</li><li>错误率。错误率的监控通常用一段时间内调用失败的次数占调用总次数的比率来衡量，比如对于接口的错误率一般用接口返回错误码为 503 的比率来表示。</li></ul><h2 id="监控维度"><a href="#监控维度" class="headerlink" title="监控维度"></a>监控维度</h2><ul><li>全局维度。从整体角度监控对象的的请求量、平均耗时以及错误率，全局维度的监控一般是为了让你对监控对象的调用情况有个整体了解。</li><li>分机房维度。</li><li>单机维度。即便是在同一个机房内部，可能由于采购年份和批次的不同，位于不同机器上的同一个监控对象的各种指标也会有很大差异。</li><li>时间维度。同一个监控对象，在每天的同一时刻各种指标通常也不会一样，这种差异要么是由业务变更导致，要么是运营活动导致。</li><li>核心维度。业务上一般会依据重要性程度对监控对象进行分级，最简单的是分成核心业务和非核心业务。核心业务和非核心业务在部署上必须隔离，分开监控，这样才能对核心业务做重点保障。</li></ul><h2 id="监控系统原理"><a href="#监控系统原理" class="headerlink" title="监控系统原理"></a>监控系统原理</h2><p>监控系统主要包括四个环节：数据采集、数据传输、数据处理和数据展示。</p><h3 id="数据采集"><a href="#数据采集" class="headerlink" title="数据采集"></a>数据采集</h3><p>通常有两种数据收集方式：</p><ul><li>服务主动上报，这种处理方式通过在业务代码或者服务框架里加入数据收集代码逻辑，在每一次服务调用完成后，主动上报服务的调用信息。</li><li>代理收集，这种处理方式通过服务调用后把调用的详细信息记录到本地日志文件中，然后再通过代理去解析本地日志文件，然后再上报服务的调用信息。</li></ul><h3 id="数据传输"><a href="#数据传输" class="headerlink" title="数据传输"></a>数据传输</h3><p>数据传输最常用的方式有两种：</p><ul><li>UDP 传输，这种处理方式是数据处理单元提供服务器的请求地址，数据采集后通过 UDP 协议与服务器建立连接，然后把数据发送过去。</li><li>Kafka 传输，这种处理方式是数据采集后发送到指定的 Topic，然后数据处理单元再订阅对应的 Topic，就可以从 Kafka 消息队列中读取到对应的数据。</li></ul><p>一般数据传输时采用的数据格式有两种：</p><ul><li>二进制协议，最常用的就是 PB 对象，它的优点是高压缩比和高性能，可以减少传输带宽并且序列化和反序列化效率特别高。</li><li>文本协议，最常用的就是 JSON 字符串，它的优点是可读性好，但相比于 PB 对象，传输占用带宽高，并且解析性能也要差一些。</li></ul><h3 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h3><p>数据处理是对收集来的原始数据进行聚合并存储。数据聚合通常有两个维度：</p><ul><li>接口维度聚合。把实时收到的数据按照接口名维度实时聚合在一起，这样就可以得到每个接口的实时请求量、平均耗时等信息。</li><li>机器维度聚合。把实时收到的数据按照调用的节点维度聚合在一起，这样就可以从单机维度去查看每个接口的实时请求量、平均耗时等信息。</li></ul><p>聚合后的数据需要持久化到数据库中存储，所选用的数据库一般分为两种：</p><ul><li>索引数据库，比如 Elasticsearch，以倒排索引的数据结构存储，需要查询的时候，根据索引来查询。</li><li>时序数据库，比如 OpenTSDB，以时序序列数据的方式存储，查询的时候按照时序如 1min、5min 等维度来查询。</li></ul><h3 id="数据展示"><a href="#数据展示" class="headerlink" title="数据展示"></a>数据展示</h3><p>数据展示是把处理后的数据以 Dashboard 的方式展示给用户。数据展示有多种方式，比如曲线图、饼状图、格子图展示等。</p><ul><li>曲线图。一般是用来监控变化趋势的。</li><li>饼状图。一般是用来监控占比分布的。</li><li>格子图。主要做一些细粒度的监控。</li></ul><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul><li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li></ul>]]></content>
     
     
       

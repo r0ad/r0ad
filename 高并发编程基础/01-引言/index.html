@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   
   
-  <title>archives | code trend</title>
+  <title>高并发编程基础-引言 | code trend</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
     <meta name="description" content="java,spring,spring cloud,javascript">
@@ -87,39 +87,146 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="page-" class="h-entry article article-type-page" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-高并发编程基础/01-引言" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/archives/index.html">archives</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      高并发编程基础-引言
     </h1>
   
 
-,
+
       </header>
     
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-12-06T16:00:00.000Z" itemprop="datePublished">2023年12月07日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a>
+  </div>
+
+      
+        
+<span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+
+    </div>
     <div class="e-content article-entry" itemprop="articleBody">
-      <div class="author-page">
-        <div class="photo"><img src="/logo.svg"></div>
-        <div class="author">
-          <div><i class="fa fa-user">name：</i>codeman</div>
-          
-            <div>
-              <i class="fa fa-email">email：</i>
-              <a href="qq@163.com" target="_blank">qq@163.com</a>
+      
+        <h2 id="5W1H"><a href="#5W1H" class="headerlink" title="5W1H"></a>5W1H</h2><p>这里用“六何”的分析方法概括下即将开始的新主题高并发编程基础系列文章。</p>
+<p>what何事：</p>
+<p>高并发编程指同一时间进行大量任务的处理，同时保持过程稳定和结果一致。Java中使用多线程技术来支撑高并发的场景。“高并发编程基础”指的就是多线程这块技术的内容。</p>
+<p>随着JDK版本的迭代，JDK已经出到23，本文主要基于JDK17版本的源码和api来说明多线程编程技术的使用。一个是因为这个版本稳定兼容性好，第二个是相较于8的版本更加新和优秀。</p>
+<p>why何因：</p>
+<p>Java为多线程提供了基本的工具来支持在多核处理器进行编程的工具类，通过对这款内容的学习可以加深对并发框架的使用原理的了解以及满足日常多线程开发过程的使用。</p>
+<p>where何地：</p>
+<p>“高并发编程基础”会发表在各大技术论坛（掘金、知乎、CSDN等）、公众号和博客（<a href="https://r0ad.github.io/">https://r0ad.github.io/</a>）中。</p>
+<p>when何时:</p>
+<p>预计需要花费一个月时间完成整个基础教程的输出。</p>
+<p>who何人:</p>
+<p>适合希望使用或学习多线程编程或想要自我检查学习成果的人。不足之处可以随时交流指出</p>
+<p>how何法:</p>
+<p>通过源码分析加DEMO实战加图片文字说明的方式输出整个系文档。</p>
+<h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><p>整个“高并发编程基础”可能的大纲如下，随着后续迭代可能进行增删。</p>
+<ul>
+<li>线程基础知识说明</li>
+<li>Thread构造函数使用说明</li>
+<li>Thread常用API使用说明</li>
+<li>线程安全与数据同步</li>
+<li>并发中的基础概念Monitor</li>
+<li>线程间通信</li>
+<li>AQS的原理和实现</li>
+<li>Java中锁的概念和原理</li>
+<li>对象共享中的可见性问题</li>
+<li>ThreadGroup的使用</li>
+<li>Hook线程以及捕获线程执行异常</li>
+<li>线程池原理以及自定义线程池</li>
+<li>线程上下文通讯</li>
+<li>单例模式与多线程</li>
+<li>Lock的使用</li>
+<li>CAS 原子操作及相关类</li>
+<li>Future 和 FutureTask</li>
+<li>线程池工作原理</li>
+<li>ThreadLocal 底层原理</li>
+<li>等等</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>由于水平限制，“高并发编程基础”参考了很多资料来编写。</p>
+<ul>
+<li>JDK 17 官方文档，用于自查和权威核对 <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/17/">https://docs.oracle.com/en/java/javase/17/</a></li>
+<li>涉及JDK源码、基础原理介绍的书：《Java高并发编程详解：多线程与架构设计》（基于JDK8）</li>
+<li>涉及Java标准介绍和多线程基础说明的书： 《Java多线程编程核心技术》（基于JDK8）</li>
+</ul>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>来自一线全栈程序员nine的八年探索与实践，持续迭代中。欢迎关注“雨林寻北”或添加个人卫星codetrend（备注技术）。</p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#5W1H"><span class="toc-number">1.</span> <span class="toc-text">5W1H</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E7%BA%B2"><span class="toc-number">2.</span> <span class="toc-text">大纲</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85"><span class="toc-number">4.</span> <span class="toc-text">关于作者</span></a></li></ol>
+    </div>
+  </div>
+
+
             </div>
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
           
-            <div>
-              <i class="fa fa-github">github：</i>
-              <a href="https://gitee.com/r0ad" target="_blank">https://gitee.com/r0ad</a>
-            </div>
+
           
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
         </div>
+      
+      
+        
+<nav id="article-nav">
+  
+    <a href="/%E7%BC%96%E7%A8%8B/%E5%89%8D%E7%AB%AF%E9%80%9A%E8%BF%87%E5%A2%9E%E5%8A%A0XHR%E9%92%A9%E5%AD%90%E6%9D%A5%E5%85%A8%E5%B1%80%E5%A2%9E%E5%8A%A0header/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">newer</strong>
+      <div class="article-nav-title">
+        
+          前端通过增加XHR钩子来全局增加header
+        
       </div>
+    </a>
+  
+  
+    <a href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">Gitlab使用或替换外部Nginx方法说明</div>
+    </a>
+  
+</nav>
+
+      
       
         
 
@@ -130,7 +237,7 @@
 
 
       
-    </div>
+    </footer>
   </div>
 </article>
 </section>
