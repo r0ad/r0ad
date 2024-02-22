@@ -179,6 +179,56 @@
 </article>
 
 
+  <article id="post-高并发编程基础/03-Thread构造函数使用说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/03-Thread%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">Java高并发编程基础之Thread构造函数大有内涵</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-12-26T16:00:00.000Z" itemprop="datePublished">2023年12月27日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        Java中的Thread构造函数大有内涵，通过掌握这些构造函数，也就基本了解了线程的基本概念和线程使用方法以及部分调优知识。
+      
+    </div>
+    <footer class="article-footer">
+      
+        
+        <p class="article-more-link">
+          <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/03-Thread%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/#more">Read More</a>
+        </p>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-高并发编程基础/02-线程基础知识说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -1026,221 +1076,6 @@
 </article>
 
 
-  <article id="post-JavaEngineer/Java注解机制和应用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/JavaEngineer/Java%E6%B3%A8%E8%A7%A3%E6%9C%BA%E5%88%B6%E5%92%8C%E5%BA%94%E7%94%A8/">Java 注解机制和应用</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-03-11T16:00:00.000Z" itemprop="datePublished">2023年03月12日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/JavaEngineer/">JavaEngineer</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>Java注解是一种很常见的开发辅助模式，Java语言中的类、方法、变量、参数和包等都可以被标注。</li>
-<li>通过自定义注解的使用可以优化业务开发的使用。</li>
-</ul>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Java注解又称Java标注，是Java语言5.0版本开始支持加入源代码的特殊语法元数据。为我们在代码中添加信息提供了一种形式化的方法，使我们可以在稍后某个时刻非常方便的使用这些数据。</p>
-<p>Java语言中的类、方法、变量、参数和包等都可以被标注。和Javadoc不同，Java标注可以通过反射获取注解内容。在编译器生成类文件时，注解可以被嵌入到字节码中。Java虚拟机可以保留注解内容，在运行时可以获取到注解内容。</p>
-<h2 id="常见注解"><a href="#常见注解" class="headerlink" title="常见注解"></a>常见注解</h2><h3 id="Java内置注解"><a href="#Java内置注解" class="headerlink" title="Java内置注解"></a>Java内置注解</h3><p>Java 定义了一套注解，共有 7 个，3 个在 java.lang 中，剩下 4 个在 java.lang.annotation 中。</p>
-<p> 1、作用在代码的注解是</p>
-<ul>
-<li><code>@Override</code> - 检查该方法是否是重写方法。如果发现其父类，或者是引用的接口中并没有该方法时，会报编译错误。</li>
-<li><code>@Deprecated</code> - 标记过时方法。如果使用该方法，会报编译警告。</li>
-<li><code>@SuppressWarnings</code> - 指示编译器去忽略注解中声明的警告。</li>
-</ul>
-<p>2、作用在其他注解的注解(或者说<strong>元注解</strong>)是:</p>
-<ul>
-<li><code>@Retention</code> - 标识这个注解怎么保存，是只在代码中，还是编入class文件中，或者是在运行时可以通过反射访问。</li>
-<li><code>@Documented</code> - 标记这些注解是否包含在用户文档中。</li>
-<li><code>@Target</code> - 标记这个注解应该是哪种 Java 成员。</li>
-<li><code>@Inherited</code> - 标记这个注解是继承于哪个注解类(默认 注解并没有继承于任何子类)</li>
-</ul>
-<p>3、从 Java 7 开始，额外添加了 3 个注解:</p>
-<ul>
-<li><code>@SafeVarargs</code> - Java 7 开始支持，忽略任何使用参数为泛型变量的方法或构造函数调用产生的警告。</li>
-<li><code>@FunctionalInterface</code> - Java 8 开始支持，标识一个匿名函数或函数式接口。</li>
-<li><code>@Repeatable</code> - Java 8 开始支持，标识某注解可以在同一个声明上使用多次。</li>
-</ul>
-<h3 id="常见的库中的注解"><a href="#常见的库中的注解" class="headerlink" title="常见的库中的注解"></a>常见的库中的注解</h3><p>日常开发使用的库中也有着大量的注解，例如Jackson、SpringMvc等，下面就简单介绍下常见库中的常见注解使用</p>
-<ul>
-<li><p>Jackson<br>Jackson是一个通用的序列化库，程序员使用过程中可以使用它提供的注解机制对序列化进行定制化操作，比如:</p>
-</li>
-<li><p>使用@JsonIgnore和@JsonIgnoreProperties配置序列化的过程中忽略部分字段</p>
-</li>
-<li><p>使用@JsonManagedReference和@JsonBackReference可以配置实例之间的互相引用</p>
-</li>
-<li><p>使用@JsonProperty和@JsonFormat配置序列化的过程中字段名称和属性字段的格式等</p>
-</li>
-<li><p>Servlet3.0</p>
-</li>
-</ul>
-<p>随着web开发技术的发展，Java web已经发展到了Servlet3.0，在早期使用Servlet的时候，我们只能在web.xml中配置，但是当我们使用Servlet3.0的时候开始，已经开始支持注解了，比如我们可以使用@WebServlet配置一个类为Servlet类。</p>
-<ul>
-<li>SpringMvc</li>
-</ul>
-<p>同样的，在web开发中，我们往往还会使用SpringMvc框架来简化开发，其框架的大量注解可以帮助我们减少大量的业务代码，例如一个请求的参数和字段/实例之间的映射关系，一个方法使用的是Http的什么请求方法，对应请求的某个路径，同样的请求如何解析，返回的响应报文格式定义等，这些都可以使用注解来简化实现，一个简单的Mvc操作如下:</p>
-<p>其中@Controller注解标明当前的类是SpringMvc接管的一个Bean实例，@RequestMapping(“/hello”)则是代表当前Bean的前置请求路径比如是/hello开头， @GetMapping(“/test”)则是表示test方法被访问必须是Http请求的get请求，并且路径必须是/hello/test为路径前置，@ResponseBody注解则是标明了当前请求的相应信息按照默认的格式返回(根据后缀名来确定格式)</p>
-<h2 id="注解创建"><a href="#注解创建" class="headerlink" title="注解创建"></a>注解创建</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(ElementType.FIELD)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Label &#123;</span><br><span class="line">    String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>@Target注解表示当前注解可以使用在什么类型的元素上，这里的值可以多选，即一个注解可以作用在多种不同类型的元素上，具体的可选值在ElementType枚举类中，值如下:</p>
-<table>
-<thead>
-<tr>
-<th align="center">取值</th>
-<th align="center">解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">TYPE</td>
-<td align="center">表示作用在类、接口上</td>
-</tr>
-<tr>
-<td align="center">FIELD</td>
-<td align="center">表示作用在字段，包括枚举常量中</td>
-</tr>
-<tr>
-<td align="center">METHOD</td>
-<td align="center">表示作用在方法中</td>
-</tr>
-<tr>
-<td align="center">PARAMETER</td>
-<td align="center">表示作用在方法中的参数中</td>
-</tr>
-<tr>
-<td align="center">CONSTRUCTOR</td>
-<td align="center">表示作用在构造方法中</td>
-</tr>
-<tr>
-<td align="center">LOCAL_VARIABLE</td>
-<td align="center">表示作用在本地常量中</td>
-</tr>
-<tr>
-<td align="center">MODULE</td>
-<td align="center">表示作用在部分模块中(Java9引入的概念)</td>
-</tr>
-<tr>
-<td align="center">ANNOTATION_TYPE</td>
-<td align="center">表示当前注解作用在定义其他注解中，即元注解</td>
-</tr>
-<tr>
-<td align="center">PACKAGE</td>
-<td align="center">表示当前注解使用在包的申明中</td>
-</tr>
-<tr>
-<td align="center">TYPE_PARAMETER</td>
-<td align="center">表明当前注解使用在类型参数的申明中(Java8新增)</td>
-</tr>
-<tr>
-<td align="center">TYPE_USE</td>
-<td align="center">表明当前注解使用在具体使用类型中(Java8新增)</td>
-</tr>
-</tbody></table>
-<p>当使用多个作用域范围的时候，使用{}包裹多个参数，比如@SuppressWarnings注解的Target就有多个，在Java7中的定义为:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.SOURCE)</span> <span class="keyword">public</span> <span class="meta">@interface</span> SuppressWarnings &#123;    String[] value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Retention"><a href="#Retention" class="headerlink" title="@Retention"></a>@Retention</h3><p>@Retention注解则是表明了当前注解可以保留到Java多个阶段的哪一个阶段，参数类型为RetentionPolicy枚举类，可取值如下:</p>
-<table>
-<thead>
-<tr>
-<th align="center">取值</th>
-<th align="center">解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">SOURCE</td>
-<td align="center">此注解仅在源代码阶段保留，编译后即丢失注解部分</td>
-</tr>
-<tr>
-<td align="center">CLASS</td>
-<td align="center">表示编译后依然保留在Class字节码中，但是加载时不一定会在内存中</td>
-</tr>
-<tr>
-<td align="center">RUNTIME</td>
-<td align="center">表示不仅保留在Class字节码中，一直到内存使用时仍然存在</td>
-</tr>
-</tbody></table>
-<p>此注解有默认值，即当我们没有申明@Retention的时候，默认则是Class取值范围</p>
-<h3 id="Documented"><a href="#Documented" class="headerlink" title="@Documented"></a>@Documented</h3><p>@Documented注解没有具体的参数，使用此元注解，则表示带有类型的注解将由javadoc记录</p>
-<h3 id="Inherited"><a href="#Inherited" class="headerlink" title="@Inherited"></a>@Inherited</h3><ul>
-<li><code>@Inherited</code>  注解与注解的继承有关系，具体关系为如果使用了当前的元注解，则表示此注解可以被其他的注解的子类直接继承，但是需要注意的是对已实现接口上的注解将没有作用。</li>
-<li><code>@Inherited</code> 注释表明注释类型可以从超类继承。当用户查询注释类型并且该类没有此类型的注释时，将查询类的超类以获取注释类型（默认情况下不是这样）。此注释仅适用于类声明。</li>
-</ul>
-<h2 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h2><h3 id="业务开发的使用"><a href="#业务开发的使用" class="headerlink" title="业务开发的使用"></a>业务开发的使用</h3><p>基于Spring提供的AOP开发方法，可以简化业务代码开发中冗余的业务代码，对接口调用过程的前置处理、过程处理、后置处理。</p>
-<ul>
-<li>金融借贷系统对接了很多第三方的风控接口。调用接口前需要校验报文体中的签名字段 <code>sign</code> 。<ul>
-<li>每个方法开头都写一份签名验签的代码。</li>
-<li>将验签代码抽取成方法，方便复用。</li>
-<li>新建 <code>@SignCheck</code> 注解，在切面里面写业务逻辑。</li>
-</ul>
-</li>
-<li>应用开发过程的日志记录需要保存到消息中间件或者数据库。<ul>
-<li>每个方法开头都写一份记录日志的代码。</li>
-<li>将记录日志抽取成方法，方便复用。</li>
-<li>新建 <code>@LogAccess</code> 注解，在切面里面写日志记录逻辑。</li>
-</ul>
-</li>
-</ul>
-<h3 id="工具开发的使用"><a href="#工具开发的使用" class="headerlink" title="工具开发的使用"></a>工具开发的使用</h3><ul>
-<li>Lombok 通过注解 <code>@Getter</code> <code>@Setter</code> 等主机，在源码编译时添加对应的模板方法。</li>
-<li>Fastjson 通过 <code>@JSONField</code> 定制序列化方法。指定JSON代码文本生成的别名。</li>
-</ul>
-<h3 id="自定义注解例子"><a href="#自定义注解例子" class="headerlink" title="自定义注解例子"></a>自定义注解例子</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Getter;</span><br><span class="line"><span class="keyword">import</span> lombok.Setter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.ElementType;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.RetentionPolicy;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Target;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.text.SimpleDateFormat;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.TimeZone;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnotationTestAll</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义注解 Format</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line">    <span class="meta">@Target(ElementType.FIELD)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="meta">@interface</span> Format &#123;</span><br><span class="line">        String <span class="title function_">pattern</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>;</span><br><span class="line"></span><br><span class="line">        String <span class="title function_">timezone</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;GMT+8&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line">    <span class="meta">@Target(ElementType.FIELD)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="meta">@interface</span> Label &#123;</span><br><span class="line">        String <span class="title function_">value</span><span class="params">()</span> <span class="keyword">default</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 通过反射 Format Label，并且获取值做运算</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SimpleFormatter</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">format</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Class&lt;?&gt; cls = obj.getClass();</span><br><span class="line">                <span class="type">StringBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">                <span class="keyword">for</span> (Field field : cls.getDeclaredFields()) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!field.isAccessible()) &#123;</span><br><span class="line">                        field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="comment">// 获取Label注解-输出的字段名称</span></span><br><span class="line">                    <span class="type">Label</span> <span class="variable">label</span> <span class="operator">=</span> field.getAnnotation(Label.class);</span><br><span class="line">                    <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="literal">null</span> == label ? field.getName() : label.value();</span><br><span class="line">                    <span class="type">Object</span> <span class="variable">value</span> <span class="operator">=</span> field.get(obj);</span><br><span class="line">                    <span class="keyword">if</span> (value != <span class="literal">null</span> &amp;&amp; field.getType() == Date.class) &#123;</span><br><span class="line">                        value = formatter(field, value);</span><br><span class="line">                    &#125;</span><br><span class="line">                    builder.append(String.format(<span class="string">&quot;%s ? %s \n&quot;</span>, name, value));</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> builder.toString();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;格式化输出失败：&quot;</span> + e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title function_">formatter</span><span class="params">(Field field, Object value)</span> &#123;</span><br><span class="line">            <span class="type">Format</span> <span class="variable">format</span> <span class="operator">=</span> field.getAnnotation(Format.class);</span><br><span class="line">            <span class="keyword">if</span> (<span class="literal">null</span> == format) &#123;</span><br><span class="line">                <span class="keyword">return</span> value;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">String</span> <span class="variable">pattern</span> <span class="operator">=</span> format.pattern();</span><br><span class="line">            <span class="type">String</span> <span class="variable">timezone</span> <span class="operator">=</span> format.timezone();</span><br><span class="line">            <span class="type">SimpleDateFormat</span> <span class="variable">sdf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SimpleDateFormat</span>(pattern);</span><br><span class="line">            sdf.setTimeZone(TimeZone.getTimeZone(timezone));</span><br><span class="line">            <span class="keyword">return</span> sdf.format(value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试的一个bo</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Getter</span></span><br><span class="line">    <span class="meta">@Setter</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">        <span class="meta">@Label(&quot;姓名&quot;)</span></span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line">        <span class="meta">@Label(&quot;出生日期&quot;)</span></span><br><span class="line">        <span class="meta">@Format(pattern = &quot;yyyy/MM/dd&quot;)</span></span><br><span class="line">        <span class="keyword">private</span> Date born;</span><br><span class="line">        <span class="meta">@Label(&quot;分数&quot;)</span></span><br><span class="line">        <span class="keyword">private</span> Double score;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 测试运算结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Student</span> <span class="variable">student</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Student</span>();</span><br><span class="line">        student.setBorn(<span class="keyword">new</span> <span class="title class_">Date</span>());</span><br><span class="line">        student.setName(<span class="string">&quot;张三&quot;</span>);</span><br><span class="line">        student.setScore(<span class="number">244.0</span>);</span><br><span class="line">        System.out.println(SimpleFormatter.format(student));</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 输出：</span></span><br><span class="line"><span class="comment">         * 姓名 ? 张三</span></span><br><span class="line"><span class="comment">         * 出生日期 ? 2023/03/12</span></span><br><span class="line"><span class="comment">         * 分数 ? 244.0 </span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QoJnf2vPCWR5ClCjSkiPsQ">详解Java注解机制</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/47449512/answer/658228092">怎样理解 Java 注解和运用注解编程？ - bravo1988的回答 - 知乎</a></li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1263,6 +1098,10 @@
           </li>
         
           <li>
+            <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/03-Thread%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">Java高并发编程基础之Thread构造函数大有内涵</a>
+          </li>
+        
+          <li>
             <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/02-%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E8%AF%B4%E6%98%8E/">高并发编程基础线程知识说明</a>
           </li>
         
@@ -1272,10 +1111,6 @@
         
           <li>
             <a href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/">Gitlab使用或替换外部Nginx方法说明</a>
-          </li>
-        
-          <li>
-            <a href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/">Windows端微信多开的技巧</a>
           </li>
         
       </ul>
@@ -1297,7 +1132,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -1307,7 +1142,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
