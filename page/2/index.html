@@ -88,6 +88,121 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-中间件实战/Redis的安装和使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/Redis%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">Redis的安装和使用</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-03-15T16:00:00.000Z" itemprop="datePublished">2023年03月16日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Redis 是基于内存的、采用Key-Value结构化存储的NoSQL数据库，底层采用单线程和多路IO复用模型加快查询速度。</p>
+<ul>
+<li>支持多种数据格式的存储；</li>
+<li>支持持久化存储；</li>
+<li>支持集群部署。</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="Windows安装"><a href="#Windows安装" class="headerlink" title="Windows安装"></a>Windows安装</h3><p>Redis 官方不支持Windows的安装，通过启用windows自带的WSL2 （(Windows Subsystem for Linux）Linux子系统工具可以使用和安装。<br>Windows 版本要求大于10 。</p>
+<p>具体安装流程和Linux安装一致。</p>
+<h3 id="Linux安装"><a href="#Linux安装" class="headerlink" title="Linux安装"></a>Linux安装</h3><p>大多数Linux发行版本提供了Redis的安装包，通过安装软件包命令可以从远程安装对应的工具。</p>
+<p>Ubuntu/Debian 系统的安装流程如下：</p>
+<ol>
+<li>添加Redis官方软件仓库源到Apt软件。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg</span><br><span class="line"></span><br><span class="line">echo &quot;deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main&quot; | sudo tee /etc/apt/sources.list.d/redis.list</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install redis</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>前置要求:如果运行的像是docker这类最小发行版本需要先安装 <code>lsb-release</code> 。</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install lsb-release</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis启动"><a href="#Redis启动" class="headerlink" title="Redis启动"></a>Redis启动</h3><p>Linux Ubuntu/Debian 系统启动命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service redis-server start</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis访问"><a href="#Redis访问" class="headerlink" title="Redis访问"></a>Redis访问</h3><p>通过官方的Cli工具访问：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">redis-cli </span><br><span class="line"></span><br><span class="line">Usage: redis-cli [OPTIONS] [cmd [arg [arg ...]]]</span><br><span class="line">  -h &lt;hostname&gt;      Server hostname (default: 127.0.0.1).</span><br><span class="line">  -p &lt;port&gt;          Server port (default: 6379).</span><br><span class="line">  -s &lt;socket&gt;        Server socket (overrides hostname and port).</span><br><span class="line">  -a &lt;password&gt;      Password to use when connecting to the server.</span><br><span class="line">                     You can also use the REDISCLI_AUTH environment</span><br><span class="line">                     variable to pass this password more safely</span><br><span class="line">                     (if both are used, this argument takes precedence).</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis配置"><a href="#Redis配置" class="headerlink" title="Redis配置"></a>Redis配置</h3><p>详细配置例子查看 <a target="_blank" rel="noopener" href="https://redis.io/docs/management/config-file/">https://redis.io/docs/management/config-file/</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Accept connections on the specified port, default is 6379 (IANA <span class="comment">#815344).</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">If port 0 is specified Redis will not listen on a TCP socket.</span></span><br><span class="line">port 6379</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Close the connection after a client is idle <span class="keyword">for</span> N seconds (0 to <span class="built_in">disable</span>)</span></span><br><span class="line">timeout 60</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">IMPORTANT NOTE: starting with Redis 6 <span class="string">&quot;requirepass&quot;</span> is just a compatibility</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">layer on top of the new ACL system. The option effect will be just setting</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">the password <span class="keyword">for</span> the default user. Clients will still authenticate using</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">AUTH &lt;password&gt; as usually, or more explicitly with AUTH default &lt;password&gt;</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">if</span> they follow the new protocol: both will work.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># The requirepass is not compatible with aclfile option and the ACL LOAD</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">command</span>, these will cause requirepass to be ignored.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash">requirepass redis1234</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="分布式部署"><a href="#分布式部署" class="headerlink" title="分布式部署"></a>分布式部署</h3><p>需要修改集群的相关配置，此处从略。 详情可参考网络或者 <a target="_blank" rel="noopener" href="https://redis.io/docs/management/replication/">https://redis.io/docs/management/replication/</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">############################### REDIS CLUSTER  ###############################</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Normal Redis instances can<span class="string">&#x27;t be part of a Redis Cluster; only nodes that are</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">started as cluster nodes can. In order to start a Redis instance as a</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">cluster node enable the cluster support uncommenting the following:</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="string"></span></span></span><br><span class="line"><span class="string"><span class="language-bash">cluster-enabled yes</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Springboot集成redis"><a href="#Springboot集成redis" class="headerlink" title="Springboot集成redis"></a>Springboot集成redis</h2><ol>
+<li>修改依赖加入Redis启动项目，此处以maven为例子说明。</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- redis--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改配置，指定redis启动。</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="comment"># Redis 配置</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="comment"># Redis 服务器地址</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    <span class="comment"># 连接端口号</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="comment"># 数据库索引（0 - 15）</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">redis1234</span></span><br><span class="line">    <span class="attr">database:</span> <span class="number">0</span></span><br><span class="line">    <span class="comment"># 连接超时时间（毫秒）</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="number">600000</span></span><br><span class="line">    <span class="comment"># lettuce 参数</span></span><br><span class="line">    <span class="attr">lettuce:</span></span><br><span class="line">      <span class="attr">pool:</span></span><br><span class="line">        <span class="comment"># 最大连接数(使用负值表示没有限制) 默认为 8</span></span><br><span class="line">        <span class="attr">max-active:</span> <span class="number">10</span></span><br><span class="line">        <span class="comment"># 最大阻塞等待时间(使用负值表示没有限制) 默认为 -1 ms</span></span><br><span class="line">        <span class="attr">max-wait:</span> <span class="number">-1</span></span><br><span class="line">        <span class="comment"># 最大空闲连接 默认为 8</span></span><br><span class="line">        <span class="attr">max-idle:</span> <span class="number">5</span></span><br><span class="line">        <span class="comment"># 最小空闲连接 默认为 0</span></span><br><span class="line">        <span class="attr">min-idle:</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>增加 RedisTemplate 序列化配置，以FastJSON2为例子说明。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisConfiguration</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate <span class="title function_">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> &#123;</span><br><span class="line">        <span class="type">RedisTemplate</span> <span class="variable">redisTemplate</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisTemplate</span>();</span><br><span class="line">        redisTemplate.setConnectionFactory(redisConnectionFactory);</span><br><span class="line"></span><br><span class="line">        <span class="type">GenericFastJsonRedisSerializer</span> <span class="variable">fastJsonRedisSerializer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GenericFastJsonRedisSerializer</span>();</span><br><span class="line">        redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);<span class="comment">//设置默认的Serialize，包含 keySerializer &amp; valueSerializer</span></span><br><span class="line">        redisTemplate.setKeySerializer(fastJsonRedisSerializer);<span class="comment">//单独设置keySerializer</span></span><br><span class="line">        redisTemplate.setValueSerializer(fastJsonRedisSerializer);<span class="comment">//单独设置valueSerializer</span></span><br><span class="line">        <span class="keyword">return</span> redisTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用的demo，通过RedisTemplate访问。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api(tags = &quot;demo&quot;)</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/v1/demo/&quot;)</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisDemo</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;get&quot;)</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;get&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">get</span><span class="params">(String key)</span> &#123;</span><br><span class="line">        <span class="type">ValueOperations</span> <span class="variable">valueOperations</span> <span class="operator">=</span> redisTemplate.opsForValue();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">val</span> <span class="operator">=</span> valueOperations.get(key);</span><br><span class="line">        <span class="keyword">return</span> val;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;set&quot;)</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;set&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">set</span><span class="params">(String key,String val)</span> &#123;</span><br><span class="line">        <span class="type">ValueOperations</span> <span class="variable">valueOperations</span> <span class="operator">=</span> redisTemplate.opsForValue();</span><br><span class="line">        valueOperations.set(key,val);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;delete&quot;)</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;delete&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">delete</span><span class="params">(String key)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> redisTemplate.delete(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://redis.io/docs/getting-started/installation/install-redis-on-linux/">Install Redis on Linux</a></li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-JavaEngineer/Java函数式编程" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -822,6 +937,88 @@
 </article>
 
 
+  <article id="post-编程/使用Springboot集成Sqlite" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8Springboot%E9%9B%86%E6%88%90Sqlite/">使用Springboot集成Sqlite</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-02-19T16:00:00.000Z" itemprop="datePublished">2023年02月20日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> > <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>SQLite，是一款轻型的数据库，是遵守ACID的关系型数据库管理系统，它包含在一个相对小的C库中。它是D.RichardHipp建立的公有领域项目。它的设计目标是嵌入式的，而且已经在很多嵌入式产品中使用了它，它占用资源非常的低，在嵌入式设备中，可能只需要几百K的内存就够了。</p>
+<p>简单来说，通过一个文件就能启动和使用关系型数据库管理。</p>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>JDK 1.8+</li>
+<li>SpringBoot 2.1+</li>
+</ul>
+<h2 id="引入sqlite"><a href="#引入sqlite" class="headerlink" title="引入sqlite"></a>引入sqlite</h2><ol>
+<li>引入sqlite依赖和数据库依赖：</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.xerial<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>sqlite-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.40.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改启动配置：</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 数据库连接池</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#  驱动使用sqlite</span></span></span><br><span class="line">spring.datasource.driver-class-name=org.sqlite.JDBC</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">指定数据库位置，相对或者绝对定位</span></span><br><span class="line">spring.datasource.url=jdbc:sqlite::resource:db/rssboot.db</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>通过mybatis操作数据库。</li>
+<li>通过JdbcTemplate操作数据库。</li>
+<li>通过 JPA 操作数据库。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>无</p>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-编程/使用Springboot集成MybatisGenerator" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -884,88 +1081,6 @@
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a target="_blank" rel="noopener" href="http://mybatis.org/generator/running/running.html">Running MyBatis Generator - http://mybatis.org/generator/running/running.html</a></li>
 </ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
-  <article id="post-编程/使用Springboot集成Sqlite" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E7%BC%96%E7%A8%8B/%E4%BD%BF%E7%94%A8Springboot%E9%9B%86%E6%88%90Sqlite/">使用Springboot集成Sqlite</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-02-19T16:00:00.000Z" itemprop="datePublished">2023年02月20日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a> > <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>SQLite，是一款轻型的数据库，是遵守ACID的关系型数据库管理系统，它包含在一个相对小的C库中。它是D.RichardHipp建立的公有领域项目。它的设计目标是嵌入式的，而且已经在很多嵌入式产品中使用了它，它占用资源非常的低，在嵌入式设备中，可能只需要几百K的内存就够了。</p>
-<p>简单来说，通过一个文件就能启动和使用关系型数据库管理。</p>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
-<li>JDK 1.8+</li>
-<li>SpringBoot 2.1+</li>
-</ul>
-<h2 id="引入sqlite"><a href="#引入sqlite" class="headerlink" title="引入sqlite"></a>引入sqlite</h2><ol>
-<li>引入sqlite依赖和数据库依赖：</li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.xerial<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>sqlite-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.40.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-jdbc<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>修改启动配置：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 数据库连接池</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#  驱动使用sqlite</span></span></span><br><span class="line">spring.datasource.driver-class-name=org.sqlite.JDBC</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">指定数据库位置，相对或者绝对定位</span></span><br><span class="line">spring.datasource.url=jdbc:sqlite::resource:db/rssboot.db</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>通过mybatis操作数据库。</li>
-<li>通过JdbcTemplate操作数据库。</li>
-<li>通过 JPA 操作数据库。</li>
-</ol>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>无</p>
 
         
         
@@ -1076,154 +1191,6 @@
 </article>
 
 
-  <article id="post-深度讲解Spring5底层原理/01-Spring中BeanFacory和ApplicationContext的功能与实现" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/01-Spring%E4%B8%ADBeanFacory%E5%92%8CApplicationContext%E7%9A%84%E5%8A%9F%E8%83%BD%E4%B8%8E%E5%AE%9E%E7%8E%B0/">01-Spring中BeanFacory和ApplicationContext的功能与实现</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-12-06T16:00:00.000Z" itemprop="datePublished">2022年12月07日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="导图"><a href="#导图" class="headerlink" title="导图"></a>导图</h2><pre class="mermaid">flowchart LR
-A(Spring) --> B(BeanFacory)
-A --> C(ApplicationContext)
-C --> 1(功能)
-C --> 2(实现)
-B --> 3(功能)
-B --> 4(实现)
-A --> 5(差异)</pre>
-
-<h2 id="差异"><a href="#差异" class="headerlink" title="差异"></a>差异</h2><p><code>org.springframework.beans</code> 和 <code>org.springframework.context</code> 是Spring框架IoC容器的基础包。 <code>BeanFactory</code> 接口提供了一种高级配置机制，能够管理任何类型的对象。ApplicationContext是BeanFactory的子接口，添加了如下功能：</p>
-<ul>
-<li>更容易与Spring的AOP功能集成</li>
-<li>消息资源处理（用于国际化）</li>
-<li>事件发布</li>
-<li>特定应用层的上下文，如用于web应用程序的WebApplicationContext</li>
-</ul>
-<table>
-<caption class="title">Table 9. Feature Matrix</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 25%;">
-<col style="width: 25%;">
-</colgroup>
-<thead>
-<tr>
-<th >Feature</th>
-<th ><code>BeanFactory</code></th>
-<th ><code>ApplicationContext</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td ><p>Bean instantiation/wiring Bean的实例化和自动装配</p></td>
-<td ><p>Yes</p></td>
-<td ><p>Yes</p></td>
-</tr>
-<tr>
-<td ><p>Integrated lifecycle management 集成bean生命周期管理</p></td>
-<td ><p>No</p></td>
-<td ><p>Yes</p></td>
-</tr>
-<tr>
-<td ><p>Automatic <code>BeanPostProcessor </code> registration Bean后置处理器自动注册</p></td>
-<td ><p>No</p></td>
-<td ><p>Yes</p></td>
-</tr>
-<tr>
-<td ><p>Automatic <code>BeanFactoryPostProcessor</code> registration BeanFactory后置处理器自动注册</p></td>
-<td ><p>No</p></td>
-<td ><p>Yes</p></td>
-</tr>
-<tr>
-<td ><p>Convenient <code>MessageSource</code> access (for internationalization) 国际化资源访问</p></td>
-<td ><p>No</p></td>
-<td ><p>Yes</p></td>
-</tr>
-<tr>
-<td ><p>Built-in <code>ApplicationEvent</code> publication mechanism 内置事件发布机制</p></td>
-<td ><p>No</p></td>
-<td ><p>Yes</p></td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="常见实现"><a href="#常见实现" class="headerlink" title="常见实现"></a>常见实现</h2><p>ApplicationContext：</p>
-<ul>
-<li>AnnotationConfigApplicationContext 基于注解配置的A加载上下文</li>
-<li>ClassPathXmlApplicationContext 基于xml配置的加载上下文</li>
-<li>FileSystemXmlApplicationContext 基于xml配置的加载上下文</li>
-<li>GenericApplicationContext 通用的上下文，更加灵活加载配置</li>
-</ul>
-<p>BeanFactory：</p>
-<ul>
-<li>DefaultListableBeanFactory 默认BeanFactory</li>
-</ul>
-<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><p>beanFactory 不会做的事情：</p>
-<ol>
-<li>不会主动调用 beanFactory的后处理器</li>
-<li>不会主动添加Bean的后处理器</li>
-<li>不会主动初始化单例</li>
-<li>不会解析beanFactory，还不会解析 ${} 占位符 #{} EL表达式</li>
-</ol>
-<p>通过 <code>DefaultListableBeanFactory</code> 实现 ApplicationContext的功能：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> engineer.spring.ioc.context;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AppBeanFactory</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> <span class="type">Log</span> <span class="variable">log</span> <span class="operator">=</span> LogFactory.getLog(getClass());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">DefaultListableBeanFactory</span> <span class="variable">beanFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultListableBeanFactory</span>();</span><br><span class="line">        <span class="comment">// bean的定义 初始化 销毁 class scope 生命周期定义</span></span><br><span class="line">        <span class="type">AbstractBeanDefinition</span> <span class="variable">beanDefinition</span> <span class="operator">=</span> BeanDefinitionBuilder.genericBeanDefinition(Config.class)</span><br><span class="line">                .setScope(BeanDefinition.SCOPE_SINGLETON).getBeanDefinition();</span><br><span class="line">        beanFactory.registerBeanDefinition(<span class="string">&quot;config&quot;</span>, beanDefinition);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 给beanFactory添加常用的后置处理器</span></span><br><span class="line">        <span class="comment">// 设置排序方法</span></span><br><span class="line">        AnnotationConfigUtils.registerAnnotationConfigProcessors(beanFactory);</span><br><span class="line">        <span class="comment">// beanFactory 执行后置处理器类 补充一些bean的定义</span></span><br><span class="line">        beanFactory.getBeansOfType(BeanFactoryPostProcessor.class).values().stream().sorted(beanFactory.getDependencyComparator()).forEach(beanFactoryPostProcessor -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;BeanFactoryPostProcessor: &quot;</span> + beanFactoryPostProcessor.getClass());</span><br><span class="line">            beanFactoryPostProcessor.postProcessBeanFactory(beanFactory);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// bean 执行后置处理器类 补充一些bean的扩展处理  如 @autowired @resource</span></span><br><span class="line">        beanFactory.getBeansOfType(BeanPostProcessor.class).values().forEach(beanPostProcessor -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;BeanPostProcessor: &quot;</span> + beanPostProcessor.getClass());</span><br><span class="line">            beanFactory.addBeanPostProcessor(beanPostProcessor);</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 预处理单例类</span></span><br><span class="line">        beanFactory.preInstantiateSingletons();</span><br><span class="line"></span><br><span class="line">        System.out.println(beanFactory.getBean(Bean1.class).getBean2());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String beanDefinitionName : beanFactory.getBeanDefinitionNames()) &#123;</span><br><span class="line">            System.out.println(beanDefinitionName);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// beanFactory 后处理器有排序的逻辑</span></span><br><span class="line">        System.out.println(beanFactory.getBean(Bean1.class).getInter());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Configuration</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Config</span> &#123;</span><br><span class="line">        <span class="meta">@Bean</span></span><br><span class="line">        <span class="keyword">public</span> Bean1 <span class="title function_">bean1</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Bean1</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Bean</span></span><br><span class="line">        <span class="keyword">public</span> Bean2 <span class="title function_">bean2</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Bean2</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Bean</span></span><br><span class="line">        <span class="keyword">public</span> Bean3 <span class="title function_">bean3</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Bean3</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Bean</span></span><br><span class="line">        <span class="keyword">public</span> Bean4 <span class="title function_">bean4</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Bean4</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Bean1</span> &#123;</span><br><span class="line">        <span class="meta">@Autowired</span></span><br><span class="line">        <span class="keyword">private</span> Bean2 bean2;</span><br><span class="line">        <span class="meta">@Autowired</span></span><br><span class="line">        <span class="meta">@Resource(name = &quot;bean4&quot;)</span></span><br><span class="line">        <span class="keyword">private</span> Inter bean3;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Bean1</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Bean1构造器初始化&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Bean2 <span class="title function_">getBean2</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> bean2;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Inter <span class="title function_">getInter</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> bean3;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Bean2</span> &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">Bean2</span><span class="params">()</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Bean2构造器初始化&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">interface</span> <span class="title class_">Inter</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Bean3</span> <span class="keyword">implements</span> <span class="title class_">Inter</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Bean4</span> <span class="keyword">implements</span> <span class="title class_">Inter</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/5.3.x/reference/html/core.html#resources">1.16.1. BeanFactory or ApplicationContext?</a></li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1242,6 +1209,10 @@ A --> 5(差异)</pre>
       <ul>
         
           <li>
+            <a href="/%E8%BF%90%E7%BB%B4/%E5%9F%BA%E4%BA%8ELinux%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85%E7%9A%84Nginx%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/">基于Linux直接安装的Nginx版本升级方法</a>
+          </li>
+        
+          <li>
             <a href="/%E7%BC%96%E7%A8%8B/%E5%89%8D%E7%AB%AF%E9%80%9A%E8%BF%87%E5%A2%9E%E5%8A%A0XHR%E9%92%A9%E5%AD%90%E6%9D%A5%E5%85%A8%E5%B1%80%E5%A2%9E%E5%8A%A0header/">前端通过增加XHR钩子来全局增加header</a>
           </li>
         
@@ -1255,10 +1226,6 @@ A --> 5(差异)</pre>
         
           <li>
             <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/01-%E5%BC%95%E8%A8%80/">高并发编程基础-引言</a>
-          </li>
-        
-          <li>
-            <a href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/">Gitlab使用或替换外部Nginx方法说明</a>
           </li>
         
       </ul>
@@ -1280,7 +1247,7 @@ A --> 5(差异)</pre>
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -1290,7 +1257,7 @@ A --> 5(差异)</pre>
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年02月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 

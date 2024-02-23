@@ -88,6 +88,56 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-运维/基于Linux直接安装的Nginx版本升级" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E8%BF%90%E7%BB%B4/%E5%9F%BA%E4%BA%8ELinux%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85%E7%9A%84Nginx%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/">基于Linux直接安装的Nginx版本升级方法</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2024-02-22T16:00:00.000Z" itemprop="datePublished">2024年02月23日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        随着版本的迭代和漏洞的发现，Nginx作为一款软件避免不了打补丁的命运。以下基于Linux直接安装的Nginx版本升级过程，相较于镜像安装来说明的。以下操作均在本地虚拟机中操作验证，请验证后再线上操作。基于centos7测试。
+      
+    </div>
+    <footer class="article-footer">
+      
+        
+        <p class="article-more-link">
+          <a href="/%E8%BF%90%E7%BB%B4/%E5%9F%BA%E4%BA%8ELinux%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85%E7%9A%84Nginx%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/#more">Read More</a>
+        </p>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-编程/前端通过增加XHR钩子来全局增加header" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -961,121 +1011,6 @@
 </article>
 
 
-  <article id="post-中间件实战/Redis的安装和使用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/Redis%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">Redis的安装和使用</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-03-15T16:00:00.000Z" itemprop="datePublished">2023年03月16日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>Redis 是基于内存的、采用Key-Value结构化存储的NoSQL数据库，底层采用单线程和多路IO复用模型加快查询速度。</p>
-<ul>
-<li>支持多种数据格式的存储；</li>
-<li>支持持久化存储；</li>
-<li>支持集群部署。</li>
-</ul>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="Windows安装"><a href="#Windows安装" class="headerlink" title="Windows安装"></a>Windows安装</h3><p>Redis 官方不支持Windows的安装，通过启用windows自带的WSL2 （(Windows Subsystem for Linux）Linux子系统工具可以使用和安装。<br>Windows 版本要求大于10 。</p>
-<p>具体安装流程和Linux安装一致。</p>
-<h3 id="Linux安装"><a href="#Linux安装" class="headerlink" title="Linux安装"></a>Linux安装</h3><p>大多数Linux发行版本提供了Redis的安装包，通过安装软件包命令可以从远程安装对应的工具。</p>
-<p>Ubuntu/Debian 系统的安装流程如下：</p>
-<ol>
-<li>添加Redis官方软件仓库源到Apt软件。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg</span><br><span class="line"></span><br><span class="line">echo &quot;deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main&quot; | sudo tee /etc/apt/sources.list.d/redis.list</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install redis</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>前置要求:如果运行的像是docker这类最小发行版本需要先安装 <code>lsb-release</code> 。</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install lsb-release</span><br></pre></td></tr></table></figure>
-
-<h3 id="Redis启动"><a href="#Redis启动" class="headerlink" title="Redis启动"></a>Redis启动</h3><p>Linux Ubuntu/Debian 系统启动命令如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service redis-server start</span><br></pre></td></tr></table></figure>
-
-<h3 id="Redis访问"><a href="#Redis访问" class="headerlink" title="Redis访问"></a>Redis访问</h3><p>通过官方的Cli工具访问：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">redis-cli </span><br><span class="line"></span><br><span class="line">Usage: redis-cli [OPTIONS] [cmd [arg [arg ...]]]</span><br><span class="line">  -h &lt;hostname&gt;      Server hostname (default: 127.0.0.1).</span><br><span class="line">  -p &lt;port&gt;          Server port (default: 6379).</span><br><span class="line">  -s &lt;socket&gt;        Server socket (overrides hostname and port).</span><br><span class="line">  -a &lt;password&gt;      Password to use when connecting to the server.</span><br><span class="line">                     You can also use the REDISCLI_AUTH environment</span><br><span class="line">                     variable to pass this password more safely</span><br><span class="line">                     (if both are used, this argument takes precedence).</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="Redis配置"><a href="#Redis配置" class="headerlink" title="Redis配置"></a>Redis配置</h3><p>详细配置例子查看 <a target="_blank" rel="noopener" href="https://redis.io/docs/management/config-file/">https://redis.io/docs/management/config-file/</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Accept connections on the specified port, default is 6379 (IANA <span class="comment">#815344).</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">If port 0 is specified Redis will not listen on a TCP socket.</span></span><br><span class="line">port 6379</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Close the connection after a client is idle <span class="keyword">for</span> N seconds (0 to <span class="built_in">disable</span>)</span></span><br><span class="line">timeout 60</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">IMPORTANT NOTE: starting with Redis 6 <span class="string">&quot;requirepass&quot;</span> is just a compatibility</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">layer on top of the new ACL system. The option effect will be just setting</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">the password <span class="keyword">for</span> the default user. Clients will still authenticate using</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">AUTH &lt;password&gt; as usually, or more explicitly with AUTH default &lt;password&gt;</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">if</span> they follow the new protocol: both will work.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash"><span class="comment"># The requirepass is not compatible with aclfile option and the ACL LOAD</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">command</span>, these will cause requirepass to be ignored.</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash">requirepass redis1234</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="分布式部署"><a href="#分布式部署" class="headerlink" title="分布式部署"></a>分布式部署</h3><p>需要修改集群的相关配置，此处从略。 详情可参考网络或者 <a target="_blank" rel="noopener" href="https://redis.io/docs/management/replication/">https://redis.io/docs/management/replication/</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">############################### REDIS CLUSTER  ###############################</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Normal Redis instances can<span class="string">&#x27;t be part of a Redis Cluster; only nodes that are</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">started as cluster nodes can. In order to start a Redis instance as a</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="string">cluster node enable the cluster support uncommenting the following:</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="string"></span></span></span><br><span class="line"><span class="string"><span class="language-bash">cluster-enabled yes</span></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Springboot集成redis"><a href="#Springboot集成redis" class="headerlink" title="Springboot集成redis"></a>Springboot集成redis</h2><ol>
-<li>修改依赖加入Redis启动项目，此处以maven为例子说明。</li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- redis--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改配置，指定redis启动。</li>
-</ul>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="comment"># Redis 配置</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="comment"># Redis 服务器地址</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    <span class="comment"># 连接端口号</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="comment"># 数据库索引（0 - 15）</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">redis1234</span></span><br><span class="line">    <span class="attr">database:</span> <span class="number">0</span></span><br><span class="line">    <span class="comment"># 连接超时时间（毫秒）</span></span><br><span class="line">    <span class="attr">timeout:</span> <span class="number">600000</span></span><br><span class="line">    <span class="comment"># lettuce 参数</span></span><br><span class="line">    <span class="attr">lettuce:</span></span><br><span class="line">      <span class="attr">pool:</span></span><br><span class="line">        <span class="comment"># 最大连接数(使用负值表示没有限制) 默认为 8</span></span><br><span class="line">        <span class="attr">max-active:</span> <span class="number">10</span></span><br><span class="line">        <span class="comment"># 最大阻塞等待时间(使用负值表示没有限制) 默认为 -1 ms</span></span><br><span class="line">        <span class="attr">max-wait:</span> <span class="number">-1</span></span><br><span class="line">        <span class="comment"># 最大空闲连接 默认为 8</span></span><br><span class="line">        <span class="attr">max-idle:</span> <span class="number">5</span></span><br><span class="line">        <span class="comment"># 最小空闲连接 默认为 0</span></span><br><span class="line">        <span class="attr">min-idle:</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>增加 RedisTemplate 序列化配置，以FastJSON2为例子说明。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisConfiguration</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> RedisTemplate <span class="title function_">redisTemplate</span><span class="params">(RedisConnectionFactory redisConnectionFactory)</span> &#123;</span><br><span class="line">        <span class="type">RedisTemplate</span> <span class="variable">redisTemplate</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisTemplate</span>();</span><br><span class="line">        redisTemplate.setConnectionFactory(redisConnectionFactory);</span><br><span class="line"></span><br><span class="line">        <span class="type">GenericFastJsonRedisSerializer</span> <span class="variable">fastJsonRedisSerializer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">GenericFastJsonRedisSerializer</span>();</span><br><span class="line">        redisTemplate.setDefaultSerializer(fastJsonRedisSerializer);<span class="comment">//设置默认的Serialize，包含 keySerializer &amp; valueSerializer</span></span><br><span class="line">        redisTemplate.setKeySerializer(fastJsonRedisSerializer);<span class="comment">//单独设置keySerializer</span></span><br><span class="line">        redisTemplate.setValueSerializer(fastJsonRedisSerializer);<span class="comment">//单独设置valueSerializer</span></span><br><span class="line">        <span class="keyword">return</span> redisTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>使用的demo，通过RedisTemplate访问。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@Api(tags = &quot;demo&quot;)</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/v1/demo/&quot;)</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedisDemo</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;get&quot;)</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;get&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">get</span><span class="params">(String key)</span> &#123;</span><br><span class="line">        <span class="type">ValueOperations</span> <span class="variable">valueOperations</span> <span class="operator">=</span> redisTemplate.opsForValue();</span><br><span class="line">        <span class="type">Object</span> <span class="variable">val</span> <span class="operator">=</span> valueOperations.get(key);</span><br><span class="line">        <span class="keyword">return</span> val;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;set&quot;)</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;set&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">set</span><span class="params">(String key,String val)</span> &#123;</span><br><span class="line">        <span class="type">ValueOperations</span> <span class="variable">valueOperations</span> <span class="operator">=</span> redisTemplate.opsForValue();</span><br><span class="line">        valueOperations.set(key,val);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApiOperation(value = &quot;delete&quot;)</span></span><br><span class="line">    <span class="meta">@PostMapping(&quot;delete&quot;)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="keyword">public</span> Boolean <span class="title function_">delete</span><span class="params">(String key)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> redisTemplate.delete(key);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://redis.io/docs/getting-started/installation/install-redis-on-linux/">Install Redis on Linux</a></li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1094,6 +1029,10 @@
       <ul>
         
           <li>
+            <a href="/%E8%BF%90%E7%BB%B4/%E5%9F%BA%E4%BA%8ELinux%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85%E7%9A%84Nginx%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/">基于Linux直接安装的Nginx版本升级方法</a>
+          </li>
+        
+          <li>
             <a href="/%E7%BC%96%E7%A8%8B/%E5%89%8D%E7%AB%AF%E9%80%9A%E8%BF%87%E5%A2%9E%E5%8A%A0XHR%E9%92%A9%E5%AD%90%E6%9D%A5%E5%85%A8%E5%B1%80%E5%A2%9E%E5%8A%A0header/">前端通过增加XHR钩子来全局增加header</a>
           </li>
         
@@ -1107,10 +1046,6 @@
         
           <li>
             <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/01-%E5%BC%95%E8%A8%80/">高并发编程基础-引言</a>
-          </li>
-        
-          <li>
-            <a href="/%E8%BF%90%E7%BB%B4/Gitlab%E4%BD%BF%E7%94%A8%E6%88%96%E6%9B%BF%E6%8D%A2%E5%A4%96%E9%83%A8Nginx%E6%96%B9%E6%B3%95%E8%AF%B4%E6%98%8E/">Gitlab使用或替换外部Nginx方法说明</a>
           </li>
         
       </ul>
@@ -1132,7 +1067,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -1142,7 +1077,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年02月</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 

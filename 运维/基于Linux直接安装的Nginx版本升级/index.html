@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   
   
-  <title>Gitlab使用或替换外部Nginx方法说明 | code trend</title>
+  <title>基于Linux直接安装的Nginx版本升级方法 | code trend</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
     <meta name="description" content="java,spring,spring cloud,javascript">
@@ -87,7 +87,7 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-运维/Gitlab使用或替换外部Nginx方法说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-运维/基于Linux直接安装的Nginx版本升级" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
     
@@ -95,7 +95,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      Gitlab使用或替换外部Nginx方法说明
+      基于Linux直接安装的Nginx版本升级方法
     </h1>
   
 
@@ -106,7 +106,7 @@
       
       <span class="article-date">
   <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-08-15T16:00:00.000Z" itemprop="datePublished">2023年08月16日</time>
+  <time class="dt-published" datetime="2024-02-22T16:00:00.000Z" itemprop="datePublished">2024年02月23日</time>
 </span>
       
   <div class="article-category">
@@ -129,43 +129,46 @@
     </div>
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>Gitlab 版本没更新就会导致依赖的组件库版本没更新，如果Nginx有漏洞，则需要升级Gitlab，或者第二个选择就是使用外部的Nginx作为服务容器。</p>
-<h2 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h2><p>** 请勿直接在生产或者线上主机上执行。</p>
-<p>具体操作步骤如下：</p>
-<ol>
-<li>备份配置文件 <code>cp /etc/gitlab/gitlab.rb /etc/gitlab/gitlab.rb.20230822.bak</code></li>
-<li>禁用捆绑的 NGINX，在 /etc/gitlab/gitlab.rb 中设置：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx[&#x27;enable&#x27;] = false</span><br></pre></td></tr></table></figure>
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>随着版本的迭代和漏洞的发现，Nginx作为一款软件避免不了打补丁的命运。</p>
+<p>以下基于Linux直接安装的Nginx版本升级。</p>
+<p>以下操作均在本地虚拟机中操作验证，请验证后再线上操作。基于centos7测试。</p>
+<h2 id="前置资源"><a href="#前置资源" class="headerlink" title="前置资源"></a>前置资源</h2><ul>
+<li>获取nginx的最新源码版本网址： <a target="_blank" rel="noopener" href="http://freenginx.org/">http://freenginx.org/</a></li>
+<li>查看nginx的版本命令： <code>nginx -V</code></li>
+</ul>
+<h2 id="基于源码安装Nginx"><a href="#基于源码安装Nginx" class="headerlink" title="基于源码安装Nginx"></a>基于源码安装Nginx</h2><h3 id="安装编译环境"><a href="#安装编译环境" class="headerlink" title="安装编译环境"></a>安装编译环境</h3><p>nginx基于c语言编写的，所以安装之前需要安装编译环境。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### 安装编译环境和依赖包</span></span><br><span class="line">yum -y install make zlib zlib-devel gcc-c++ libtool  openssl openssl-devel</span><br><span class="line"><span class="comment">## 验证编译环境是否安装成功</span></span><br><span class="line">gcc --version</span><br><span class="line"></span><br><span class="line">gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-44)</span><br><span class="line">Copyright (C) 2015 Free Software Foundation, Inc.</span><br><span class="line">This is free software; see the <span class="built_in">source</span> <span class="keyword">for</span> copying conditions.  There is NO</span><br><span class="line">warranty; not even <span class="keyword">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>下载正确的网络服务器配置，访问地址： <a target="_blank" rel="noopener" href="https://gitlab.com/gitlab-org/gitlab-recipes/tree/master/web-server">GitLab recipes repository</a></li>
-</ol>
-<p>下面以http的Nginx为例说明，把配置文件放入/etc/nginx/conf.d（默认）：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">upstream gitlab-workhorse &#123;</span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">On GitLab versions before 13.5, the location is</span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">`/var/opt/gitlab/gitlab-workhorse/socket`. Change the following line</span></span><br><span class="line"><span class="meta prompt_">  # </span><span class="language-bash">accordingly.</span></span><br><span class="line">  server unix:/var/opt/gitlab/gitlab-workhorse/sockets/socket;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># Normal HTTP host</span></span></span><br><span class="line">server &#123;</span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># Either remove &quot;default_server&quot; from the listen line below 如果遇到问题可以删除 default_server</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># or delete the /etc/nginx/sites-enabled/default file. This will cause gitlab</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># to be served if you visit any address that your server responds to, eg.</span></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># the ip address of the server (http://x.x.x.x/)n 0.0.0.0:80 default_server;</span></span></span><br><span class="line">  listen 0.0.0.0:8088 default_server; # 修改你需要监听的端口</span><br><span class="line">  listen [::]:8088 default_server;</span><br><span class="line">  server_name localhost; ## Replace this with something like gitlab.example.com # 修改配置的域名</span><br><span class="line">  server_tokens off; ## Don&#x27;t show the nginx version number, a security best practice</span><br><span class="line">  root /opt/gitlab/embedded/service/gitlab-rails/public; # 默认位置就是这里</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># See app/controllers/application_controller.rb for headers set</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">  #</span><span class="language-bash"><span class="comment"># Individual nginx logs for this GitLab vhost</span></span></span><br><span class="line">  access_log  /var/log/nginx/gitlab_access.log;</span><br><span class="line">  error_log   /var/log/nginx/gitlab_error.log;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">    client_max_body_size 0;</span><br><span class="line">    gzip off;</span><br><span class="line"></span><br><span class="line">    ## https://github.com/gitlabhq/gitlabhq/issues/694</span><br><span class="line">    ## Some requests take more than 30 seconds.</span><br><span class="line">    proxy_read_timeout      300;</span><br><span class="line">    proxy_connect_timeout   300;</span><br><span class="line">    proxy_redirect          off;</span><br><span class="line"></span><br><span class="line">    proxy_http_version 1.1;</span><br><span class="line"></span><br><span class="line">    proxy_set_header    Host                $http_host;</span><br><span class="line">    proxy_set_header    X-Real-IP           $remote_addr;</span><br><span class="line">    proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header    X-Forwarded-Proto   $scheme;</span><br><span class="line"></span><br><span class="line">    proxy_pass http://gitlab-workhorse;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li><p>执行 <code>sudo gitlab-ctl reconfigure</code> 命令以使更改生效。</p>
-</li>
-<li><p>启动 nginx。</p>
-</li>
-</ol>
-<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><ol>
-<li>权限不够，界面返回502。解决办法是修改nginx配置文件的启动用户为root或者授权给对应用户。</li>
-<li>出现如下错误：</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">connect() to unix:/var/opt/gitlab/gitlab-workhorse/sockets/socket failed (13:Permission denied) while connecting to upstream</span><br></pre></td></tr></table></figure>
-
-<p>选择以下选项之一进行修复：</p>
+<h3 id="逆向编译命令"><a href="#逆向编译命令" class="headerlink" title="逆向编译命令"></a>逆向编译命令</h3><p>nginx编译通过 <code>./configure</code> 命令加指定参数来完成，对应的参数决定了应用程序的安装位置、日志文件位置、依赖库使用情况等。</p>
+<p>所以在安装之前需要知道如下信息：</p>
 <ul>
-<li>更新到 14.3 或更高版本，其中包含更新的 SELinux 策略。</li>
-<li>手动获取和更新策略：</li>
+<li>使用到的依赖库</li>
+<li>程序安装位置</li>
+<li>启用的模块</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://gitlab.com/gitlab-org/omnibus-gitlab/-/raw/a9d6b020f81d18d778fb502c21b2c8f2265cabb4/files/gitlab-selinux/rhel/7/gitlab-13.5.0-gitlab-shell.pp</span><br><span class="line">semodule -i gitlab-13.5.0-gitlab-shell.pp</span><br></pre></td></tr></table></figure>
+<p>以上信息可以通过<code>ngingx -V</code>来获取。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 进入nginx的安装目录</span></span><br><span class="line">nginx -V</span><br><span class="line"><span class="comment">## 可以看到对应的配置参数信息</span></span><br><span class="line">nginx version: nginx/1.24.0</span><br><span class="line">built by gcc 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC) </span><br><span class="line">built with OpenSSL 1.0.2k-fips  26 Jan 2017</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --prefix=/usr/local/nginx --with-http_ssl_module --with-stream --with-http_stub_status_module</span><br></pre></td></tr></table></figure>
 
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://docs.gitlab.cn/14.6/omnibus/settings/nginx.html#%E4%BD%BF%E7%94%A8%E9%9D%9E%E6%8D%86%E7%BB%91%E7%9A%84%E7%BD%91%E7%BB%9C%E6%9C%8D%E5%8A%A1%E5%99%A8">NGINX 配置-Gitlab</a></li>
+<h3 id="安装新版本nginx"><a href="#安装新版本nginx" class="headerlink" title="安装新版本nginx"></a>安装新版本nginx</h3><ul>
+<li>到正式网站下载源码：</li>
 </ul>
+<p><strong>推荐Free版本</strong> <a target="_blank" rel="noopener" href="http://freenginx.org/en/download.html">http://freenginx.org/en/download.html</a><br>或者F5版本 <a target="_blank" rel="noopener" href="http://nginx.org/en/download.html">http://nginx.org/en/download.html</a> </p>
+<p>freenginx 是nginx被F5收购出来的一个独立分支，由原来的nginx的核心人员维护，就像mariadb和mysql的关系。</p>
+<ul>
+<li>上传源码到指定服务器，开始安装。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解压源码</span></span><br><span class="line">tar -xf nginx-1.25.4.tar.gz</span><br><span class="line">cd nginx-1.25.4</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 根据逆向得到的参数进行编译</span></span></span><br><span class="line">./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-stream --with-http_stub_status_module</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#  如果缺少对应依赖库，可以通过如下命令安装</span></span></span><br><span class="line">yum -y install make zlib zlib-devel gcc-c++ libtool  openssl openssl-devel</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 也可以到对应库的正式网站下载安装，通过命令指定安装位置，比如</span></span></span><br><span class="line">./configure --prefix=/usr/local/nginx --with-http_ssl_module --with-stream --with-http_stub_status_module --with-pcre=/root/install_app/pcre2-10.43</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 安装</span></span></span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 查看安装后的版本</span></span></span><br><span class="line">/usr/local/nginx/sbin/nginx -V</span><br><span class="line"></span><br><span class="line">nginx version: nginx/1.25.4</span><br><span class="line">built by gcc 4.8.5 20150623 (Red Hat 4.8.5-44) (GCC)</span><br><span class="line">built with OpenSSL 1.0.2k-fips  26 Jan 2017</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --prefix=/usr/local/nginx --with-http_ssl_module --with-stream --with-http_stub_status_module --with-pcre=/root/install_app/pcre2-10.43</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上是通过覆盖的方式升级nginx，注意提前做好备份，避免数据丢失。</p>
+<h2 id="基于安装包安装Nginx"><a href="#基于安装包安装Nginx" class="headerlink" title="基于安装包安装Nginx"></a>基于安装包安装Nginx</h2><p>nginx在linux上做了很多分发包，包括debian、centos、ubuntu等。通过nginx官方的安装包升级nginx，可以避免编译过程的麻烦。</p>
+<p>确认nginx是通过安装包安装的，可以通过安装路径查看。一般nginx的安装路径为分开的，包括任意路径可以执行<code>nginx -V</code>。</p>
+<p>centos通过<code>rpm -qa nginx</code>查找nginx的安装包是否存在。</p>
+<p>升级过程如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">## 安装nginx的仓库源，访问 http://nginx.org/packages/centos/7/noarch/RPMS/ 下载 nginx-release-centos-7-0.el7.ngx.noarch.rpm  </span></span><br><span class="line">wget http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm</span><br><span class="line"><span class="comment">## 安装nginx源</span></span><br><span class="line">rpm -ivh nginx-release-centos-7-0.el7.ngx.noarch.rpm</span><br><span class="line"><span class="comment">## 查看nginx安装包列表</span></span><br><span class="line">yum --showduplicates list nginx</span><br><span class="line"><span class="comment">## 安装最新版本的nginx</span></span><br><span class="line">yum install nginx.x86_64</span><br><span class="line"><span class="comment">## 验证版本</span></span><br><span class="line">nginx -V</span><br></pre></td></tr></table></figure>
+
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>以上就是nginx 1.21.5升级到1.25.4的过程。不同镜像版本可能升级过程不一致。</p>
+<p><strong>请在虚拟机中操作验证，请勿直接线上生产主机操作。</strong></p>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>来自一线全栈程序员nine的八年探索与实践，持续迭代中。欢迎关注“雨林寻北”或添加个人卫星codetrend（备注技术）。</p>
 
         
             <div id="toc-article">
@@ -173,7 +176,7 @@
   <div class="widget-wrap" id="toc-wrap">
     <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
     <div class="widget">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E7%BA%A7%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">升级步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">遇到的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E8%B5%84%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">前置资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85Nginx"><span class="toc-number">3.</span> <span class="toc-text">基于源码安装Nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83"><span class="toc-number">3.1.</span> <span class="toc-text">安装编译环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%86%E5%90%91%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4"><span class="toc-number">3.2.</span> <span class="toc-text">逆向编译命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E6%96%B0%E7%89%88%E6%9C%ACnginx"><span class="toc-number">3.3.</span> <span class="toc-text">安装新版本nginx</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%AE%89%E8%A3%85%E5%8C%85%E5%AE%89%E8%A3%85Nginx"><span class="toc-number">4.</span> <span class="toc-text">基于安装包安装Nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-number">5.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85"><span class="toc-number">6.</span> <span class="toc-text">关于作者</span></a></li></ol>
     </div>
   </div>
 
@@ -202,19 +205,10 @@
         
 <nav id="article-nav">
   
-    <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/01-%E5%BC%95%E8%A8%80/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">newer</strong>
-      <div class="article-nav-title">
-        
-          高并发编程基础-引言
-        
-      </div>
-    </a>
   
-  
-    <a href="/%E7%BC%96%E7%A8%8B/Windows%E7%AB%AF%E5%BE%AE%E4%BF%A1%E5%A4%9A%E5%BC%80%E7%9A%84%E6%8A%80%E5%B7%A7/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/%E7%BC%96%E7%A8%8B/%E5%89%8D%E7%AB%AF%E9%80%9A%E8%BF%87%E5%A2%9E%E5%8A%A0XHR%E9%92%A9%E5%AD%90%E6%9D%A5%E5%85%A8%E5%B1%80%E5%A2%9E%E5%8A%A0header/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">older</strong>
-      <div class="article-nav-title">Windows端微信多开的技巧</div>
+      <div class="article-nav-title">前端通过增加XHR钩子来全局增加header</div>
     </a>
   
 </nav>
