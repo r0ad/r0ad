@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   
   
-  <title>认真生活认真工作 | code trend</title>
+  <title>SpringCloud和SpringBoot的版本依赖该怎么选择 | code trend</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
     <meta name="description" content="java,spring,spring cloud,javascript">
@@ -87,7 +87,7 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-技术人生/认真生活认真工作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-SpringCloud实战/01-SpringCloud2022依赖版本选择" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
     
@@ -95,7 +95,7 @@
         
   
     <h1 class="p-name article-title" itemprop="headline name">
-      认真生活认真工作
+      SpringCloud和SpringBoot的版本依赖该怎么选择
     </h1>
   
 
@@ -106,12 +106,12 @@
       
       <span class="article-date">
   <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-02-09T16:00:00.000Z" itemprop="datePublished">2022年02月10日</time>
+  <time class="dt-published" datetime="2024-02-26T16:00:00.000Z" itemprop="datePublished">2024年02月27日</time>
 </span>
       
   <div class="article-category">
     <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
+    <a class="article-category-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a>
   </div>
 
       
@@ -129,21 +129,68 @@
     </div>
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>好好工作，好好读书，认真生活。</p>
-</blockquote>
-<p>只需在日常生活中扮演好社会赋予自己的角色，或者对于自己应该做好的事情——公务、家务、学习——都要尽心尽力，孜孜不倦，锲而不舍。这个过程本身就是磨炼人格的修行。</p>
-<p>第一种人，是不想工作但不得不工作的人。</p>
-<p>1、 这种人，如果是员工，他们追求“钱多、舒适、宽容的工作”；如果是创业者，他们追求“赚快钱”。他们面对现实中容易失望，容易抱怨公司与外部环境，或经常跳槽，或浅尝辄止。<br>2、 他们总以“没找到自己喜欢的工作”为借口，在工作中不用心，不耐烦，不全心全意投入。<br>3、 碰到困难与挫折，容易找借口放弃努力。</p>
-<p>第二种人，是赚钱第一、工作第二的人。</p>
-<p>这种人对待工作与责任不很用心，只求完成不求完美，有时甚至为了赚钱而不择手段，牺牲工作与责任，损人利已。</p>
-<p>这两类人，他们有一个共同点，就是都不尊重工作、不忠诚于工作与责任。对他们而言，工作不是生命真正的需求，是为了谋生不得不做的事情，是一旦有了条件后想要摆脱的事情。</p>
-<span id="more"></span>  
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Spring Cloud是一个基于Spring Boot的微服务框架，用于构建和管理分布式系统的各个组件。它提供了一套完整的解决方案，包括服务注册与发现、配置管理、负载均衡、熔断器、消息总线、数据流等功能。</p>
+<p>SpringCloud2023为当前Spring Cloud的最新版本迭代，基于Spring6和Springboot3以后的版本研发。因此开发选择SpringCloud的版本也就对应的选择了Springboot和Spring的版本。</p>
+<h2 id="版本依赖关系"><a href="#版本依赖关系" class="headerlink" title="版本依赖关系"></a>版本依赖关系</h2><table>
+<thead>
+<tr>
+<th>SpringCoud版本选择</th>
+<th>Springboot版本选择</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2023.0.x aka Leyton</td>
+<td>3.2.x</td>
+</tr>
+<tr>
+<td>2022.0.x aka Kilburn</td>
+<td>3.0.x, 3.1.x (Starting with 2022.0.3)</td>
+</tr>
+<tr>
+<td>2021.0.x aka Jubilee</td>
+<td>2.6.x, 2.7.x (Starting with 2021.0.3)</td>
+</tr>
+<tr>
+<td>2020.0.x aka Ilford</td>
+<td>2.4.x, 2.5.x (Starting with 2020.0.3)</td>
+</tr>
+<tr>
+<td>Hoxton</td>
+<td>2.2.x, 2.3.x (Starting with SR5)</td>
+</tr>
+<tr>
+<td>Greenwich</td>
+<td>2.1.x</td>
+</tr>
+<tr>
+<td>Finchley</td>
+<td>2.0.x</td>
+</tr>
+<tr>
+<td>Edgware</td>
+<td>1.5.x</td>
+</tr>
+<tr>
+<td>Dalston</td>
+<td>1.5.x</td>
+</tr>
+</tbody></table>
+<p>其中 Spring Cloud Dalston, Edgware, Finchley, 和 Greenwich 已经EOF，结束支持了。</p>
+<p>最新版本是2023（cloud L系列），除了springboot版本要求3.2以外，其它的生态软件还暂未迭代到对应的版本，比如cloud alibaba还是2022的版本。但是出于Spring boot的良好兼容性，通过版本的修改验证还是可以直接使用。原理是一致的。</p>
+<h2 id="引入BOM"><a href="#引入BOM" class="headerlink" title="引入BOM"></a>引入BOM</h2><p>SpringCloud2022实战基于Spring Cloud K系列版本。</p>
+<p>在根工程管理pom.xml或者gradle.setting中使用bom管理依赖。</p>
+<p>maven的引入方式：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">spring-cloud.version</span>&gt;</span>2022.0.1<span class="tag">&lt;/<span class="name">spring-cloud.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>第三种人，把工作当成修行的人。</p>
-<p>1、他们是拥有“自我观照”与自我领导力的人.<br>2、他们重塑完成了“工作能力人格”<br>3、他们尊重工作，忠于职责，并喜爱之，享受之。<br>4、他们是聚焦工作、引爆潜能、灵感横溢的人。<br>5、他们是“自燃型”与知行合一的人。<br>6、他们是快乐工作并身心健康的人。</p>
-<p>用心做事，心里有你，并且他专注与热爱工作，精益求精，视工作为自己的尊严与生命的一部分。<br>把平凡的工作做得不平凡，同时在工作中达到高级的人格与人生境界。</p>
-<p>摘录自： <a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ec03rH3srZW7FhzBNRslvQ">https://mp.weixin.qq.com/s/ec03rH3srZW7FhzBNRslvQ</a></p>
+<p>gradle的引入方式：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">  id <span class="string">&#x27;java&#x27;</span></span><br><span class="line">  id <span class="string">&#x27;org.springframework.boot&#x27;</span> version <span class="string">&#x27;3.0.5&#x27;</span></span><br><span class="line">  id <span class="string">&#x27;io.spring.dependency-management&#x27;</span> version <span class="string">&#x27;1.1.0&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ext &#123;</span><br><span class="line">  set(<span class="string">&#x27;springCloudVersion&#x27;</span>, <span class="string">&quot;2022.0.1&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencyManagement &#123;</span><br><span class="line">  imports &#123;</span><br><span class="line">    mavenBom <span class="string">&quot;org.springframework.cloud:spring-cloud-dependencies:$&#123;springCloudVersion&#125;&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来在启动工程中就可以使用各种cloud的starter来引入云服务特性了。下面以Netflix的引入为例说明。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- ... --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">  implementation <span class="string">&#x27;org.springframework.cloud:spring-cloud-starter-config&#x27;</span></span><br><span class="line">  implementation <span class="string">&#x27;org.springframework.cloud:spring-cloud-starter-netflix-eureka-client&#x27;</span></span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>来自一线全栈程序员nine的八年探索与实践，持续迭代中。欢迎关注“雨林寻北”或添加个人卫星codetrend（备注技术）。</p>
 
         
             <div id="toc-article">
@@ -151,7 +198,7 @@
   <div class="widget-wrap" id="toc-wrap">
     <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
     <div class="widget">
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="toc-number">2.</span> <span class="toc-text">版本依赖关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E5%85%A5BOM"><span class="toc-number">3.</span> <span class="toc-text">引入BOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85"><span class="toc-number">4.</span> <span class="toc-text">关于作者</span></a></li></ol>
     </div>
   </div>
 
@@ -180,19 +227,10 @@
         
 <nav id="article-nav">
   
-    <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">newer</strong>
-      <div class="article-nav-title">
-        
-          项目延期的解决办法
-        
-      </div>
-    </a>
   
-  
-    <a href="/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/%E8%A7%84%E5%88%993-%E6%95%B0%E5%AD%97-10%E6%9D%A1-%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8BigDecimal%E5%AF%B9%E8%B1%A1%E6%9E%84%E9%80%A0%E6%B5%AE%E7%82%B9%E6%95%B0%E6%8D%AE/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/%E8%BF%90%E7%BB%B4/%E5%9F%BA%E4%BA%8ELinux%E7%9B%B4%E6%8E%A5%E5%AE%89%E8%A3%85%E7%9A%84Nginx%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">older</strong>
-      <div class="article-nav-title">规则3-数字-10条-不要使用BigDecimal对象构造浮点数据</div>
+      <div class="article-nav-title">基于Linux直接安装的Nginx版本升级方法</div>
     </a>
   
 </nav>
