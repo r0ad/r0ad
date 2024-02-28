@@ -88,6 +88,106 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-从0开始学微服务/00-微服务定义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/00-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%B9%89/">00-微服务定义</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2022-04-15T16:00:00.000Z" itemprop="datePublished">2022年04月16日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="12因素应用和微服务"><a href="#12因素应用和微服务" class="headerlink" title="12因素应用和微服务"></a>12因素应用和微服务</h2><p>12-Factor 为构建如下的 SaaS 应用提供了方法论：</p>
+<ul>
+<li>使用标准化流程自动配置，从而使新的开发者花费最少的学习成本加入这个项目。</li>
+<li>和操作系统之间尽可能的划清界限，在各个系统中提供最大的可移植性。</li>
+<li>适合部署在现代的云计算平台，从而在服务器和系统管理方面节省资源。</li>
+<li>将开发环境和生产环境的差异降至最低，并使用持续交付实施敏捷开发。</li>
+<li>可以在工具、架构和开发流程不发生明显变化的前提下实现扩展。</li>
+</ul>
+<p>满足12 因素的app大概是这样的：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">I. 基准代码</span><br><span class="line">一份基准代码，多份部署</span><br><span class="line">II. 依赖</span><br><span class="line">显式声明依赖关系</span><br><span class="line">III. 配置</span><br><span class="line">在环境中存储配置</span><br><span class="line">IV. 后端服务</span><br><span class="line">把后端服务当作附加资源</span><br><span class="line">V. 构建，发布，运行</span><br><span class="line">严格分离构建和运行</span><br><span class="line">VI. 进程</span><br><span class="line">以一个或多个无状态进程运行应用</span><br><span class="line">VII. 端口绑定</span><br><span class="line">通过端口绑定提供服务</span><br><span class="line">VIII. 并发</span><br><span class="line">通过进程模型进行扩展</span><br><span class="line">IX. 易处理</span><br><span class="line">快速启动和优雅终止可最大化健壮性</span><br><span class="line">X. 开发环境与线上环境等价</span><br><span class="line">尽可能的保持开发，预发布，线上环境相同</span><br><span class="line">XI. 日志</span><br><span class="line">把日志当作事件流</span><br><span class="line">XII. 管理进程</span><br><span class="line">后台管理任务当作一次性进程运行</span><br></pre></td></tr></table></figure>
+
+<p>微服务作为一个概念是满足12因素的多应用方案，是一个可以具体落地的方案。</p>
+<h2 id="单体服务与微服务"><a href="#单体服务与微服务" class="headerlink" title="单体服务与微服务"></a>单体服务与微服务</h2><p>单体服务，以 MVC 架构为例，业务通常是通过部署一个 WAR 包到 Tomcat 中，然后启动 Tomcat，监听某个端口即可对外提供服务。早期在业务规模不大、开发团队人员规模较小的时候，采用单体应用架构，团队的开发和运维成本都可控。存在问题如下：</p>
+<ul>
+<li>部署效率低下。</li>
+<li>团队协作开发成本高。</li>
+<li>系统高可用性差。</li>
+<li>线上发布变慢。</li>
+</ul>
+<p>服务化，就是把传统的单机应用中通过 JAR 包依赖产生的本地方法调用，改造成通过 RPC 接口产生的远程方法调用。通过服务化，可以解决单体应用膨胀、团队开发耦合度高、协作效率低下的问题。</p>
+<ol>
+<li>单体服务的线上服务稳定容易被其他功能模块影响。</li>
+<li>单体服务在进行多个功能模块开发的时候混合进行开发、测试部署。不同功能之间容易影响。</li>
+</ol>
+<p>服务化的思想进一步演化，演变为今天我们所熟知的微服务。微服务相比于服务化的不同：</p>
+<ol>
+<li>服务拆分粒度更细。</li>
+<li>服务独立部署。</li>
+<li>服务独立维护。</li>
+<li>服务治理能力要求高。</li>
+</ol>
+<p>常见的服务拆分方式：</p>
+<ol>
+<li>纵向拆分，从业务角度拆分，按照业务的关联独立程度来决定。独立功能，关联较为深的拆分微服务。</li>
+<li>横向拆分，从公共且独立功能维度拆分。多个公共服务被调用，且依赖资源独立不与其他业务耦合。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://12factor.net/zh_cn/">12-factors app</a></li>
+<li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-编程/微服务框架介绍和技术细节" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -631,6 +731,58 @@
 </article>
 
 
+  <article id="post-技术人生/编码设计过程效率提升和开源工具完美使用指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">编码设计过程效率提升和开源工具完美使用指南</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2022-02-10T16:00:00.000Z" itemprop="datePublished">2022年02月11日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在日常的 Java Web 开发过程中，笔者已经能够找到所有的免费的编码软件和办公软件替代集合，其中大部分是开源的。以 MySql 数据库客户端为例，使用 <code>MyCli</code> 自动提示和高亮进行快速的 Sql 编写，基于 Python 语言编写。使用 <code>PlantUml</code> 能绘制出目前软件设计过程的建模图形，基于 Java 和 Graphviz。老牌的 WPS 能够满足日常办公 Offie 系列的文档编写和查阅，值得称赞的是在以 Windows Mac 为主流的软件氛围下，它提供的 Debian / CentOS 也很好用。还有一个值得注意的现象是有些免费软件是强强联合的产物，例如 VS Code 、 VirutualBox 、MySQL Workbench 。</p>
+<p>工具确实提升了办公和开发的效率，过度的依赖工具却并不是好事。国外公司、组织或基金会大多数都以开源为导向的进行软件编写。开源并不等于无限制使用，因为涉及到很多开源协议。笔者这里不细提。至少目前在完全不用盗版软件的情况下可以完成编码、设计等任务。总的来说，开源作为一个全球的协作编码过程，让开发者或组织都受益。在开源的氛围中，站在巨人的肩膀上，个人开发者也可以很容易写出一个软件。</p>
+<p>以下为全部工具集合。</p>
+      
+    </div>
+    <footer class="article-footer">
+      
+        
+        <p class="article-more-link">
+          <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/#more">Read More</a>
+        </p>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-技术人生/常见经济周期说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -684,58 +836,6 @@
         
         <p class="article-more-link">
           <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E5%B8%B8%E8%A7%81%E7%BB%8F%E6%B5%8E%E5%91%A8%E6%9C%9F%E8%AF%B4%E6%98%8E/#more">Read More</a>
-        </p>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
-  <article id="post-技术人生/编码设计过程效率提升和开源工具完美使用指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">编码设计过程效率提升和开源工具完美使用指南</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-02-10T16:00:00.000Z" itemprop="datePublished">2022年02月11日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在日常的 Java Web 开发过程中，笔者已经能够找到所有的免费的编码软件和办公软件替代集合，其中大部分是开源的。以 MySql 数据库客户端为例，使用 <code>MyCli</code> 自动提示和高亮进行快速的 Sql 编写，基于 Python 语言编写。使用 <code>PlantUml</code> 能绘制出目前软件设计过程的建模图形，基于 Java 和 Graphviz。老牌的 WPS 能够满足日常办公 Offie 系列的文档编写和查阅，值得称赞的是在以 Windows Mac 为主流的软件氛围下，它提供的 Debian / CentOS 也很好用。还有一个值得注意的现象是有些免费软件是强强联合的产物，例如 VS Code 、 VirutualBox 、MySQL Workbench 。</p>
-<p>工具确实提升了办公和开发的效率，过度的依赖工具却并不是好事。国外公司、组织或基金会大多数都以开源为导向的进行软件编写。开源并不等于无限制使用，因为涉及到很多开源协议。笔者这里不细提。至少目前在完全不用盗版软件的情况下可以完成编码、设计等任务。总的来说，开源作为一个全球的协作编码过程，让开发者或组织都受益。在开源的氛围中，站在巨人的肩膀上，个人开发者也可以很容易写出一个软件。</p>
-<p>以下为全部工具集合。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-        
-        <p class="article-more-link">
-          <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/#more">Read More</a>
         </p>
       
       
@@ -876,56 +976,6 @@
 </article>
 
 
-  <article id="post-Java编码标准指南/规则3-数字-10条-不要使用BigDecimal对象构造浮点数据" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/%E8%A7%84%E5%88%993-%E6%95%B0%E5%AD%97-10%E6%9D%A1-%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8BigDecimal%E5%AF%B9%E8%B1%A1%E6%9E%84%E9%80%A0%E6%B5%AE%E7%82%B9%E6%95%B0%E6%8D%AE/">规则3-数字-10条-不要使用BigDecimal对象构造浮点数据</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-02-06T16:00:00.000Z" itemprop="datePublished">2022年02月07日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>因为浮点数字总是不准确的， 通过 <code>new BigDecimal(double)</code> 获取到的数据总是不准确的。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-        
-        <p class="article-more-link">
-          <a href="/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/%E8%A7%84%E5%88%993-%E6%95%B0%E5%AD%97-10%E6%9D%A1-%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8BigDecimal%E5%AF%B9%E8%B1%A1%E6%9E%84%E9%80%A0%E6%B5%AE%E7%82%B9%E6%95%B0%E6%8D%AE/#more">Read More</a>
-        </p>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -944,6 +994,10 @@
       <ul>
         
           <li>
+            <a href="/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E8%AF%A5%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0/">接口幂等该如何设计和实现</a>
+          </li>
+        
+          <li>
             <a href="/SpringCloud%E5%AE%9E%E6%88%98/01-SpringCloud2022%E4%BE%9D%E8%B5%96%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9/">SpringCloud和SpringBoot的版本依赖该怎么选择</a>
           </li>
         
@@ -957,10 +1011,6 @@
         
           <li>
             <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/03-Thread%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">Java高并发编程基础之Thread构造函数大有内涵</a>
-          </li>
-        
-          <li>
-            <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/02-%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E8%AF%B4%E6%98%8E/">高并发编程基础线程知识说明</a>
           </li>
         
       </ul>
@@ -982,7 +1032,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -992,7 +1042,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年02月</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年02月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
