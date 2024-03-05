@@ -88,6 +88,91 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-从0开始学微服务/03-注册中心原理和实现方式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/03-%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F/">03-注册中心原理和实现方式</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2022-04-19T16:00:00.000Z" itemprop="datePublished">2022年04月20日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@startmindmap</span><br><span class="line">* 注册中心</span><br><span class="line">** 注册中心原理</span><br><span class="line">*** 服务提供者（RPC Server）</span><br><span class="line">*** 服务消费者（RPC Client）</span><br><span class="line">*** 和服务注册中心（Registry)</span><br><span class="line">** 注册中心实现方式</span><br><span class="line">*** 注册中心 API</span><br><span class="line">**** 服务注册接口</span><br><span class="line">**** 服务反注册接口</span><br><span class="line">**** 心跳汇报接口</span><br><span class="line">**** 服务订阅接口</span><br><span class="line">**** 服务变更查询接口</span><br><span class="line">**** 服务查询接口</span><br><span class="line">**** 服务修改接口</span><br><span class="line">*** 集群部署</span><br><span class="line">*** 目录存储</span><br><span class="line">*** 服务健康状态检查</span><br><span class="line">*** 服务状态变更通知</span><br><span class="line">@endmindmap</span><br></pre></td></tr></table></figure>
+
+<h2 id="注册中心原理"><a href="#注册中心原理" class="headerlink" title="注册中心原理"></a>注册中心原理</h2><p>在微服务架构下，主要有三种角色：服务提供者（RPC Server）、服务消费者（RPC Client）和服务注册中心（Registry）。</p>
+<ul>
+<li>RPC Server 提供服务，在启动时，根据服务发布文件 server.xml 中的配置的信息，向 Registry 注册自身服务，并向 Registry 定期发送心跳汇报存活状态。</li>
+<li>RPC Client 调用服务，在启动时，根据服务引用文件 client.xml 中配置的信息，向 Registry 订阅服务，把 Registry 返回的服务节点列表缓存在本地内存中，并与 RPC Sever 建立连接。</li>
+<li>当 RPC Server 节点发生变更时，Registry 会同步变更，RPC Client 感知后会刷新本地内存中缓存的服务节点列表。</li>
+<li>RPC Client 从本地缓存的服务节点列表中，基于负载均衡算法选择一台 RPC Sever 发起调用。</li>
+</ul>
+<p><img src="https://gitee.com/r0ad/filebed/raw/master/cloud/registry.jpg" alt="微服务架构"></p>
+<p>当 RPC Server 节点发生变更时，RPC Client 可以通过拉取的方式获取最新服务节点。Registry 也可以推送节点变化的消息。</p>
+<h2 id="注册中心实现方式"><a href="#注册中心实现方式" class="headerlink" title="注册中心实现方式"></a>注册中心实现方式</h2><h3 id="1-注册中心-API"><a href="#1-注册中心-API" class="headerlink" title="1. 注册中心 API"></a>1. 注册中心 API</h3><ul>
+<li>服务注册接口：服务提供者通过调用服务注册接口来完成服务注册。</li>
+<li>服务反注册接口：服务提供者通过调用服务反注册接口来完成服务注销。</li>
+<li>心跳汇报接口：服务提供者通过调用心跳汇报接口完成节点存活状态上报。</li>
+<li>服务订阅接口：服务消费者通过调用服务订阅接口完成服务订阅，获取可用的服务提供者节点列表。</li>
+<li>服务变更查询接口：服务消费者通过调用服务变更查询接口，获取最新的可用服务节点列表。</li>
+</ul>
+<h3 id="2-集群部署"><a href="#2-集群部署" class="headerlink" title="2. 集群部署"></a>2. 集群部署</h3><p>注册中心作为服务提供者和服务消费者之间沟通的桥梁，它的重要性不言而喻。所以注册中心一般都是采用集群部署来保证高可用性，并通过分布式一致性协议来确保集群中不同节点之间的数据保持一致。</p>
+<h3 id="3-目录存储"><a href="#3-目录存储" class="headerlink" title="3. 目录存储"></a>3. 目录存储</h3><p>注册中心存储服务信息一般采用层次化的目录结构。</p>
+<h3 id="4-服务健康状态检测"><a href="#4-服务健康状态检测" class="headerlink" title="4. 服务健康状态检测"></a>4. 服务健康状态检测</h3><p>注册中心除了要支持最基本的服务注册和服务订阅功能以外，还必须具备对服务提供者节点的健康状态检测功能，这样才能保证注册中心里保存的服务节点都是可用的。</p>
+<h3 id="5-服务状态变更通知"><a href="#5-服务状态变更通知" class="headerlink" title="5. 服务状态变更通知"></a>5. 服务状态变更通知</h3><p>一旦注册中心探测到有服务提供者节点新加入或者被剔除，就必须立刻通知所有订阅该服务的服务消费者，刷新本地缓存的服务节点信息，确保服务调用不会请求不可用的服务提供者节点。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-从0开始学微服务/00-微服务定义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -159,6 +244,113 @@
 </ol>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://12factor.net/zh_cn/">12-factors app</a></li>
+<li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-从0开始学微服务/01-微服务架构定义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/01-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%AE%9A%E4%B9%89/">01-微服务架构定义</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2022-04-15T16:00:00.000Z" itemprop="datePublished">2022年04月16日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="基本组件"><a href="#基本组件" class="headerlink" title="基本组件"></a>基本组件</h2><p>微服务架构下，服务调用主要依赖下面几个基本组件：</p>
+<ul>
+<li>服务描述</li>
+<li>注册中心</li>
+<li>服务框架</li>
+<li>服务监控</li>
+<li>服务追踪</li>
+<li>服务治理</li>
+</ul>
+<p><img src="https://gitee.com/r0ad/filebed/raw/master/cloud/cloudArch01.png" alt="微服务架构"></p>
+<h3 id="服务描述"><a href="#服务描述" class="headerlink" title="服务描述"></a>服务描述</h3><p>服务调用首先要解决的问题就是服务如何对外描述。</p>
+<p>常用的服务描述方式包括 RESTful API、XML 配置以及 IDL 文件三种。</p>
+<h3 id="注册中心"><a href="#注册中心" class="headerlink" title="注册中心"></a>注册中心</h3><p>有了服务的接口描述，下一步要解决的问题就是服务的发布和订阅，就是说你提供了一个服务，如何让外部想调用你的服务的人知道。</p>
+<p>注册中心的工作流程是：</p>
+<ol>
+<li>服务提供者在启动时，根据服务发布文件中配置的发布信息向注册中心注册自己的服务。</li>
+<li>服务消费者在启动时，根据消费者配置文件中配置的服务信息向注册中心订阅自己所需要的服务。</li>
+<li>注册中心返回服务提供者地址列表给服务消费者。</li>
+<li>当服务提供者发生变化，比如有节点新增或者销毁，注册中心将变更通知给服务消费者。</li>
+</ol>
+<h3 id="服务框架"><a href="#服务框架" class="headerlink" title="服务框架"></a>服务框架</h3><p>通过注册中心，服务消费者就可以获取到服务提供者的地址，有了地址后就可以发起调用。发起调用之前，服务框架需要解决问题如下：</p>
+<ol>
+<li>服务通信采用什么协议。服务提供者和服务消费者之间以什么样的协议进行网络通信，是采用四层 TCP、UDP 协议，还是采用七层 HTTP 协议。</li>
+<li>数据传输采用什么方式。服务提供者和服务消费者之间的数据传输采用哪种方式，是同步还是异步，是在单连接上传输，还是多路复用。</li>
+<li>数据压缩格式。通常数据传输都会对数据进行压缩，来减少网络传输的数据量，从而减少带宽消耗和网络传输时间，比如常见的 JSON 序列化、 Java 对象序列化以及 Protobuf 序列化等。</li>
+</ol>
+<h3 id="服务监控"><a href="#服务监控" class="headerlink" title="服务监控"></a>服务监控</h3><p>一旦服务消费者与服务提供者之间能够正常发起服务调用，你就需要对调用情况进行监控，以了解服务是否正常。通常来讲，服务监控主要包括三个流程。</p>
+<ul>
+<li>指标收集。就是要把每一次服务调用的请求耗时以及成功与否收集起来，并上传到集中的数据处理中心。</li>
+<li>数据处理。有了每次调用的请求耗时以及成功与否等信息，就可以计算每秒服务请求量、平均耗时以及成功率等指标。</li>
+<li>数据展示。数据收集起来，经过处理之后，还需要以友好的方式对外展示，才能发挥价值。通常都是将数据展示在 Dashboard 面板上，并且每隔 10s 等间隔自动刷新，用作业务监控和报警等。</li>
+</ul>
+<h3 id="服务追踪"><a href="#服务追踪" class="headerlink" title="服务追踪"></a>服务追踪</h3><p>除了需要对服务调用情况进行监控之外，你还需要记录服务调用经过的每一层链路，以便进行问题追踪和故障定位。</p>
+<p>服务追踪的工作原理大致如下：</p>
+<ul>
+<li>服务消费者发起调用前，会在本地按照一定的规则生成一个 requestid，发起调用时，将 requestid 当作请求参数的一部分，传递给服务提供者。</li>
+<li>服务提供者接收到请求后，记录下这次请求的 requestid，然后处理请求。如果服务提供者继续请求其他服务，会在本地再生成一个自己的 requestid，然后把这两个 requestid 都当作请求参数继续往下传递。</li>
+</ul>
+<h3 id="服务治理"><a href="#服务治理" class="headerlink" title="服务治理"></a>服务治理</h3><p>服务监控能够发现问题，服务追踪能够定位问题所在，而解决问题就得靠服务治理了。服务治理就是通过一系列的手段来保证在各种意外情况下，服务调用仍然能够正常进行。</p>
+<ul>
+<li>单机故障。通常遇到单机故障，都是靠运维发现并重启服务或者从线上摘除故障节点。然而集群的规模越大，越是容易遇到单机故障，在机器规模超过一百台以上时，靠传统的人肉运维显然难以应对。而服务治理可以通过一定的策略，自动摘除故障节点，不需要人为干预，就能保证单机故障不会影响业务。</li>
+<li>单 IDC 故障。你应该经常听说某某 App，因为施工挖断光缆导致大批量用户无法使用的严重故障。而服务治理可以通过自动切换故障 IDC 的流量到其他正常 IDC，可以避免因为单 IDC 故障引起的大批量业务受影响。</li>
+<li>赖服务不可用。比如你的服务依赖依赖了另一个服务，当另一个服务出现问题时，会拖慢甚至拖垮你的服务。而服务治理可以通过熔断，在依赖服务异常的情况下，一段时期内停止发起调用而直接返回。</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li>
 </ul>
 
@@ -731,58 +923,6 @@
 </article>
 
 
-  <article id="post-技术人生/编码设计过程效率提升和开源工具完美使用指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">编码设计过程效率提升和开源工具完美使用指南</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-02-10T16:00:00.000Z" itemprop="datePublished">2022年02月11日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>在日常的 Java Web 开发过程中，笔者已经能够找到所有的免费的编码软件和办公软件替代集合，其中大部分是开源的。以 MySql 数据库客户端为例，使用 <code>MyCli</code> 自动提示和高亮进行快速的 Sql 编写，基于 Python 语言编写。使用 <code>PlantUml</code> 能绘制出目前软件设计过程的建模图形，基于 Java 和 Graphviz。老牌的 WPS 能够满足日常办公 Offie 系列的文档编写和查阅，值得称赞的是在以 Windows Mac 为主流的软件氛围下，它提供的 Debian / CentOS 也很好用。还有一个值得注意的现象是有些免费软件是强强联合的产物，例如 VS Code 、 VirutualBox 、MySQL Workbench 。</p>
-<p>工具确实提升了办公和开发的效率，过度的依赖工具却并不是好事。国外公司、组织或基金会大多数都以开源为导向的进行软件编写。开源并不等于无限制使用，因为涉及到很多开源协议。笔者这里不细提。至少目前在完全不用盗版软件的情况下可以完成编码、设计等任务。总的来说，开源作为一个全球的协作编码过程，让开发者或组织都受益。在开源的氛围中，站在巨人的肩膀上，个人开发者也可以很容易写出一个软件。</p>
-<p>以下为全部工具集合。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-        
-        <p class="article-more-link">
-          <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/#more">Read More</a>
-        </p>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
   <article id="post-技术人生/常见经济周期说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -845,7 +985,7 @@
 </article>
 
 
-  <article id="post-技术人生/项目延期的解决办法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <article id="post-技术人生/编码设计过程效率提升和开源工具完美使用指南" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
     
@@ -853,7 +993,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E9%A1%B9%E7%9B%AE%E5%BB%B6%E6%9C%9F%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">项目延期的解决办法</a>
+      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">编码设计过程效率提升和开源工具完美使用指南</a>
     </h1>
   
 
@@ -878,95 +1018,16 @@
     </div>
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>项目延期了，一个是会导致做了的东西没有价值，丧失了努力的动力。二个是项目挤压越来越多，导致后续跟不上项目迭代，加班加点越来越多。</p>
-<p>导致项目延期的原因有很多：</p>
-<ol>
-<li>需求变动，项目延后或者提前发布。</li>
-<li>人员安排不合理，无法按时完成。</li>
-<li>开发人员请假有事忙着其他的业务做。</li>
-</ol>
-<p>来自军哥的解决办法分享：</p>
-<ol>
-<li>提前识别依赖。前后端分离中的接口依赖，服务接口的依赖。</li>
-<li>识别关键路径。新的迭代项目都有关键路径，比如电商环境的下单流程，提前打通关键流程就可以提高信心。</li>
-<li>提前发布预生产环境。提前一天发布到预生产环境，倒逼产品测试。</li>
-</ol>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
-  <article id="post-技术人生/认真生活认真工作" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E8%AE%A4%E7%9C%9F%E7%94%9F%E6%B4%BB%E8%AE%A4%E7%9C%9F%E5%B7%A5%E4%BD%9C/">认真生活认真工作</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-02-09T16:00:00.000Z" itemprop="datePublished">2022年02月10日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>好好工作，好好读书，认真生活。</p>
-</blockquote>
-<p>只需在日常生活中扮演好社会赋予自己的角色，或者对于自己应该做好的事情——公务、家务、学习——都要尽心尽力，孜孜不倦，锲而不舍。这个过程本身就是磨炼人格的修行。</p>
-<p>第一种人，是不想工作但不得不工作的人。</p>
-<p>1、 这种人，如果是员工，他们追求“钱多、舒适、宽容的工作”；如果是创业者，他们追求“赚快钱”。他们面对现实中容易失望，容易抱怨公司与外部环境，或经常跳槽，或浅尝辄止。<br>2、 他们总以“没找到自己喜欢的工作”为借口，在工作中不用心，不耐烦，不全心全意投入。<br>3、 碰到困难与挫折，容易找借口放弃努力。</p>
-<p>第二种人，是赚钱第一、工作第二的人。</p>
-<p>这种人对待工作与责任不很用心，只求完成不求完美，有时甚至为了赚钱而不择手段，牺牲工作与责任，损人利已。</p>
-<p>这两类人，他们有一个共同点，就是都不尊重工作、不忠诚于工作与责任。对他们而言，工作不是生命真正的需求，是为了谋生不得不做的事情，是一旦有了条件后想要摆脱的事情。</p>
+        <p>在日常的 Java Web 开发过程中，笔者已经能够找到所有的免费的编码软件和办公软件替代集合，其中大部分是开源的。以 MySql 数据库客户端为例，使用 <code>MyCli</code> 自动提示和高亮进行快速的 Sql 编写，基于 Python 语言编写。使用 <code>PlantUml</code> 能绘制出目前软件设计过程的建模图形，基于 Java 和 Graphviz。老牌的 WPS 能够满足日常办公 Offie 系列的文档编写和查阅，值得称赞的是在以 Windows Mac 为主流的软件氛围下，它提供的 Debian / CentOS 也很好用。还有一个值得注意的现象是有些免费软件是强强联合的产物，例如 VS Code 、 VirutualBox 、MySQL Workbench 。</p>
+<p>工具确实提升了办公和开发的效率，过度的依赖工具却并不是好事。国外公司、组织或基金会大多数都以开源为导向的进行软件编写。开源并不等于无限制使用，因为涉及到很多开源协议。笔者这里不细提。至少目前在完全不用盗版软件的情况下可以完成编码、设计等任务。总的来说，开源作为一个全球的协作编码过程，让开发者或组织都受益。在开源的氛围中，站在巨人的肩膀上，个人开发者也可以很容易写出一个软件。</p>
+<p>以下为全部工具集合。</p>
       
     </div>
     <footer class="article-footer">
       
         
         <p class="article-more-link">
-          <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E8%AE%A4%E7%9C%9F%E7%94%9F%E6%B4%BB%E8%AE%A4%E7%9C%9F%E5%B7%A5%E4%BD%9C/#more">Read More</a>
+          <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E7%BC%96%E7%A0%81%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87%E5%92%8C%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7%E5%AE%8C%E7%BE%8E%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/#more">Read More</a>
         </p>
       
       
@@ -979,7 +1040,7 @@
 
     <nav id="page-nav">
 
-<a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
+<a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
 </nav>
 
 
@@ -992,6 +1053,10 @@
     <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/SpringCloud%E5%AE%9E%E6%88%98/02-SpringCloud2022%E7%BB%84%E4%BB%B6%E9%80%89%E5%9E%8B/">SpringCloud2023最新版本该如何进行组件选型？</a>
+          </li>
         
           <li>
             <a href="/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E8%AF%A5%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0/">接口幂等该如何设计和实现</a>
@@ -1007,10 +1072,6 @@
         
           <li>
             <a href="/%E7%BC%96%E7%A8%8B/%E5%89%8D%E7%AB%AF%E9%80%9A%E8%BF%87%E5%A2%9E%E5%8A%A0XHR%E9%92%A9%E5%AD%90%E6%9D%A5%E5%85%A8%E5%B1%80%E5%A2%9E%E5%8A%A0header/">前端通过增加XHR钩子来全局增加header</a>
-          </li>
-        
-          <li>
-            <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/03-Thread%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">Java高并发编程基础之Thread构造函数大有内涵</a>
           </li>
         
       </ul>
@@ -1032,7 +1093,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -1042,7 +1103,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年02月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年03月</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
