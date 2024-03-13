@@ -88,6 +88,110 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-高并发编程基础/01-引言" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/01-%E5%BC%95%E8%A8%80/">高并发编程基础-引言</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-12-06T16:00:00.000Z" itemprop="datePublished">2023年12月07日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="5W1H"><a href="#5W1H" class="headerlink" title="5W1H"></a>5W1H</h2><p>这里用“六何”的分析方法概括下即将开始的新主题高并发编程基础系列文章。</p>
+<p>what何事：</p>
+<p>高并发编程指同一时间进行大量任务的处理，同时保持过程稳定和结果一致。Java中使用多线程技术来支撑高并发的场景。“高并发编程基础”指的就是多线程这块技术的内容。</p>
+<p>随着JDK版本的迭代，JDK已经出到23，本文主要基于JDK17版本的源码和api来说明多线程编程技术的使用。一个是因为这个版本稳定兼容性好，第二个是相较于8的版本更加新和优秀。</p>
+<p>why何因：</p>
+<p>Java为多线程提供了基本的工具来支持在多核处理器进行编程的工具类，通过对这款内容的学习可以加深对并发框架的使用原理的了解以及满足日常多线程开发过程的使用。</p>
+<p>where何地：</p>
+<p>“高并发编程基础”会发表在各大技术论坛（掘金、知乎、CSDN等）、公众号和博客（<a href="https://r0ad.github.io/">https://r0ad.github.io/</a>）中。</p>
+<p>when何时:</p>
+<p>预计需要花费一个月时间完成整个基础教程的输出。</p>
+<p>who何人:</p>
+<p>适合希望使用或学习多线程编程或想要自我检查学习成果的人。不足之处可以随时交流指出</p>
+<p>how何法:</p>
+<p>通过源码分析加DEMO实战加图片文字说明的方式输出整个系文档。</p>
+<h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><p>整个“高并发编程基础”可能的大纲如下，随着后续迭代可能进行增删。</p>
+<ul>
+<li>线程基础知识说明</li>
+<li>Thread构造函数使用说明</li>
+<li>Thread常用API使用说明</li>
+<li>线程安全与数据同步</li>
+<li>并发中的基础概念Monitor</li>
+<li>线程间通信</li>
+<li>AQS的原理和实现</li>
+<li>Java中锁的概念和原理</li>
+<li>对象共享中的可见性问题</li>
+<li>ThreadGroup的使用</li>
+<li>Hook线程以及捕获线程执行异常</li>
+<li>线程池原理以及自定义线程池</li>
+<li>线程上下文通讯</li>
+<li>单例模式与多线程</li>
+<li>Lock的使用</li>
+<li>CAS 原子操作及相关类</li>
+<li>Future 和 FutureTask</li>
+<li>线程池工作原理</li>
+<li>ThreadLocal 底层原理</li>
+<li>等等</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>由于水平限制，“高并发编程基础”参考了很多资料来编写。</p>
+<ul>
+<li>JDK 17 官方文档，用于自查和权威核对 <a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/17/">https://docs.oracle.com/en/java/javase/17/</a></li>
+<li>涉及JDK源码、基础原理介绍的书：《Java高并发编程详解：多线程与架构设计》（基于JDK8）</li>
+<li>涉及Java标准介绍和多线程基础说明的书： 《Java多线程编程核心技术》（基于JDK8）</li>
+</ul>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>来自一线全栈程序员nine的八年探索与实践，持续迭代中。欢迎关注“雨林寻北”或添加个人卫星codetrend（备注技术）。</p>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-跟着GPT学设计模式/05-结构型设计模式之代理模式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -1066,104 +1170,6 @@
 </article>
 
 
-  <article id="post-JavaEngineer/Java反射机制与应用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/JavaEngineer/Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E5%BA%94%E7%94%A8/">Java反射机制与应用</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-03-07T16:00:00.000Z" itemprop="datePublished">2023年03月08日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/JavaEngineer/">JavaEngineer</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>Java的反射机制提供了运行时分析处理类的能力。</li>
-<li>Spring框架的IOC容器使用了反射技术，可以简化代码编写。</li>
-<li>使用Spring+策略模式可以解决代码中if或switch代码块的代码耦合问题。</li>
-</ul>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>反射机制提供的功能:</p>
-<ul>
-<li>在运行时判断任意一个对象所属的类</li>
-<li>在运行的时候构造任意一个类的对象</li>
-<li>在运行时判断一个类所具有的成员变量和方法</li>
-<li>在运行时调用任何一个对象的方法</li>
-<li>生成动态代理</li>
-</ul>
-<h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2><h3 id="Java反射机制类"><a href="#Java反射机制类" class="headerlink" title="Java反射机制类"></a>Java反射机制类</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java.lang.Class; //类</span><br><span class="line">java.lang.reflect.Constructor;//构造方法</span><br><span class="line">java.lang.reflect.Field; //类的成员变量</span><br><span class="line">java.lang.reflect.Method;//类的方法</span><br><span class="line">java.lang.reflect.Modifier;//访问权限</span><br></pre></td></tr></table></figure>
-
-<h3 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h3><ul>
-<li>优点：运行期类型的判断，动态类加载，动态代理使用反射。</li>
-<li>缺点：性能是一个问题，反射相当于一系列解释操作，通知jvm要做的事情，性能比直接的java代码要慢很多。</li>
-</ul>
-<h3 id="反射机制的应用场景"><a href="#反射机制的应用场景" class="headerlink" title="反射机制的应用场景"></a>反射机制的应用场景</h3><ul>
-<li>逆向代码 ，例如反编译</li>
-<li>与注解相结合的框架 例如Retrofit</li>
-<li>单纯的反射机制应用框架 例如EventBus 2.x</li>
-<li>动态生成类框架 例如Gson</li>
-</ul>
-<h2 id="反射机制的应用"><a href="#反射机制的应用" class="headerlink" title="反射机制的应用"></a>反射机制的应用</h2><h3 id="Spring框架的IOC"><a href="#Spring框架的IOC" class="headerlink" title="Spring框架的IOC"></a>Spring框架的IOC</h3><p>IOC中最基本的技术就是“反射(Reflection)”编程，，通俗来讲就是根据给出的类名（字符串方式）来动态地生成对象，这种编程方式可以让对象在生成时才决定到底是哪一种对象。只是在Spring中要生产的对象都在配置文件中给出定义，目的就是提高灵活性和可维护性。</p>
-<p>我们可以把IOC容器的工作模式看做是工厂模式的升华，可以把IOC容器看作是一个工厂，这个工厂里要生产的对象都在配置文件中给出定义，然后利用编程语言的的反射编程，根据配置文件中给出的类名生成相应的对象。从实现来看，IOC是把以前在工厂方法里写死的对象生成代码，改变为由配置文件来定义，也就是把工厂和对象生成这两者独立分隔开来，目的就是提高灵活性和可维护性。</p>
-<h3 id="Spring反射的策略模式"><a href="#Spring反射的策略模式" class="headerlink" title="Spring反射的策略模式"></a>Spring反射的策略模式</h3><p>如果不是用设计模式来做的情况下，会出现很多个 if-else 或者 switch 语句块。这样的话，代码耦合性也会非常高，将来再增加一个需求，则会导致一直增加判断语句块。也违反了面向对象的开闭原则。耦合性也会非常高，将来再增加一个需求，则会导致一直增加判断语句块。也违反了面向对象的开闭原则。反射+策略模式解决代码中if或switch代码块的代码耦合问题。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyStragtrgyReflexContent</span> <span class="keyword">implements</span> <span class="title class_">ApplicationContextAware</span>,InitializingBean &#123;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;String,MyStragtegy&gt; beanMap ;</span><br><span class="line">    <span class="keyword">private</span> ApplicationContext applicationContext;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 实现ApplicationContextAware接口，Spring容器会在创建MyStragtrgyReflexContent类之后，</span></span><br><span class="line"><span class="comment">     * 自动调用实现接口的setApplicationContextAware()方法，</span></span><br><span class="line"><span class="comment">     * 调用该方法时，会将ApplicationContext(容器本身)作为参数传给该方法，</span></span><br><span class="line"><span class="comment">     * 我们可以在该方法中将Spring传入的参数ApplicationContext赋给MyStragtrgyReflexContent对象的applicationContext实例变量，因此接下来可以通过该applicationContext实例变量来访问容器本身。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException &#123;</span><br><span class="line">        <span class="built_in">this</span>.applicationContext = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 实现InitializingBean接口，该接口提供了afterPropertiesSet方法。</span></span><br><span class="line"><span class="comment">     * spirng容器在初始化bean的时候会执行afterPropertiesSet方法，</span></span><br><span class="line"><span class="comment">     * 我们可以在该方法中调用applicationContext接口提供的getBeansOfType方法获得实现MyStragtegy类的Bean，将之存储至map集合中</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        Map&lt;String,MyStragtegy&gt; map = applicationContext.getBeansOfType(MyStragtegy.class);</span><br><span class="line">        <span class="built_in">this</span>.beanMap = map;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> MyStragtegy <span class="title function_">getMyStragtegy</span><span class="params">(String beanName)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.beanMap.get(beanName);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StragtegyReflexService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> MyStragtrgyReflexContent reflexContent;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">play</span><span class="params">(String type)</span>&#123;</span><br><span class="line">        <span class="type">MyStragtegy</span> <span class="variable">myStragtegy</span> <span class="operator">=</span> reflexContent.getMyStragtegy(type);</span><br><span class="line">        <span class="keyword">if</span> (myStragtegy!=<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> myStragtegy.play();</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;还没有这个宠物哟！~&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/4pg9_7QyqVYoukpWswlb2g">Java反射机制及应用场景 - 王道通 - 工作LIFE </a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/j1FBTivlzCkZxVrY8i9JNg">Spring反射+策略模式Demo - Java程序猿部落 </a></li>
-<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ZpCYYRGflRMrx41ro_eqGw">Spring使用反射机制后实现注解实例化Bean注入 </a></li>
-<li><a target="_blank" rel="noopener" href="https://my.oschina.net/freer/blog/897903">Spring的IOC（控制反转）/DI（依赖注入）原理（一）：用到“反射”编程 - Freer </a></li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1182,6 +1188,10 @@
       <ul>
         
           <li>
+            <a href="/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/06-%E7%BB%93%E6%9E%84%E5%9E%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式之桥接模式</a>
+          </li>
+        
+          <li>
             <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/04-Thread%E5%B8%B8%E7%94%A8API%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">并发编程Thread的常用API有哪些？</a>
           </li>
         
@@ -1195,10 +1205,6 @@
         
           <li>
             <a href="/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E8%AF%A5%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0/">接口幂等该如何设计和实现</a>
-          </li>
-        
-          <li>
-            <a href="/SpringCloud%E5%AE%9E%E6%88%98/01-SpringCloud2022%E4%BE%9D%E8%B5%96%E7%89%88%E6%9C%AC%E9%80%89%E6%8B%A9/">SpringCloud和SpringBoot的版本依赖该怎么选择</a>
           </li>
         
       </ul>
@@ -1220,7 +1226,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
     </div>
   </div>
 
@@ -1230,7 +1236,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年03月</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年03月</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 

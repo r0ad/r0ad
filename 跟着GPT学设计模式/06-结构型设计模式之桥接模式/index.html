@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>跟着GPT学设计模式之桥接模式 | code trend</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+    <meta name="description" content="java,spring,spring cloud,javascript">
+  
+  
+  
+    <link rel="alternate" href="/atom.xml" title="code trend" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/logo.svg">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/localshare/css/share.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">code trend</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">专注软件技术发展趋势，传播软件技术</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        
+          <a class="main-nav-link" href="/."><i class="fa fa-home"></i> 首页</a>
+        
+          <a class="main-nav-link" href="/archives/"><i class="fa fa-archive"></i> 归档</a>
+        
+          <a class="main-nav-link" href="/about/"><i class="fa fa-user"></i> 关于</a>
+        
+          <a class="main-nav-link" href="/atom.xml"><i class="fa fa-rss"></i> 订阅</a>
+        
+      </nav>
+    </div>
+    <div id="search-form">
+      <div id="result-mask" class="hide"></div>
+      <label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label>
+      <div id="result-wrap" class="hide">
+        <div id="search-result"></div>
+      </div>
+      <div class="hide">
+        <template id="search-tpl">
+          <div class="item">
+            <a href="{path}" title="{title}">
+              <div class="title">{title}</div>
+              <div class="time">{date}</div>
+              <div class="tags">{tags}</div>
+            </a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-跟着GPT学设计模式/06-结构型设计模式之桥接模式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      跟着GPT学设计模式之桥接模式
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2024-03-12T16:00:00.000Z" itemprop="datePublished">2024年03月13日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a>
+  </div>
+
+      
+        
+<span class="article-views">
+  <i class="fa fa-views"></i>
+  <i id="busuanzi_container_page_pv">
+      <i id="busuanzi_value_page_pv"></i>
+  </i>
+</span>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>桥接模式，也叫作桥梁模式，英文是 Bridge Design Pattern。在 GoF 的《设计模式》一书中，桥接模式是这么定义的：“Decouple an abstraction from its implementation so that the two can vary independently。”翻译成中文就是：“将抽象和实现解耦，让它们可以独立变化。” 桥接模式通过将一个类的抽象部分与实现部分分离开来，使它们可以独立地进行扩展和修改。</p>
+<p>在桥接模式中，有两个核心概念：</p>
+<ul>
+<li>抽象部分（Abstraction）：定义抽象部分的接口，并维护一个对实现部分对象的引用。抽象部分将客户端的请求委派给实现部分进行处理。</li>
+<li>实现部分（Implementation）：定义实现部分的接口，并提供具体实现。实现部分通常是通过接口或抽象类来定义，让不同的实现部分可以灵活替换。</li>
+</ul>
+<p>通过桥接模式，抽象部分和实现部分可以独立地发展和演化，不会相互影响。这种解耦可以提高系统的灵活性和可扩展性。桥接模式常用于以下情况：</p>
+<ul>
+<li>当一个类拥有多个变化维度时，可以使用桥接模式将每个维度抽象出来，使得它们可以独立地变化。</li>
+<li>当需要在抽象部分和实现部分之间建立稳定的关联关系，又希望它们可以独立地进行扩展和修改时，可以使用桥接模式。</li>
+</ul>
+<p>以下是桥接模式的结构示意图：</p>
+<pre class="mermaid">classDiagram
+  class Abstraction {
+    + implementor: Implementor
+    + operation(): void
+  }
+
+  class RefinedAbstraction {
+    + operation(): void
+  }
+
+  class Implementor {
+    + operationImpl(): void
+  }
+
+  class ConcreteImplementorA {
+    + operationImpl(): void
+  }
+
+  class ConcreteImplementorB {
+    + operationImpl(): void
+  }
+
+  Abstraction <|-- RefinedAbstraction
+  Abstraction o-- Implementor
+
+  Implementor <|.. ConcreteImplementorA
+  Implementor <|.. ConcreteImplementorB</pre>
+
+<p>Abstraction（抽象化角色）通过持有Implementor（实现化角色）的引用，将操作委托给Implementor来实现。RefinedAbstraction（扩充抽象化角色）继承自Abstraction，并可以在基础操作上添加额外的功能。Implementor（实现化角色）是一个接口或抽象类，定义了在Abstraction中使用的操作方法。ConcreteImplementorA和ConcreteImplementorB（具体实现化角色）实现了Implementor接口，并提供了具体的操作实现。</p>
+<p>在桥接模式中，抽象部分通过聚合（或组合）实现部分的对象来实现功能。通过定义抽象部分和实现部分的接口，以及维护它们之间的关联关系，可以实现抽象部分与实现部分的解耦和独立变化。</p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>在Java开源项目中，桥接模式有许多应用场景。以下是其中几个示例：</p>
+<ul>
+<li>JDBC（Java Database Connectivity）：JDBC是Java中用于与数据库进行交互的API。它使用桥接模式将Java应用程序与不同数据库之间的连接进行解耦。JDBC提供了一个标准的接口，即抽象部分，而具体的数据库驱动程序实现则作为实现部分。这使得开发人员可以通过改变数据库驱动程序实现来与不同类型的数据库进行交互，而不需要修改应用程序的代码。</li>
+<li>AWT（Abstract Window Toolkit）和Swing：AWT和Swing是Java的图形用户界面（GUI）工具包。它们使用桥接模式将组件的外观（如按钮、文本框）与底层操作系统的窗口系统分离开来。在AWT和Swing中，抽象部分是Java中的组件类，而实现部分是由底层平台提供的本地窗口系统。</li>
+<li>日志库：许多Java开源项目使用日志库进行日志记录。例如，Log4j和Logback是常见的日志库。它们使用桥接模式将应用程序的日志记录行为与底层的日志输出目标（如控制台、文件、数据库）解耦。抽象部分是由日志库提供的通用日志API，而实现部分是具体的日志输出目标。</li>
+<li>数据源连接池：连接池被广泛用于管理数据库连接的重用。在Java中，常见的开源连接池项目如HikariCP和Commons DBCP使用桥接模式来支持不同类型的数据库连接。它们提供了一个通用的连接池接口作为抽象部分，而具体的数据库驱动程序实现则作为实现部分。</li>
+</ul>
+<p>这些示例说明了在Java开源项目中桥接模式的应用。通过桥接模式，可以将不同维度的变化解耦，在代码的可扩展性和灵活性方面提供支持。</p>
+<h2 id="编程示例"><a href="#编程示例" class="headerlink" title="编程示例"></a>编程示例</h2><p>首先，定义抽象部分的接口或抽象类。这个接口或抽象类将定义高层操作或功能，并将包含一个对实现部分的引用。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，创建实现部分的接口或抽象类。这个接口或抽象类将定义实现部分的操作或功能。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Color</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">fill</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，实现具体的实现部分类。这些类将实现实现部分的接口或抽象类。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Red</span> <span class="keyword">implements</span> <span class="title class_">Color</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fill</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Filling with red color&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Blue</span> <span class="keyword">implements</span> <span class="title class_">Color</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fill</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Filling with blue color&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在抽象部分的接口或抽象类中添加对实现部分的引用，并在其中定义具体的操作。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">AbstractShape</span> <span class="keyword">implements</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line">    <span class="keyword">protected</span> Color color;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">AbstractShape</span><span class="params">(Color color)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.color = color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，创建具体的抽象部分类。这些类将扩展抽象部分的接口或抽象类，并实现具体的操作。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Circle</span> <span class="keyword">extends</span> <span class="title class_">AbstractShape</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Circle</span><span class="params">(Color color)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(color);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;Drawing a circle. &quot;</span>);</span><br><span class="line">        color.fill();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Rectangle</span> <span class="keyword">extends</span> <span class="title class_">AbstractShape</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Rectangle</span><span class="params">(Color color)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(color);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.print(<span class="string">&quot;Drawing a rectangle. &quot;</span>);</span><br><span class="line">        color.fill();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，可以使用桥接模式来创建抽象部分和实现部分之间的桥接：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建实现部分的对象</span></span><br><span class="line"><span class="type">Color</span> <span class="variable">red</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Red</span>();</span><br><span class="line"><span class="type">Color</span> <span class="variable">blue</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Blue</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建抽象部分的对象并进行桥接</span></span><br><span class="line"><span class="type">Shape</span> <span class="variable">redCircle</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Circle</span>(red);</span><br><span class="line"><span class="type">Shape</span> <span class="variable">blueRectangle</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Rectangle</span>(blue);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用抽象部分的方法，它会委派给实现部分的对象</span></span><br><span class="line">redCircle.draw(); <span class="comment">// Output: Drawing a circle. Filling with red color</span></span><br><span class="line">blueRectangle.draw(); <span class="comment">// Output: Drawing a rectangle. Filling with blue color</span></span><br></pre></td></tr></table></figure>
+
+<p>以上内容基于GPT创建和整理。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>设计模式之美(作者王争，来自极客时间)</li>
+</ul>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><p>来自一线全栈程序员nine的八年探索与实践，持续迭代中。欢迎关注“雨林寻北”或添加个人卫星codetrend（备注技术）。</p>
+
+        
+            <div id="toc-article">
+                
+  <div class="widget-wrap" id="toc-wrap">
+    <h3 class="widget-title"><i class="fa fa-toc"></i> 文章目录</h3>
+    <div class="widget">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.</span> <span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A8%8B%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">编程示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85"><span class="toc-number">5.</span> <span class="toc-text">关于作者</span></a></li></ol>
+    </div>
+  </div>
+
+
+            </div>
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+        
+<nav id="article-nav">
+  
+  
+    <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/04-Thread%E5%B8%B8%E7%94%A8API%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">older</strong>
+      <div class="article-nav-title">并发编程Thread的常用API有哪些？</div>
+    </a>
+  
+</nav>
+
+      
+      
+        
+
+
+
+
+
+
+
+      
+    </footer>
+  </div>
+</article>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-posts"></i> 最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/06-%E7%BB%93%E6%9E%84%E5%9E%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式之桥接模式</a>
+          </li>
+        
+          <li>
+            <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/04-Thread%E5%B8%B8%E7%94%A8API%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/">并发编程Thread的常用API有哪些？</a>
+          </li>
+        
+          <li>
+            <a href="/SpringCloud%E5%AE%9E%E6%88%98/03-%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%E4%B9%8B%E7%88%B6%E5%B7%A5%E7%A8%8B%E9%85%8D%E7%BD%AE/">如何简洁高效地搭建一个SpringCloud2023的maven工程</a>
+          </li>
+        
+          <li>
+            <a href="/SpringCloud%E5%AE%9E%E6%88%98/02-SpringCloud2022%E7%BB%84%E4%BB%B6%E9%80%89%E5%9E%8B/">SpringCloud2023最新版本该如何进行组件选型？</a>
+          </li>
+        
+          <li>
+            <a href="/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E8%AF%A5%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0/">接口幂等该如何设计和实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B/" style="font-size: 10px;">前端编程</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年03月</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-tag"></i> 标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E7%BC%96%E7%A8%8B/" rel="tag">前端编程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title"><i class="fa fa-link"></i> 友情链接</h3>
+    <div class="widget">
+      <ul>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://juejin.cn/">掘金</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://tech.meituan.com/">美团技术团队</a>
+        </li>
+      
+        <li>
+          <a target="_blank" rel="noopener" href="https://efe.baidu.com/">百度EFE</a>
+        </li>
+      
+      </ul>
+    </div>
+  </div>
+
+
+  
+</aside>
+        
+      </div>
+      <a id="totop" href="#top"></a>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      <p>
+        <a href="/sitemap.xml">网站地图</a>
+        <span> | </span><a href="/atom.xml">订阅本站</a>
+        <span> | </span><a href="/about/">联系博主</a>
+      </p>
+      
+        <p>
+          <i class="fa fa-visitors"></i>
+          <i id="busuanzi_container_site_uv"><i id="busuanzi_value_site_uv"></i></i>
+          ，
+          <i class="fa fa-views"></i>
+          <i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>
+        </p>
+      
+      <p>
+        <span>Copyright &copy; 2024 codeman.</span>
+        <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
+        
+            <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>
+        
+        <span>Powered by <a href="https://hexo.io/" target="_blank">Hexo.</a></span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/search.json.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6e17ef6b36c9fdda22a20012ad8022c3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+  
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+  
+<script src="/localshare/js/social-share.js"></script>
+
+  
+<script src="/localshare/js/qrcode.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    const host = 'https://r0ad.github.io'
+    const local = location.href
+    const white = ['localhost','127.0.0.1','l192.168']
+    let redirectFlag = true;
+    white.find(function(item){
+      if(local.indexOf(item) > -1){
+        redirectFlag =false
+      }
+    })
+    if(local && local.indexOf(host)===-1 && redirectFlag ){
+      location.replace(location.href.replace(location.origin,host))
+    }
+
+  </script>
+
+
+
+  <script src='https://unpkg.com/mermaid@9.2.2/dist/mermaid.min.js'></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({theme: 'forest'});
+    }
+  </script>
+
+  </div>
+</body>
+</html>
