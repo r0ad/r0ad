@@ -88,6 +88,108 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-编程/Java与JS去掉小数部分的方法" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E7%BC%96%E7%A8%8B/Java%E4%B8%8EJS%E5%8E%BB%E6%8E%89%E5%B0%8F%E6%95%B0%E9%83%A8%E5%88%86%E7%9A%84%E6%96%B9%E6%B3%95/">Java与JS去掉小数部分的方法</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2022-02-18T02:48:07.000Z" itemprop="datePublished">2022年02月18日</time>
+</span>
+      
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>由于除法、编程语言等特性，小数计算总是可能无法获取到精确的结果。但是金额计算又要求有精确的结果，这样的矛盾可以通过整数计算加去除小数部分来获取想要的结果。</p>
+<ol>
+<li>乘法： 单价为9.99元的某物品购买9个，总价为89.91元。</li>
+<li>除法： 总价 89.90，数量为9，通过舍去小数部分的单价为 9.98。</li>
+</ol>
+<p>解决办法： 将元为单位的金额乘以100换算为分进行计算，对结果取整，除以100获得真实金额。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> price =  <span class="title class_">Math</span>.<span class="title function_">floor</span>((<span class="number">89.90</span>*<span class="number">100</span>)/<span class="number">9</span>)/<span class="number">100</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="JavaScript-处理方法"><a href="#JavaScript-处理方法" class="headerlink" title="JavaScript 处理方法"></a>JavaScript 处理方法</h2><h3 id="JavaScript-去掉小数部分的方法"><a href="#JavaScript-去掉小数部分的方法" class="headerlink" title="JavaScript 去掉小数部分的方法"></a>JavaScript 去掉小数部分的方法</h3><p>常用的去掉小数部分的方法：</p>
+<ul>
+<li>Math.ceil(.6)  // 向上取整，向上舍入到一个整数</li>
+<li>Math.floor(.6) // 向下取整，向下舍入到一个整数</li>
+<li>Math.round(.6) // 四舍五入，舍入到最近整数</li>
+<li>Number.toFixed(n) 四舍六入五成双,保留小数</li>
+</ul>
+<blockquote>
+<p>toFixed它是一个四舍六入五成双的方法(也叫银行家算法)，”四舍六入五成双”含义：对于位数很多的近似数，当有效位数确定后，其后面多余的数字应该舍去，只保留有效数字最末一位，这种修约（舍入）规则是“四舍六入五成双”，也即“4舍6入5凑偶”这里“四”是指≤4 时舍去，”六”是指≥6时进上，”五”指的是根据5后面的数字来定，当5后有数时，舍5入1；当5后无有效数字时，需要分两种情况来讲：①5前为奇数，舍5入1；②5前为偶数，舍5不进。（0是偶数）</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">10.99</span>;</span><br><span class="line"><span class="keyword">var</span> quantity = <span class="number">7</span>;</span><br><span class="line"><span class="keyword">var</span> needPay = <span class="built_in">parseFloat</span>(price * quantity);</span><br><span class="line"><span class="comment">// needPay的正确结果应该是76.93元  但是运行后发现needPay为76.93000000000001 </span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过 Number.toFixed(2) 方法修正。</li>
+<li>将元为单位的金额乘以100换算为分进行计算。s</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> price = <span class="number">10.99</span></span><br><span class="line"><span class="keyword">var</span> quantity = <span class="number">7</span></span><br><span class="line"><span class="keyword">var</span> needPay = <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="built_in">parseFloat</span>(price*<span class="number">100</span> * quantity))/<span class="number">100</span>;</span><br><span class="line"><span class="comment">// parseFloat(price*100 * quantity)的计算结果是7693.000000000001   使用Math.floor()方法向下取整，再除100  即为正确的结果</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="JavaScript-保留小数两位的方法"><a href="#JavaScript-保留小数两位的方法" class="headerlink" title="JavaScript 保留小数两位的方法"></a>JavaScript 保留小数两位的方法</h3><p>通过 Number.toFixed(2) 方法实现任意小数的保留</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过 Number.toFixed(2) 方法</span></span><br><span class="line"><span class="keyword">var</span> price = <span class="number">10.9</span></span><br><span class="line"><span class="keyword">var</span> quantity = <span class="number">7</span></span><br><span class="line"><span class="keyword">var</span> needPay = <span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="built_in">parseFloat</span>(price*<span class="number">100</span> * quantity))/<span class="number">100</span>;</span><br><span class="line"><span class="keyword">var</span> needPay2 = needPay.<span class="title function_">toFixed</span>(<span class="number">2</span>)</span><br><span class="line"><span class="comment">// parseFloat(price*100 * quantity)的计算结果是7693.000000000001   使用Math.floor()方法向下取整，再除100  即为正确的结果</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Java-处理方法"><a href="#Java-处理方法" class="headerlink" title="Java 处理方法"></a>Java 处理方法</h2><h3 id="Java-去掉小数部分的方法"><a href="#Java-去掉小数部分的方法" class="headerlink" title="Java 去掉小数部分的方法"></a>Java 去掉小数部分的方法</h3><ul>
+<li>Math.ceil(0.6) //向上取整，向上舍入到一个整数</li>
+<li>Math.floor(0.6) //向下取整，向下舍入到一个整数</li>
+<li>Math.round(0.6) //四舍五入，舍入到最近整数</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">double</span> <span class="variable">price</span> <span class="operator">=</span> <span class="number">10.99</span>;</span><br><span class="line"><span class="type">double</span> <span class="variable">quantity</span> <span class="operator">=</span> <span class="number">7</span>;</span><br><span class="line"><span class="type">double</span> <span class="variable">needPay</span> <span class="operator">=</span> Math.floor(Double.valueOf(price*<span class="number">100</span> * quantity))/<span class="number">100</span>;</span><br><span class="line">System.out.println(needPay);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Java-保留小数两位的方法"><a href="#Java-保留小数两位的方法" class="headerlink" title="Java 保留小数两位的方法"></a>Java 保留小数两位的方法</h3><ul>
+<li>DecimalFormat</li>
+<li>String.format(“%.2f”, f)</li>
+<li>NumberFormat</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BigDecimalFormat</span> &#123;</span><br><span class="line">    <span class="type">double</span> <span class="variable">f</span> <span class="operator">=</span> <span class="number">111231.5585</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">m1</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">BigDecimal</span> <span class="variable">bg</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimal</span>(f);</span><br><span class="line">        <span class="type">double</span> <span class="variable">f1</span> <span class="operator">=</span> bg.setScale(<span class="number">2</span>, BigDecimal.ROUND_HALF_UP).doubleValue();</span><br><span class="line">        System.out.println(f1);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * DecimalFormat 转换最简便</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">m2</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">DecimalFormat</span> <span class="variable">df</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DecimalFormat</span>(<span class="string">&quot;#.00&quot;</span>);</span><br><span class="line">        System.out.println(df.format(f));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * String.format打印最简便</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">m3</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(String.format(<span class="string">&quot;%.2f&quot;</span>, f));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">m4</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">NumberFormat</span> <span class="variable">nf</span> <span class="operator">=</span> NumberFormat.getNumberInstance();</span><br><span class="line">        nf.setMaximumFractionDigits(<span class="number">2</span>);</span><br><span class="line">        System.out.println(nf.format(f));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">BigDecimalFormat</span> <span class="variable">f</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BigDecimalFormat</span>();</span><br><span class="line">        f.m1();</span><br><span class="line">        f.m2();</span><br><span class="line">        f.m3();</span><br><span class="line">        f.m4();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/efd798b235ad">js金额计算解决精度问题 - 作者：春秋若北 - https://www.jianshu.com/p/efd798b235ad</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yw09041432/p/5842204.html">java保留小数点两位的4种方法 - https://www.cnblogs.com/yw09041432/p/5842204.html </a></li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-编程/Spring生态解决方案项目全景介绍" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -147,68 +249,6 @@
         
         <p class="article-more-link">
           <a href="/%E7%BC%96%E7%A8%8B/Spring%E7%94%9F%E6%80%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E9%A1%B9%E7%9B%AE%E5%85%A8%E6%99%AF%E4%BB%8B%E7%BB%8D/#more">Read More</a>
-        </p>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
-  <article id="post-技术人生/常见经济周期说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E5%B8%B8%E8%A7%81%E7%BB%8F%E6%B5%8E%E5%91%A8%E6%9C%9F%E8%AF%B4%E6%98%8E/">常见经济周期说明</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-02-10T16:00:00.000Z" itemprop="datePublished">2022年02月11日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>经济学们家早就研究出了3-60年的循环周期。</p>
-<ul>
-<li>每3-4年，企业的原材料库存会由空到满，由满到空，这个库存循环，叫基钦周期。</li>
-<li>每8-10年，企业的生产设备就会由新购到淘汰，由淘汰到新采，这个设备更迭，是朱格拉周期。</li>
-<li>每15-25年，房地产和建筑业就会由新建到过剩，由谷底到高峰，这个地产周期，叫库兹涅茨周期。</li>
-<li>每45-60年，顶尖科技就会由兴盛到衰落，由衰落到新生，这个技术变革，叫康德拉季耶夫周期（也叫康波周期）。</li>
-</ul>
-<p>每一个周期，都有萌芽、发展、高峰、衰退，如波浪起伏。</p>
-<ul>
-<li>在萌芽期，创业氛围浓厚，英雄崭露头角，就像恒大当年，是广东地产四小虎，</li>
-<li>在发展期，央行刺激经济，社会现金充足，有志者快马加鞭大干快上，各路大佬大鳄脱颖而出，</li>
-<li>在高峰期，社会流动泛滥，股市一片红火，企业家不务正业泡女明星，白领们都想超越巴菲特，</li>
-<li>在衰退期，各界收紧银根，杠杆纷纷暴雷，过剩产能出清，在萧条和反思中开启下一轮循环。
-      
-    </div>
-    <footer class="article-footer">
-      
-        
-        <p class="article-more-link">
-          <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E5%B8%B8%E8%A7%81%E7%BB%8F%E6%B5%8E%E5%91%A8%E6%9C%9F%E8%AF%B4%E6%98%8E/#more">Read More</a>
         </p>
       
       
@@ -335,6 +375,68 @@
 
 
         </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-技术人生/常见经济周期说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E5%B8%B8%E8%A7%81%E7%BB%8F%E6%B5%8E%E5%91%A8%E6%9C%9F%E8%AF%B4%E6%98%8E/">常见经济周期说明</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2022-02-10T16:00:00.000Z" itemprop="datePublished">2022年02月11日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>经济学们家早就研究出了3-60年的循环周期。</p>
+<ul>
+<li>每3-4年，企业的原材料库存会由空到满，由满到空，这个库存循环，叫基钦周期。</li>
+<li>每8-10年，企业的生产设备就会由新购到淘汰，由淘汰到新采，这个设备更迭，是朱格拉周期。</li>
+<li>每15-25年，房地产和建筑业就会由新建到过剩，由谷底到高峰，这个地产周期，叫库兹涅茨周期。</li>
+<li>每45-60年，顶尖科技就会由兴盛到衰落，由衰落到新生，这个技术变革，叫康德拉季耶夫周期（也叫康波周期）。</li>
+</ul>
+<p>每一个周期，都有萌芽、发展、高峰、衰退，如波浪起伏。</p>
+<ul>
+<li>在萌芽期，创业氛围浓厚，英雄崭露头角，就像恒大当年，是广东地产四小虎，</li>
+<li>在发展期，央行刺激经济，社会现金充足，有志者快马加鞭大干快上，各路大佬大鳄脱颖而出，</li>
+<li>在高峰期，社会流动泛滥，股市一片红火，企业家不务正业泡女明星，白领们都想超越巴菲特，</li>
+<li>在衰退期，各界收紧银根，杠杆纷纷暴雷，过剩产能出清，在萧条和反思中开启下一轮循环。
+      
+    </div>
+    <footer class="article-footer">
+      
+        
+        <p class="article-more-link">
+          <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E5%B8%B8%E8%A7%81%E7%BB%8F%E6%B5%8E%E5%91%A8%E6%9C%9F%E8%AF%B4%E6%98%8E/#more">Read More</a>
+        </p>
       
       
       
@@ -611,58 +713,6 @@
 </article>
 
 
-  <article id="post-飞桨PaddlePaddle/02-00-机器学习和深度学习基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E9%A3%9E%E6%A1%A8PaddlePaddle/02-00-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%92%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">02-00-机器学习和深度学习基础</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2021-11-07T16:00:00.000Z" itemprop="datePublished">2021年11月08日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/PaddlePaddle/">PaddlePaddle</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="02-00-机器学习和深度学习基础"><a href="#02-00-机器学习和深度学习基础" class="headerlink" title="02-00-机器学习和深度学习基础"></a>02-00-机器学习和深度学习基础</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>概括来说，人工智能、机器学习和深度学习覆盖的技术范畴是逐层递减的。</p>
-<p><img src="https://ai-studio-static-online.cdn.bcebos.com/5521d1d951c440eb8511f03a0b9028bd63357aec52e94189b5ab3f55d63369d7" alt="img"></p>
-<p>人工智能是研发用于模拟、延伸和扩展人的智能的理论、方法、技术及应用系统的一门新的技术科学。由于这个定义只阐述了目标，而没有限定方法，因此实现人工智能存在的诸多方法和分支，导致其变成一个“大杂烩”式的学科。</p>
-      
-    </div>
-    <footer class="article-footer">
-      
-        
-        <p class="article-more-link">
-          <a href="/%E9%A3%9E%E6%A1%A8PaddlePaddle/02-00-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%92%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/#more">Read More</a>
-        </p>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -681,6 +731,10 @@
       <ul>
         
           <li>
+            <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/09-Java%E4%B8%AD%E9%94%81%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">简单了解下Java中锁的概念和原理</a>
+          </li>
+        
+          <li>
             <a href="/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/06-%E7%BB%93%E6%9E%84%E5%9E%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式之桥接模式</a>
           </li>
         
@@ -694,10 +748,6 @@
         
           <li>
             <a href="/SpringCloud%E5%AE%9E%E6%88%98/02-SpringCloud2022%E7%BB%84%E4%BB%B6%E9%80%89%E5%9E%8B/">SpringCloud2023最新版本该如何进行组件选型？</a>
-          </li>
-        
-          <li>
-            <a href="/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E8%AF%A5%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0/">接口幂等该如何设计和实现</a>
           </li>
         
       </ul>
@@ -719,7 +769,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -729,7 +779,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年03月</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年06月</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 

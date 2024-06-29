@@ -88,6 +88,56 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-高并发编程基础/09-Java中锁的概念和原理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/09-Java%E4%B8%AD%E9%94%81%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">简单了解下Java中锁的概念和原理</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2024-06-28T16:00:00.000Z" itemprop="datePublished">2024年06月29日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        Java的锁通过java代码实现，go语言的锁通过go实现，python语言的锁通过python实现。它们都实现的什么呢？这部分就是锁的定义和设计模式、算法、原理等一些理论上的东西。
+      
+    </div>
+    <footer class="article-footer">
+      
+        
+        <p class="article-more-link">
+          <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/09-Java%E4%B8%AD%E9%94%81%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/#more">Read More</a>
+        </p>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-跟着GPT学设计模式/06-结构型设计模式之桥接模式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -579,136 +629,6 @@
 </article>
 
 
-  <article id="post-高并发编程基础/02-线程基础知识说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/02-%E7%BA%BF%E7%A8%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E8%AF%B4%E6%98%8E/">高并发编程基础线程知识说明</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2023-12-25T16:00:00.000Z" itemprop="datePublished">2023年12月26日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>现在几乎所有操作系统都支持多任务执行，其中每个任务被视为一个进程。在每个进程内部，至少有一个线程在运行，线程也被称为轻量级进程。</p>
-<p>线程可以看作是程序执行的一条路径，每个线程都有自己的局部变量表、程序计数器（指向当前正在执行的指令）以及各自的生命周期。现代操作系统通常支持同时运行多个线程。例如，在启动Java虚拟机（JVM）时，操作系统会创建一个新的进程（即JVM进程），并在该进程中生成多个派生或创建的线程。</p>
-<h2 id="线程生命周期"><a href="#线程生命周期" class="headerlink" title="线程生命周期"></a>线程生命周期</h2><pre class="mermaid">flowchart TD
-    A[新建New] --> B[就绪Runnable]
-    B --> C[运行Running]
-    C --> D[阻塞Blocked]
-    D --> E[就绪Runnable]
-    E --> F[运行Running]
-    F --> G[终止Terminated]
-    D --> H[等待Waiting]
-    H --> I[唤醒Notify]
-    I --> E
-    D --> J[超时等待Timed Waiting]
-    J --> K[唤醒Notify]
-    K --> E</pre>
-
-<p>在JDK17版本的JVM线程的生命周期共7个状态，可以在<code>java.lang.Thread.State</code>枚举类看到，具体如下：</p>
-<ol>
-<li>新建状态（New）：当一个Thread类或其子类的对象被创建时，该线程处于新建状态。此时它尚未启动，即没有开始执行run()方法。</li>
-<li>就绪状态（Runnable）：当线程对象调用了start()方法之后，该线程进入就绪状态。此时该线程已经有了执行资格，只等待CPU的调度，也就是分配时间片。</li>
-<li>运行状态（Running）：当就绪状态的线程获得了CPU时间片，开始执行run()方法时，该线程进入运行状态。</li>
-<li>阻塞状态（Blocked）：在某些情况下，线程可能会暂时失去对CPU的控制权，暂停执行。这时线程进入阻塞状态。例如，线程调用了sleep()方法、I/O操作、等待synchronized锁等都会使线程进入阻塞状态。</li>
-<li>等待状态（Waiting）：当线程执行wait()、join()、park()等方法之后，线程进入等待状态。此时线程不会占用CPU资源，也不会释放持有的锁，需要其他线程的唤醒才能继续执行。</li>
-<li>超时等待状态（Timed Waiting）：与等待状态类似，但是可以设置等待的时间。当线程调用了带有时间参数的sleep()、wait()、join()方法或者LockSupport.parkNanos()、LockSupport.parkUntil()方法时，线程进入超时等待状态。</li>
-<li>终止状态（Terminated）：线程执行完run()方法后，或者出现异常而结束时，线程进入终止状态。此时线程已经彻底结束，不会再回到其他状态。</li>
-</ol>
-<p>这些线程状态在Java中非常重要，理解它们的含义和转换规则有助于我们编写高效、正确的多线程程序。</p>
-<p>线程的生命周期是从新建状态开始，通过调用 start() 方法进入可运行状态，然后可能进入阻塞、等待或者被中断，最后进入终止状态。JVM 管理线程状态的转换，可以通过 Thread 类的状态相关方法来查询当前线程的状态。</p>
-<h3 id="Running状态的转换"><a href="#Running状态的转换" class="headerlink" title="Running状态的转换"></a>Running状态的转换</h3><ul>
-<li>直接进入 TERMINATED 状态，比如用JDK已经不推荐使用的stop法或者判断某个逻辑标识。</li>
-<li>进入 BLOCKED 状态，比如调用了 sleep 或者 wait 方法而加入了 waitSet 中。</li>
-<li>进行某个阻塞的 IO 操作，比如因网络数据的读写而进入了 BLOCKED 状态获取某个锁资源，从而加人到该锁的阻塞队列中而进入了 BLOCKED 状态。</li>
-<li>由于CPU的调度器轮询使该线程放弃执行，进入RUNNABLE 状态。</li>
-<li>线程主动调用 yield 方法，放弃 CPU 执行权，进入 RUNNABLE 状态。</li>
-</ul>
-<h3 id="Blocked状态的转换"><a href="#Blocked状态的转换" class="headerlink" title="Blocked状态的转换"></a>Blocked状态的转换</h3><ul>
-<li>直接进人 TERMINATED 状态，比如调用JDK已经不推荐使用的 stop 方法或者意外死亡(JVM Crash)。</li>
-<li>线程阻塞的操作结束，比如读取了想要的数据字节进入到 RUNNABLE 状态。</li>
-<li>线程完成了指定时间的休眠，进入到了 RUNNABLE 状态。</li>
-<li>Wait 中的线程被其他线程 notify/notifyall 唤醒，进入RUNNABLE状态。</li>
-<li>线程获取到了某个锁资源，进人 RUNNABLE 状态。</li>
-<li>线程在阻塞过程中被打断，比如其他线程调用了 interrupt 方法，进入RUNNABLE状态。</li>
-</ul>
-<h3 id="Terminated状态的形成"><a href="#Terminated状态的形成" class="headerlink" title="Terminated状态的形成"></a>Terminated状态的形成</h3><ul>
-<li>线程运行正常结束，结束生命周期。</li>
-<li>线程运行出错意外结束。</li>
-<li>JVM Crash，导致所有的线程都结束。</li>
-</ul>
-<h2 id="线程的创建"><a href="#线程的创建" class="headerlink" title="线程的创建"></a>线程的创建</h2><p>创建线程只有一种方式那就是构造Thread类，而实现线程的执行单元则有两种方式。</p>
-<ul>
-<li>重写Thread的run方法。</li>
-<li>实现 Runnable 接口的run方法，并且将Runnable 实例用作构造Thread 的参数。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyThread</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 定义线程执行的任务</span></span><br><span class="line">        System.out.println(<span class="string">&quot;This is a new thread.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">MyThread</span> <span class="variable">myThread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyThread</span>();</span><br><span class="line">        myThread.start(); <span class="comment">// 启动线程</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 定义线程执行的任务</span></span><br><span class="line">        System.out.println(<span class="string">&quot;This is a new thread.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">MyRunnable</span> <span class="variable">myRunnable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyRunnable</span>();</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(myRunnable); <span class="comment">// 将实现了 Runnable 接口的对象作为参数传递给 Thread 类的构造方法</span></span><br><span class="line">        thread.start(); <span class="comment">// 启动线程</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="线程中的策略模式"><a href="#线程中的策略模式" class="headerlink" title="线程中的策略模式"></a>线程中的策略模式</h3><p>无论是 Runnable 接口的 run() 方法，还是 Thread 类本身的 run() 方法，都遵循了将线程的控制逻辑与业务逻辑分离的原则，以实现职责分明、功能单一的设计思想。这种设计方式与 GoF（Gang of Four）设计模式中的策略模式有相似之处。</p>
-<p>在策略模式中，将可变的算法封装成独立的策略类，并通过接口或抽象类与调用者进行解耦。调用者可以根据需要选择不同的策略来完成特定的任务。类似地，Java 中的线程创建方式也将线程的执行逻辑封装在一个单独的类（实现 Runnable 接口或继承 Thread 类）中，通过调用 start() 方法来启动线程。</p>
-<p>使用这种设计模式，可以使线程控制逻辑与业务逻辑分离，提高代码的可维护性和可扩展性。例如，可以根据不同的业务需求，定义不同的 Runnable 实现类或 Thread 子类，并在启动线程时选择合适的线程对象，从而实现不同的业务逻辑。</p>
-<p>总结来说，Java 中线程的创建方式与策略设计模式相似，都体现了将控制逻辑与具体业务逻辑分离的设计原则，以实现代码的灵活性和可扩展性。</p>
-<h3 id="线程中的Runnable复用"><a href="#线程中的Runnable复用" class="headerlink" title="线程中的Runnable复用"></a>线程中的Runnable复用</h3><p>重写 Thread 类的 run() 方法和实现 Runnable 接口的 run() 方法有一个关键的不同点。Thread 类的 run() 方法是无法共享的，也就是说，一个线程的 run() 方法不能被另一个线程当作自己的执行单元。相比之下，使用 Runnable 接口可以实现线程执行单元的共享。通过传递同一个实现了 Runnable 接口的对象给多个 Thread 实例，可以使多个线程共享同一个执行单元，从而提高代码的复用性和可维护性。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyRunnable</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 定义线程执行的任务</span></span><br><span class="line">        System.out.println(<span class="string">&quot;This is a new thread.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">MyRunnable</span> <span class="variable">myRunnable</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyRunnable</span>();</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(myRunnable); </span><br><span class="line">        thread.start(); <span class="comment">// 启动线程</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">thread2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Thread</span>(myRunnable); </span><br><span class="line">        thread2.start(); <span class="comment">// 启动线程</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><h3 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> engineer.concurrent.battle.onebasic;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TryConcurrent</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(TryConcurrent::writeCode).start();</span><br><span class="line">        listenMusic();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">listenMusic</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;music is good&quot;</span>);</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">writeCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;write code and work hard&quot;</span>);</span><br><span class="line">            sleep(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">sleep</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(i);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="多线程排队模拟"><a href="#多线程排队模拟" class="headerlink" title="多线程排队模拟"></a>多线程排队模拟</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 叫号机排队模拟，通过多线程并发</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TicketWindow</span> <span class="keyword">extends</span> <span class="title class_">Thread</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">MAX</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">AtomicInteger</span> <span class="variable">index</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">TicketWindow</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (index.get() &lt;= MAX) &#123;</span><br><span class="line">            System.out.println(name + <span class="string">&quot;柜台正在排队，排队号码为：&quot;</span> + index);</span><br><span class="line">            index.getAndIncrement();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TicketWindow</span>(<span class="string">&quot;一号窗口&quot;</span>).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TicketWindow</span>(<span class="string">&quot;二号窗口&quot;</span>).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TicketWindow</span>(<span class="string">&quot;三号窗口&quot;</span>).start();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">TicketWindow</span>(<span class="string">&quot;四号窗口&quot;</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li>《Java高并发编程详解：多线程与架构设计》</li>
-<li><a target="_blank" rel="noopener" href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Thread.html">Java Thread Doc</a></li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -727,6 +647,10 @@
       <ul>
         
           <li>
+            <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/09-Java%E4%B8%AD%E9%94%81%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">简单了解下Java中锁的概念和原理</a>
+          </li>
+        
+          <li>
             <a href="/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/06-%E7%BB%93%E6%9E%84%E5%9E%8B%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式之桥接模式</a>
           </li>
         
@@ -740,10 +664,6 @@
         
           <li>
             <a href="/SpringCloud%E5%AE%9E%E6%88%98/02-SpringCloud2022%E7%BB%84%E4%BB%B6%E9%80%89%E5%9E%8B/">SpringCloud2023最新版本该如何进行组件选型？</a>
-          </li>
-        
-          <li>
-            <a href="/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/%E6%8E%A5%E5%8F%A3%E5%B9%82%E7%AD%89%E8%AF%A5%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0/">接口幂等该如何设计和实现</a>
           </li>
         
       </ul>
@@ -765,7 +685,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -775,7 +695,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年03月</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年06月</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
