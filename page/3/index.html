@@ -88,6 +88,106 @@
 
       <div class="outer">
         <section id="main">
+  <article id="post-JavaEngineer/Java函数式编程" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/JavaEngineer/Java%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">Java函数式编程</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2023-03-11T16:00:00.000Z" itemprop="datePublished">2023年03月12日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/JavaEngineer/">JavaEngineer</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>现在主流的编程范式主要有三种，面向过程、面向对象和函数式编程。函数式编程作为一种补充，有很大存在、发展和学习的意义。</li>
+<li>函数内部涉及的变量都是局部变量，不会像面向对象编程那样，共享类成员变量，也不会像面向过程编程那样，共享全局变量。</li>
+<li>函数式接口可以将函数作为一个参数传入方法中进行使用。</li>
+</ul>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>函数式编程因其编程的特殊性，仅在科学计算、数据处理、统计分析等领域，才能更好地发挥它的优势，所以它并不能完全替代更加通用的面向对象编程范式。但是作为一种补充，它也有很大存在、发展和学习的意义。</p>
+<p>函数式编程更符合数学上函数映射的思想。具体到编程语言层面，我们可以使用Lambda表达式来快速编写函数映射，函数之间通过链式调用连接到一起，完成所需业务逻辑。Java的Lambda表达式是后来才引入的，由于函数式编程在并行处理方面的优势，正在被大量应用在大数据计算领域。</p>
+<h2 id="编程范式"><a href="#编程范式" class="headerlink" title="编程范式"></a>编程范式</h2><p>现在主流的编程范式主要有三种，面向过程、面向对象和函数式编程。</p>
+<p>面向对象编程最大的特点是：以类、对象作为组织代码的单元以及它的四大特性。</p>
+<p>面向过程编程最大的特点是：以函数作为组织代码的单元，数据与方法相分离。</p>
+<ul>
+<li>函数式编程并非一个很新的东西，早在50多年前就已经出现了。近几年，函数式编程越来越被人关注，出现了很多新的函数式编程语言，比如Clojure、Scala、Erlang等。一些非函数式编程语言也加入了很多特性、语法、类库来支持函数式编程，比如Java、Python、Ruby、JavaScript等。除此之外，Google Guava也有对函数式编程的增强功能。</li>
+<li>函数式编程因其编程的特殊性，仅在科学计算、数据处理、统计分析等领域，才能更好地发挥它的优势，所以它并不能完全替代更加通用的面向对象编程范式。但是作为一种补充，它也有很大存在、发展和学习的意义。</li>
+<li>函数式编程中的“函数”，并不是指我们编程语言中的“函数”概念，而是指数学“函数”或者“表达式”（例如：y=f(x)）。不过，在编程实现的时候，对于数学“函数”或“表达式”，我们一般习惯性地将它们设计成函数。</li>
+<li>函数式编程最独特的地方在于它的编程思想。函数式编程认为程序可以用一系列数学函数或表达式的组合来表示。函数式编程是程序面向数学的更底层的抽象，将计算过程描述为表达式。</li>
+<li>并不是所有的程序都适合这么做。函数式编程有它自己适合的应用场景，比如科学计算、数据处理、统计分析等。在这些领域，程序往往比较容易用数学表达式来表示，比起非函数式编程，实现同样的功能，函数式编程可以用很少的代码就能搞定。但是，对于强业务相关的大型业务系统开发来说，费劲吧啦地将它抽象成数学表达式，硬要用函数式编程来实现，显然是自讨苦吃。相反，在这种应用场景下，面向对象编程更加合适，写出来的代码更加可读、可维护。</li>
+<li>函数式编程跟面向过程编程一样，也是以函数作为组织代码的单元。不过，它跟面向过程编程的区别在于，它的函数是无状态的。何为无状态？简单点讲就是，<strong>函数内部涉及的变量都是局部变量，不会像面向对象编程那样，共享类成员变量，也不会像面向过程编程那样，共享全局变量。</strong>函数的执行结果只与入参有关，跟其他任何外部变量无关。同样的入参，不管怎么执行，得到的结果都是一样的。这实际上就是数学函数或数学表达式的基本要求。</li>
+</ul>
+<h2 id="Java对函数式编程的支持"><a href="#Java对函数式编程的支持" class="headerlink" title="Java对函数式编程的支持"></a>Java对函数式编程的支持</h2><p>Java为函数式编程引入了三个新的语法概念：Stream类、Lambda表达式和函数接口（Functional Inteface）。Stream类用来支持通过“.”级联多个函数操作的代码编写方式；引入Lambda表达式的作用是简化代码编写；函数接口的作用是让我们可以把函数包裹成函数接口，来实现把函数当做参数一样来使用（Java 不像C那样支持函数指针，可以把函数直接当参数来使用）。</p>
+<ul>
+<li>stream： stream “.”表示调用某个对象的方法。为了支持上面这种级联调用方式，我们让每个函数都返回一个通用的Stream类对象。在Stream类上的操作有两种：中间操作和终止操作。中间操作返回的仍然是Stream类对象，而终止操作返回的是确定的值结果。</li>
+<li>map、filter是中间操作，返回Stream类对象，可以继续级联其他操作；max是终止操作，返回的是OPTIONAL类对象。</li>
+<li>lambda： lambda表达式在Java中只是一个语法糖而已，底层是基于函数接口来实现的。Lambda表达式包括三部分：输入、函数体、输出。</li>
+<li>函数接口： Java没有函数指针这样的语法。所以它通过函数接口，将函数包裹在接口中，当作变量来使用。实际上，函数接口就是接口。不过，它也有自己特别的地方，那就是要求只包含一个未实现的方法。因为只有这样，Lambda表达式才能明确知道匹配的是哪个方法。如果有两个未实现的方法，并且接口入参、返回值都一样，那Java在翻译Lambda表达式的时候，就不知道表达式对应哪个方法了。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">stream</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        Optional&lt;Integer&gt; result = Stream.of(<span class="string">&quot;f&quot;</span>, <span class="string">&quot;ba&quot;</span>, <span class="string">&quot;hello&quot;</span>) <span class="comment">// of返回Stream&lt;String&gt;对象</span></span><br><span class="line">                .map(s -&gt; s.length()) <span class="comment">// map返回Stream&lt;Integer&gt;对象</span></span><br><span class="line">                .filter(l -&gt; l &lt;= <span class="number">3</span>) <span class="comment">// filter返回Stream&lt;Integer&gt;对象</span></span><br><span class="line">                .max((o1, o2) -&gt; o1 - o2); <span class="comment">// max终止操作：返回Optional&lt;Integer&gt;</span></span><br><span class="line">        System.out.println(result.get()); <span class="comment">// 输出2</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h2><p><strong>@FunctionalInterface注解使用场景</strong>： 一个接口只要满足只有一个抽象方法的条件，即可以当成函数式接口使用，有没有 @FunctionalInterface 都无所谓。</p>
+<p>如果使用了此注解，再往接口中新增抽象方法，编译器就会报错，编译不通过。换句话说，@FunctionalInterface 就是一个承诺，承诺该接口世世代代都只会存在这一个抽象方法。因此，凡是使用了这个注解的接口，开发者可放心大胆的使用Lambda来实例化。当然误用 @FunctionalInterface 带来的后果也是极其惨重的：如果哪天你把这个注解去掉，再加一个抽象方法，则所有使用Lambda实例化该接口的客户端代码将全部编译错误。</p>
+<p>自定义函数式编程接口过程：</p>
+<ul>
+<li>通过 @FunctionalInterface 注解，申明一个函数式接口。</li>
+<li>在方法中使用函数接口作为入参使用；</li>
+<li>调用方法，传入函数接口的实现方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyFuncInterface</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 声明一个函数式接口</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@FunctionalInterface</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ToLongFunction</span>&lt;T&gt; &#123;</span><br><span class="line">        <span class="type">long</span> <span class="title function_">applyAsLong</span><span class="params">(T value)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 工具函数定义使用函数接口作为参数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Util</span>&#123;</span><br><span class="line">         <span class="keyword">public</span> <span class="keyword">static</span> Long <span class="title function_">mapToLong</span><span class="params">(ToLongFunction&lt;? <span class="built_in">super</span> Collection&gt; mapper, List&lt;String&gt; val)</span> &#123;</span><br><span class="line">            Objects.requireNonNull(mapper);</span><br><span class="line">            <span class="keyword">return</span> mapper.applyAsLong(val);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 使用例子</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> args</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        List&lt;String&gt; arr = Arrays.asList(<span class="string">&quot;ddd&quot;</span>, <span class="string">&quot;222&quot;</span>, <span class="string">&quot;3333&quot;</span>);</span><br><span class="line">        <span class="type">Long</span> <span class="variable">size</span> <span class="operator">=</span> Util.mapToLong((item)-&gt; item.size(),arr);</span><br><span class="line">        System.out.println(size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/Ko41OG9yFAZZMEi6-C9kBQ">Java如何支持函数式编程？</a></li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
   <article id="post-JavaEngineer/Java注解机制和应用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -1124,78 +1224,6 @@ A --> 5(差异)</pre>
 </article>
 
 
-  <article id="post-技术人生/把工作当做热爱" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/%E6%8A%8A%E5%B7%A5%E4%BD%9C%E5%BD%93%E5%81%9A%E7%83%AD%E7%88%B1/">把工作当做热爱</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-06-22T16:00:00.000Z" itemprop="datePublished">2022年06月23日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>一个人每周至少要工作40个小时，而平均每个人的工作年限是35年，也就是说除了睡觉以外，占据你最多时间的是——工作。<br>你是要浑浑噩噩度过一天中精力最充足的时间，还是集中精力解决一个个抛过来的难题磨练自己的技能，选择权在于你。</p>
-<p>稻盛和夫曾说过：“劳动的意义不仅在于追求业绩，更在于完善人的内心。”</p>
-<p>而你会发现，当你不再“逃跑”，而是选择面对直视问题的时候，你的人格就得到了磨练，你逐渐从从一个喜欢逃避、厌恶麻烦、随意任性的人变成一个直接面对问题、有责任感、值得信任的成熟社会人。</p>
-<p>就是如果你一心扑在工作上，不管吃饭也好、睡觉也好，都在想着工作，那么那个困扰你很久的问题就可能在某个时刻得到启示。</p>
-<p>每天吃吃喝喝的生活，在第一个星期的时候或许会觉得享受，但如果把这样的生活持续一个月、甚至半年，你会发现，你根本感觉不到快乐了。<br>因为幸福是一种对比，或者说是一种感受的落差。</p>
-<p>不可否认的是，工作能够给人带来意义感。</p>
-<p>正如稻盛和夫所说，“拼命工作的背后隐藏着快乐和欢喜，正像慢慢长夜结束后，曙光就会到来一样。”</p>
-<p>在《干法》中，稻盛和夫将人分为三种类型：</p>
-<p>1）不燃型：点火也烧不起来的人；<br>2）可燃型：点火就着的人；<br>3）自燃型：没人点自己就能熊熊燃烧的人。</p>
-<p>自燃型的他们有极强的自主驱动力，长期处于学习区，他们不认为工作是一种任务，相反的是，他们认为工作很有意思，他们从来不会等别人吩咐了才去干，而是在被人吩咐之前就自发去干。</p>
-<p>把工作当做热爱的认识能够持久的发光发热，温柔度过漫长的日子。</p>
-<p>摘录自： 《人为什么要热爱工作？这是我听过最好的答案》<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/_CNAsITDLyTMpOuVJrYh4Q">https://mp.weixin.qq.com/s/_CNAsITDLyTMpOuVJrYh4Q</a></p>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
 
     <nav id="page-nav">
 
@@ -1214,6 +1242,10 @@ A --> 5(差异)</pre>
       <ul>
         
           <li>
+            <a href="/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/112-MySQL%E5%8D%95%E8%A1%A8%E5%8D%83%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E5%A4%A7%E5%AE%B6%E6%80%8E%E4%B9%88%E8%AF%B4/">MySQL单表千万级数据查询优化大家怎么说（评论有亮点）</a>
+          </li>
+        
+          <li>
             <a href="/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/09-Java%E4%B8%AD%E9%94%81%E7%9A%84%E6%A6%82%E5%BF%B5%E5%92%8C%E5%8E%9F%E7%90%86/">简单了解下Java中锁的概念和原理</a>
           </li>
         
@@ -1227,10 +1259,6 @@ A --> 5(差异)</pre>
         
           <li>
             <a href="/SpringCloud%E5%AE%9E%E6%88%98/03-%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%E4%B9%8B%E7%88%B6%E5%B7%A5%E7%A8%8B%E9%85%8D%E7%BD%AE/">如何简洁高效地搭建一个SpringCloud2023的maven工程</a>
-          </li>
-        
-          <li>
-            <a href="/SpringCloud%E5%AE%9E%E6%88%98/02-SpringCloud2022%E7%BB%84%E4%BB%B6%E9%80%89%E5%9E%8B/">SpringCloud2023最新版本该如何进行组件选型？</a>
           </li>
         
       </ul>
@@ -1252,7 +1280,7 @@ A --> 5(差异)</pre>
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-classify"></i> 分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">4</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JavaEngineer/">JavaEngineer</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E7%BC%96%E7%A0%81%E6%A0%87%E5%87%86%E6%8C%87%E5%8D%97/">Java编码标准指南</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL%E6%94%BB%E7%95%A5/">MySQL攻略</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/PaddlePaddle/">PaddlePaddle</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud%E5%AE%9E%E6%88%98/">SpringCloud实战</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%9E%E6%88%98/">中间件实战</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B7%B1%E5%BA%A6%E8%AE%B2%E8%A7%A3Spring5%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86/">深度讲解Spring5底层原理</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E5%B7%A7/">编程技巧</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/Spring/">Spring</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/">网文</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E6%96%87/%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%94%9F/">技术人生</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%B7%9F%E7%9D%80GPT%E5%AD%A6%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">跟着GPT学设计模式</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1/">软件设计</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BF%90%E7%BB%B4/">运维</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">高并发编程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%AB%98%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">高并发编程基础</a><span class="category-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -1262,7 +1290,7 @@ A --> 5(差异)</pre>
   <div class="widget-wrap">
     <h3 class="widget-title"><i class="fa fa-archive"></i> 归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年06月</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/">2024年07月</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/">2023年12月</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/">2022年12月</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021年11月</a><span class="archive-list-count">9</span></li></ul>
     </div>
   </div>
 
