@@ -48,7 +48,7 @@
       </h1>
       
         <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">专注软件技术发展趋势，传播软件技术</a>
+          <a href="/" id="subtitle"> 来自一线全栈程序员nine的探索与实践，持续迭代中。</a>
         </h2>
       
     </div>
@@ -631,106 +631,6 @@
 </article>
 
 
-  <article id="post-从0开始学微服务/00-微服务定义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/00-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%B9%89/">00-微服务定义</a>
-    </h1>
-  
-
-
-      </header>
-    
-    <div class="article-meta">
-      
-      <span class="article-date">
-  <i class="fa fa-date"></i>
-  <time class="dt-published" datetime="2022-04-15T16:00:00.000Z" itemprop="datePublished">2022年04月16日</time>
-</span>
-      
-  <div class="article-category">
-    <i class="fa fa-classify"></i>
-    <a class="article-category-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a>
-  </div>
-
-      
-      
-
-    </div>
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h2 id="12因素应用和微服务"><a href="#12因素应用和微服务" class="headerlink" title="12因素应用和微服务"></a>12因素应用和微服务</h2><p>12-Factor 为构建如下的 SaaS 应用提供了方法论：</p>
-<ul>
-<li>使用标准化流程自动配置，从而使新的开发者花费最少的学习成本加入这个项目。</li>
-<li>和操作系统之间尽可能的划清界限，在各个系统中提供最大的可移植性。</li>
-<li>适合部署在现代的云计算平台，从而在服务器和系统管理方面节省资源。</li>
-<li>将开发环境和生产环境的差异降至最低，并使用持续交付实施敏捷开发。</li>
-<li>可以在工具、架构和开发流程不发生明显变化的前提下实现扩展。</li>
-</ul>
-<p>满足12 因素的app大概是这样的：</p>
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">I. 基准代码</span><br><span class="line">一份基准代码，多份部署</span><br><span class="line">II. 依赖</span><br><span class="line">显式声明依赖关系</span><br><span class="line">III. 配置</span><br><span class="line">在环境中存储配置</span><br><span class="line">IV. 后端服务</span><br><span class="line">把后端服务当作附加资源</span><br><span class="line">V. 构建，发布，运行</span><br><span class="line">严格分离构建和运行</span><br><span class="line">VI. 进程</span><br><span class="line">以一个或多个无状态进程运行应用</span><br><span class="line">VII. 端口绑定</span><br><span class="line">通过端口绑定提供服务</span><br><span class="line">VIII. 并发</span><br><span class="line">通过进程模型进行扩展</span><br><span class="line">IX. 易处理</span><br><span class="line">快速启动和优雅终止可最大化健壮性</span><br><span class="line">X. 开发环境与线上环境等价</span><br><span class="line">尽可能的保持开发，预发布，线上环境相同</span><br><span class="line">XI. 日志</span><br><span class="line">把日志当作事件流</span><br><span class="line">XII. 管理进程</span><br><span class="line">后台管理任务当作一次性进程运行</span><br></pre></td></tr></table></figure>
-
-<p>微服务作为一个概念是满足12因素的多应用方案，是一个可以具体落地的方案。</p>
-<h2 id="单体服务与微服务"><a href="#单体服务与微服务" class="headerlink" title="单体服务与微服务"></a>单体服务与微服务</h2><p>单体服务，以 MVC 架构为例，业务通常是通过部署一个 WAR 包到 Tomcat 中，然后启动 Tomcat，监听某个端口即可对外提供服务。早期在业务规模不大、开发团队人员规模较小的时候，采用单体应用架构，团队的开发和运维成本都可控。存在问题如下：</p>
-<ul>
-<li>部署效率低下。</li>
-<li>团队协作开发成本高。</li>
-<li>系统高可用性差。</li>
-<li>线上发布变慢。</li>
-</ul>
-<p>服务化，就是把传统的单机应用中通过 JAR 包依赖产生的本地方法调用，改造成通过 RPC 接口产生的远程方法调用。通过服务化，可以解决单体应用膨胀、团队开发耦合度高、协作效率低下的问题。</p>
-<ol>
-<li>单体服务的线上服务稳定容易被其他功能模块影响。</li>
-<li>单体服务在进行多个功能模块开发的时候混合进行开发、测试部署。不同功能之间容易影响。</li>
-</ol>
-<p>服务化的思想进一步演化，演变为今天我们所熟知的微服务。微服务相比于服务化的不同：</p>
-<ol>
-<li>服务拆分粒度更细。</li>
-<li>服务独立部署。</li>
-<li>服务独立维护。</li>
-<li>服务治理能力要求高。</li>
-</ol>
-<p>常见的服务拆分方式：</p>
-<ol>
-<li>纵向拆分，从业务角度拆分，按照业务的关联独立程度来决定。独立功能，关联较为深的拆分微服务。</li>
-<li>横向拆分，从公共且独立功能维度拆分。多个公共服务被调用，且依赖资源独立不与其他业务耦合。</li>
-</ol>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://12factor.net/zh_cn/">12-factors app</a></li>
-<li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li>
-</ul>
-
-        
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <div class="article-tag-wrap">
-          
-
-          
-          
-    <div class="social-share">
-      <span>分享到:</span>
-    </div>
-
-
-
-        </div>
-      
-      
-      
-    </footer>
-  </div>
-</article>
-
-
   <article id="post-从0开始学微服务/01-微服务架构定义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-inner">
     
@@ -809,6 +709,106 @@
 <li>赖服务不可用。比如你的服务依赖依赖了另一个服务，当另一个服务出现问题时，会拖慢甚至拖垮你的服务。而服务治理可以通过熔断，在依赖服务异常的情况下，一段时期内停止发起调用而直接返回。</li>
 </ul>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li>
+</ul>
+
+        
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div class="article-tag-wrap">
+          
+
+          
+          
+    <div class="social-share">
+      <span>分享到:</span>
+    </div>
+
+
+
+        </div>
+      
+      
+      
+    </footer>
+  </div>
+</article>
+
+
+  <article id="post-从0开始学微服务/00-微服务定义" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/00-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%B9%89/">00-微服务定义</a>
+    </h1>
+  
+
+
+      </header>
+    
+    <div class="article-meta">
+      
+      <span class="article-date">
+  <i class="fa fa-date"></i>
+  <time class="dt-published" datetime="2022-04-15T16:00:00.000Z" itemprop="datePublished">2022年04月16日</time>
+</span>
+      
+  <div class="article-category">
+    <i class="fa fa-classify"></i>
+    <a class="article-category-link" href="/categories/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E5%BE%AE%E6%9C%8D%E5%8A%A1/">从0开始学微服务</a>
+  </div>
+
+      
+      
+
+    </div>
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="12因素应用和微服务"><a href="#12因素应用和微服务" class="headerlink" title="12因素应用和微服务"></a>12因素应用和微服务</h2><p>12-Factor 为构建如下的 SaaS 应用提供了方法论：</p>
+<ul>
+<li>使用标准化流程自动配置，从而使新的开发者花费最少的学习成本加入这个项目。</li>
+<li>和操作系统之间尽可能的划清界限，在各个系统中提供最大的可移植性。</li>
+<li>适合部署在现代的云计算平台，从而在服务器和系统管理方面节省资源。</li>
+<li>将开发环境和生产环境的差异降至最低，并使用持续交付实施敏捷开发。</li>
+<li>可以在工具、架构和开发流程不发生明显变化的前提下实现扩展。</li>
+</ul>
+<p>满足12 因素的app大概是这样的：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">I. 基准代码</span><br><span class="line">一份基准代码，多份部署</span><br><span class="line">II. 依赖</span><br><span class="line">显式声明依赖关系</span><br><span class="line">III. 配置</span><br><span class="line">在环境中存储配置</span><br><span class="line">IV. 后端服务</span><br><span class="line">把后端服务当作附加资源</span><br><span class="line">V. 构建，发布，运行</span><br><span class="line">严格分离构建和运行</span><br><span class="line">VI. 进程</span><br><span class="line">以一个或多个无状态进程运行应用</span><br><span class="line">VII. 端口绑定</span><br><span class="line">通过端口绑定提供服务</span><br><span class="line">VIII. 并发</span><br><span class="line">通过进程模型进行扩展</span><br><span class="line">IX. 易处理</span><br><span class="line">快速启动和优雅终止可最大化健壮性</span><br><span class="line">X. 开发环境与线上环境等价</span><br><span class="line">尽可能的保持开发，预发布，线上环境相同</span><br><span class="line">XI. 日志</span><br><span class="line">把日志当作事件流</span><br><span class="line">XII. 管理进程</span><br><span class="line">后台管理任务当作一次性进程运行</span><br></pre></td></tr></table></figure>
+
+<p>微服务作为一个概念是满足12因素的多应用方案，是一个可以具体落地的方案。</p>
+<h2 id="单体服务与微服务"><a href="#单体服务与微服务" class="headerlink" title="单体服务与微服务"></a>单体服务与微服务</h2><p>单体服务，以 MVC 架构为例，业务通常是通过部署一个 WAR 包到 Tomcat 中，然后启动 Tomcat，监听某个端口即可对外提供服务。早期在业务规模不大、开发团队人员规模较小的时候，采用单体应用架构，团队的开发和运维成本都可控。存在问题如下：</p>
+<ul>
+<li>部署效率低下。</li>
+<li>团队协作开发成本高。</li>
+<li>系统高可用性差。</li>
+<li>线上发布变慢。</li>
+</ul>
+<p>服务化，就是把传统的单机应用中通过 JAR 包依赖产生的本地方法调用，改造成通过 RPC 接口产生的远程方法调用。通过服务化，可以解决单体应用膨胀、团队开发耦合度高、协作效率低下的问题。</p>
+<ol>
+<li>单体服务的线上服务稳定容易被其他功能模块影响。</li>
+<li>单体服务在进行多个功能模块开发的时候混合进行开发、测试部署。不同功能之间容易影响。</li>
+</ol>
+<p>服务化的思想进一步演化，演变为今天我们所熟知的微服务。微服务相比于服务化的不同：</p>
+<ol>
+<li>服务拆分粒度更细。</li>
+<li>服务独立部署。</li>
+<li>服务独立维护。</li>
+<li>服务治理能力要求高。</li>
+</ol>
+<p>常见的服务拆分方式：</p>
+<ol>
+<li>纵向拆分，从业务角度拆分，按照业务的关联独立程度来决定。独立功能，关联较为深的拆分微服务。</li>
+<li>横向拆分，从公共且独立功能维度拆分。多个公共服务被调用，且依赖资源独立不与其他业务耦合。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://12factor.net/zh_cn/">12-factors app</a></li>
 <li>[从 0 开始学微服务 - 极客时间 - 胡忠想]</li>
 </ul>
 
@@ -1263,7 +1263,7 @@
         </p>
       
       <p>
-        <span>Copyright &copy; 2024 codeman.</span>
+        <span>Copyright &copy; 2024 r0ad.</span>
         <span>Theme by <a href="https://github.com/chaooo/hexo-theme-BlueLake/" target="_blank">BlueLake.</a></span>
         
             <span>Count by <a href="http://busuanzi.ibruce.info/" target="_blank">busuanzi.</a></span>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>code trend</title>
   
-  <subtitle>专注软件技术发展趋势，传播软件技术</subtitle>
+  <subtitle> 来自一线全栈程序员nine的探索与实践，持续迭代中。</subtitle>
   <link href="https://r0ad.github.io/atom.xml" rel="self"/>
   
   <link href="https://r0ad.github.io/"/>
@@ -10,7 +10,7 @@
   <id>https://r0ad.github.io/</id>
   
   <author>
-    <name>codeman</name>
+    <name>r0ad</name>
     
   </author>
   
